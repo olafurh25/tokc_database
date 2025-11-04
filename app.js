@@ -197,7 +197,7 @@ function openRandom() {
   if (el) el.addEventListener("click", fn);
 });
 
-//* ===== TOPBAR LOGO → SNAP TO HERO ===== */
+/* ===== TOPBAR LOGO → SNAP TO HERO ===== */
 const logoEl = document.querySelector('.topbar-logo');
 if (logoEl) {
   // make it accessible/clickable
@@ -216,7 +216,6 @@ if (logoEl) {
     if (e.key === 'Enter' || e.key === ' ') goHero(e);
   });
 }
-
 
 /* ===== CARD DATA + RENDER ===== */
 const cardGrid = document.getElementById("cardGrid");
@@ -461,13 +460,17 @@ let filteredList = [];
 const loadWrap = document.querySelector('.load-more-wrapper');
 const noResultsEl = document.getElementById('noResults');
 
-// helper used by applyQuery()
+// ---- No-results popup control (robust) ----
 function setNoResults(show) {
-  if (!noResultsEl) return;
-  noResultsEl.classList.toggle('hidden', !show);
+  const el = noResultsEl;
+  if (!el) return;
+  el.classList.toggle('hidden', !show);
   if (show) {
-    noResultsEl.style.opacity = '1';
-    noResultsEl.style.transform = 'translateY(0)';
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+  } else {
+    el.style.opacity = '';
+    el.style.transform = '';
   }
 }
 
@@ -594,7 +597,6 @@ function renderWithLeave(nextSlice) {
 
   nextSlice.forEach((c) => {
     const id = String(c.id);
-    theExisting = byId.get(id);
     const existing = byId.get(id);
     if (existing) {
       existing.classList.remove("card-enter", "card-leave", "card-exit");
@@ -761,28 +763,6 @@ function smoothScrollTo(targetY, duration = SNAP_DURATION) {
   requestAnimationFrame(frame);
 }
 
-/* ===== tiny helper: animate grid to top (cancellable by starting a new one) ===== */
-let __gridAnimId = 0;
-function smoothScrollGridTo(target, duration = 250) {
-  const startId = ++__gridAnimId;
-  const start = cardArea.scrollTop;
-  const dist  = target - start;
-  const t0 = performance.now();
-
-  function easeInOutCubic(t) {
-    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
-  }
-
-  function frame(now) {
-    if (startId !== __gridAnimId) return; // cancelled
-    const t = Math.min((now - t0) / duration, 1);
-    const eased = easeInOutCubic(t);
-    cardArea.scrollTop = start + dist * eased;
-    if (t < 1) requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-}
-
 /* ===== CUSTOM SNAP SMOOTH SCROLL ===== */
 if (snapContainer) {
   // one set of snap state + helpers
@@ -840,37 +820,21 @@ if (snapContainer) {
 
     // ===== INSIDE CARD GRID =====
     if (overGrid) {
-      // Mid-grid → scroll up: first glide grid to top, then snap to previous page
-      if (up && !atTop()) {
-        e.preventDefault();
-        lock();
-        smoothScrollGridTo(0, 250); // controlled inner scroll (replaces native smooth)
-        const wait = () => {
-          if (atTop()) {
-            snapTo(snapContainer.scrollTop - PAGE());
-          } else {
-            requestAnimationFrame(wait);
-          }
-        };
-        requestAnimationFrame(wait);
-        return;
-      }
-
-      // At top of grid → scroll up goes to previous page
+      // No forced glide to top; only snap if already at top and scrolling up
       if (up && atTop()) {
         e.preventDefault();
         snapTo(snapContainer.scrollTop - PAGE());
         return;
       }
 
-      // At bottom of grid → scroll down goes to next page
+      // At bottom of grid → downward scroll snaps to next page
       if (down && atBottom()) {
         e.preventDefault();
         snapTo(snapContainer.scrollTop + PAGE());
         return;
       }
 
-      // Otherwise let the grid scroll normally
+      // Otherwise: normal grid scrolling
       return;
     }
 
