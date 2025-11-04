@@ -255,7 +255,7 @@ const ALIAS = {
 };
 
 const ENUMS = {
-  type:      ["basic","advanced","hq","kingdom","favor","tactic"],
+  type:      ["basic","advanced","hq","kingdom","favour","tactic"],
   faction:   ["clans","uprising","gathering","nobility"],
   suit:      ["swords","book","coins"],
   archetype: ["ruse","trader","follower","agent","cavalry","war machine","machine","captain","heir","champion"],
@@ -694,7 +694,122 @@ cardGrid.addEventListener('keydown', (e) => {
   openModal(el.dataset.id);
 });
 
-/* ===== MODAL (single definition) ===== */
+/* ===== PRETTY LABELS (hardcoded for every field) ===== */
+
+// Maps for exact, human-pretty labels. Add/modify as you like.
+const TYPE_LABELS = {
+  basic: "Basic Faction Card",
+  advanced: "Advanced Faction Card",
+  hq: "HQ Card",
+  kingdom: "Kingdom Card",
+  favour: "Kingdom's Favour Ability",
+  tactic: "Tactic"
+};
+
+const FACTION_LABELS = {
+  clans: "The Clans",
+  uprising: "The Uprising",
+  gathering: "The Gathering",
+  nobility: "The Nobility"
+};
+
+const SUIT_LABELS = {
+  swords: "Swords",
+  book: "Book",
+  coins: "Coins"
+};
+
+const ARCHETYPE_LABELS = {
+  ruse: "Ruse",
+  trader: "Trader",
+  follower: "Follower",
+  agent: "Agent",
+  cavalry: "Cavalry",
+  machine: "War Machine",
+  captain: "Captain",
+  heir: "Heir",
+  champion: "Champion"
+};
+
+const TRAIT_LABELS = {
+  resilient: "Resilient",
+  invulnerable: "Invulnerable",
+  pathfinder: "Pathfinder"
+};
+
+// If you have known Expansion/Module names, map them here (optional).
+// Unknown values fall back to Title Case.
+const RELEASE_EXPANSION_LABELS = {
+  // "wild_kingdom": "Wild Kingdom",
+};
+const RELEASE_MODULE_LABELS = {
+  // "winter_rules": "Winter Rules",
+};
+
+// ---------- Formatting helpers ----------
+
+// Title-Case fallback for any unknown string.
+function titleCase(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/\b([a-z])/g, (m, c) => c.toUpperCase());
+}
+
+// Returns a pretty, hardcoded label for a single scalar value by key.
+// If not found in a map, falls back to Title Case.
+function prettyScalar(key, value) {
+  if (value == null || value === "") return "";
+  const v = String(value).toLowerCase();
+
+  switch (key) {
+    case "type":       return TYPE_LABELS[v]       || titleCase(value);
+    case "faction":    return FACTION_LABELS[v]    || titleCase(value);
+    case "suit":       return SUIT_LABELS[v]       || titleCase(value);
+    case "archetype":  return ARCHETYPE_LABELS[v]  || titleCase(value);
+    case "trait":      return TRAIT_LABELS[v]      || titleCase(value);
+    case "tags":       return titleCase(value);
+    case "releaseExpansion":
+      return RELEASE_EXPANSION_LABELS[v] || titleCase(value);
+    case "releaseModule":
+      return RELEASE_MODULE_LABELS[v] || titleCase(value);
+    default:
+      return titleCase(value);
+  }
+}
+
+// Pretty print arrays (traits, tags) using the scalar map per item.
+function prettyArray(key, arr, sep = ", ") {
+  if (!Array.isArray(arr) || arr.length === 0) return "";
+  return arr.map(v =>
+    prettyScalar(key === "traits" ? "trait" : key, v)
+  ).join(sep);
+}
+
+// Pretty print the "Release" blob: Base Game / Expansion / Module
+function prettyRelease(rel) {
+  if (!rel) return "";
+  const bits = [];
+
+  if (rel.basegame) bits.push("Base Game");
+  if (rel.expansion) bits.push(prettyScalar("releaseExpansion", rel.expansion));
+  if (rel.module) bits.push(prettyScalar("releaseModule", rel.module));
+
+  if (!bits.length) return "";
+  // If you want the explicit "Release: " label:
+  return `Release: ${bits.join(" — ")}`;
+}
+
+// Numbers/power line (you can rename labels here, too)
+function prettyPowerBits(card) {
+  const out = [];
+  if (card.cost != null)      out.push(`Cost ${card.cost}`);
+  if (card.strength != null)  out.push(`Strength ${card.strength}`);
+  if (card.votes != null)     out.push(`Votes ${card.votes}`);
+  if (card.lore != null)      out.push(`Lore ${card.lore}`);
+  return out.join(" ⬥ ");
+}
+
+/* ===== MODAL (single definition, with hardcoded pretty labels) ===== */
 function openModal(id) {
   const c = cards.find(x => String(x.id) === String(id));
   if (!c) return;
@@ -709,40 +824,47 @@ function openModal(id) {
   const rulesEl = document.getElementById("modalRules");
   const flavEl  = document.getElementById("modalFlavor");
 
+  // Art + title
   art.src = c.image || "";
   art.alt = c.title || "";
   nameEl.textContent = c.title || "";
 
-  const relBits = [
-    c.release?.basegame ? "Base Game" : "",
-    c.release?.expansion || "",
-    c.release?.module || ""
-  ].filter(Boolean).join(" — ");
+  // ---- Pretty field values (hardcoded maps) ----
+  const typePretty      = prettyScalar("type", c.type);
+  const factionPretty   = prettyScalar("faction", c.faction);
+  const suitPretty      = prettyScalar("suit", c.suit);
+  const archetypePretty = prettyScalar("archetype", c.archetype);
+  const traitsPretty    = prettyArray("traits", c.traits, ", ");
+  const tagsPretty      = prettyArray("tags", c.tags, ", ");
 
-  const powerBits = [
-    c.cost != null ? `Cost ${c.cost}` : "",
-    c.strength != null ? `STR ${c.strength}` : "",
-    c.votes != null ? `Votes ${c.votes}` : "",
-    c.lore != null ? `Lore ${c.lore}` : ""
+  const releasePretty   = prettyRelease(c.release);
+  const powerBits       = prettyPowerBits(c);
+
+  // ---- Build the top meta row exactly how you want it ----
+  // Example grouping: [Type (+ Faction / Suit)] • [Archetype/Traits if present] • [Power] • [Release]
+  const leftBits = [
+    // Type + (Faction or Suit for kingdom)
+    [typePretty, c.type === "kingdom" ? suitPretty : factionPretty]
+      .filter(Boolean).join(" • "),
+
+    // Tarot/faction-card extra descriptors
+    [archetypePretty, traitsPretty].filter(Boolean).join(" • ")
   ].filter(Boolean).join(" • ");
 
   const metaBits = [
-    [
-      c.type === "basic" ? "Basic Faction Card" :
-      c.type === "advanced" ? "Advanced Faction Card" :
-      c.type,
-      c.faction
-    ].filter(Boolean).join(" • "),
-
+    leftBits,
     powerBits,
-    relBits ? `Release: ${relBits}` : ""
+    releasePretty
   ].filter(Boolean).join(" • ");
 
   metaEl.textContent  = metaBits;
+
+  // ---- Body texts (left as-is; you can also hardcode headings elsewhere) ----
   cmdEl.textContent   = c.commands || "";
   rulesEl.textContent = c.rules || "";
   flavEl.textContent  = c.flavor || "";
 }
+
 
 // --- modal close (outside click, button, ESC) ---
 function dismissModal() {
