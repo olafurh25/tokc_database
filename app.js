@@ -255,11 +255,17 @@ const ALIAS = {
 };
 
 const ENUMS = {
-  type:      ["tarot","hq","kingdom","favor","tactic"],
+  type:      ["basic","advanced","hq","kingdom","favor","tactic"],
   faction:   ["clans","uprising","gathering","nobility"],
   suit:      ["swords","book","coins"],
   archetype: ["ruse","trader","follower","agent","cavalry","war machine","machine","captain","heir","champion"],
   traits:    ["resilient","invulnerable","pathfinder"]
+};
+
+// both "basic" and "advanced" are faction cards
+const isFactionCard = (card) => {
+  const t = String(card.type || "").toLowerCase();
+  return t === "basic" || t === "advanced";
 };
 
 function inType(card, t){ return String(card.type||"").toLowerCase() === t; }
@@ -378,12 +384,27 @@ function matchTerm(card, term){
     return neg ? !ok : ok;
   }
 
-  // === TYPE-GATED FIELDS ===
-  if (["archetype","traits","strength","votes","lore","cost"].includes(key)) {
-    if (!inType(card,"tarot")) return neg ? true : false;
+  // tarot fields (archetype, traits, strength, votes, lore) only apply to faction cards
+  if (["archetype","traits","strength","votes","lore"].includes(key)) {
+    if (!isFactionCard(card)) return neg ? true : false;
   }
+  // cost is now allowed on every card — no gating
+
   if (key === "suit") {
     if (!inType(card,"kingdom")) return neg ? true : false;
+  }
+
+  // Special-case: allow type:tarot to mean either tarot subtype
+  if (key === "type") {
+    const v = String(val).toLowerCase();
+    let ok;
+    if (v === "faction") {
+      ok = isFactionCard(card); // matches both Basic/Advanced Faction Card
+    } else {
+      // keep the existing enum + wildcard behavior
+      ok = matchesEnum("type", val) && textCompare(norm(card.type), val);
+    }
+    return neg ? !ok : ok;
   }
 
   // enums (type/faction/suit/archetype/traits)
@@ -706,7 +727,13 @@ function openModal(id) {
   ].filter(Boolean).join(" • ");
 
   const metaBits = [
-    [c.type, c.faction].filter(Boolean).join(" • "),
+    [
+      c.type === "basic" ? "Basic Faction Card" :
+      c.type === "advanced" ? "Advanced Faction Card" :
+      c.type,
+      c.faction
+    ].filter(Boolean).join(" • "),
+
     powerBits,
     relBits ? `Release: ${relBits}` : ""
   ].filter(Boolean).join(" • ");
