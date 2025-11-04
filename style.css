@@ -1,0 +1,500 @@
+/* =========== GLOBAL =========== */
+:root{
+  --accent: #1F3B41;            /* requested teal accent */
+  --glass: rgba(255,255,255,.70); /* translucent white for search */
+  --ink: #0b0f12;
+  --card-ratio: calc(2.75 / 4.75); 
+  --modal-overlap: 120px; /* how far the card overlaps the info panel */
+  --card-radius-grid: 16px;     /* what grid uses now */
+  --card-radius-modal-pct: 5.5%;/* tweak: ~16px at ~290–300px width */
+}
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: "Bookman Old Style", "Bookman Old Face", "Bookman", serif;
+  color: #eaf0f5;
+  background-color: var(--accent); /* fallback */
+  background-image: url("images/box_art.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+
+
+
+
+/* ================= HERO ================= */
+#hero {
+  position: relative;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.hero-inner {
+  text-align: center;
+}
+
+.hero-logo {
+  width: min(40vw, 600px);
+  height: auto;
+  display: block;
+  margin-inline: auto;
+}
+
+.hero-tagline {
+  margin: 1.4rem 0 1rem;
+  font-size: 1.4rem;
+  font-style: italic;
+  text-align: center;
+  opacity: 0.95;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.65);
+}
+
+/* =========== SEARCH (hero + topbar) =========== */
+.search-wrap{
+  position:relative;
+  display:flex; align-items:center;
+  background: var(--glass);
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:999px;
+  box-shadow:0 8px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6);
+  backdrop-filter: blur(10px);
+  padding:.9rem .9rem;
+  width:clamp(560px, 52vw, 760px);       /* wide like the mock */
+}
+
+.search-wrap input{
+  flex:1; background:transparent; border:none; outline:none;
+  color: var(--ink);
+  font-size:1.08rem; padding:.55rem .3rem .55rem 2.2rem;
+}
+
+.search-icon{ position:absolute; left:1rem; color:#0a0e12; opacity:.55; }
+
+/* =========== CHIPS / ACTION BUTTONS =========== */
+.filters{ display:flex; gap:.75rem; justify-content:center; margin-top:1rem; }
+
+.chip{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.22);
+  background: rgba(31,59,65,.9);
+  color:#FAD069;;
+  padding:.6rem 1.1rem;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:1rem;
+  line-height:1;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+  transition:transform .12s ease, background .15s ease, border-color .2s ease;
+}
+.chip:hover{ transform:translateY(-2px); background:rgba(46,87,96,1); border-color:rgba(255,255,255,.35); }
+
+/* =========== TOPBAR (sticky after hero) =========== */
+#topbar{
+  position:sticky; top:-84px; opacity:0;
+  height:84px;
+  display:grid; grid-template-columns: 1fr minmax(560px, 1100px) 1fr;
+  align-items:center; gap:1rem;
+
+  border-bottom: none;
+  z-index:20;
+  transition: top .35s ease, opacity .35s ease;
+  transform: translateY(-10px);
+  padding: 0 1rem;
+}
+
+#topbar.sticky{ top:0; opacity:1; }
+
+.topbar-left{ display:flex; align-items:center; }
+.topbar-logo{ height:140px; width:auto; }
+.topbar-center{ display:flex; justify-content:center; }
+.topbar-right{ display:flex; justify-content:flex-end; gap:.6rem; }
+
+
+/* match search style in bar but a tad shorter */
+#topbar .search-wrap{ width:clamp(560px, 48vw, 1100px); padding:.45rem .9rem; }
+
+/* =========== CARD AREA (scrolling) =========== */
+#cardArea{
+  margin-top: 2rem;
+  height: calc(100vh - 84px);
+  overflow-y:auto;
+  position:relative;
+  overscroll-behavior: contain;
+}
+
+
+#cardArea {
+  flex: 1;
+  overflow-y: auto;      /* allows cards to scroll */
+  scroll-snap-align: none;
+}
+
+#cardGrid{
+  width:min(1300px, 92%);
+  margin:1.2rem auto 4rem;
+  display:grid; gap:1.1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media(max-width:1100px){ #cardGrid{ grid-template-columns:repeat(3,1fr); } }
+@media(max-width:800px){  #cardGrid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:520px){  #cardGrid{ grid-template-columns:1fr; } }
+
+/* Frosted card shells */
+.card{
+  position: relative;
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:18px;
+  cursor:pointer;
+  backdrop-filter: blur(6px);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+.card::after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none;
+  border-radius: var(--card-radius-grid);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+  pointer-events: none;
+}
+.card:hover{
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 12px 36px rgba(0,0,0,.28);
+  filter: saturate(1.05);
+}
+
+.card img{
+  display:block;
+  width:100%;
+  aspect-ratio: var(--card-ratio); /* FULL-BLEED tarot size */
+  object-fit: cover;               /* fill & crop */
+  border-radius: var(--card-radius-grid);
+}
+
+
+/* ===== CARD APPEAR ANIMATION ===== */
+.card {
+  opacity: 0;
+  transform: translateY(-10px);
+  will-change: transform, opacity;
+}
+
+.card.card-enter {
+  animation: cardStaggerIn 480ms ease forwards;
+}
+
+@keyframes cardStaggerIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ===== CARD LEAVE ANIMATION (reverse) ===== */
+.card-leave {
+  animation: cardStaggerOut 320ms ease forwards;
+}
+
+@keyframes cardStaggerOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(8px); }
+}
+
+
+/* ===== NO RESULTS MESSAGE ===== */
+#noResults {
+  text-align: center;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 20rem;
+  transition: opacity 0.3s ease;
+}
+
+#noResults.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#noResults:not(.hidden) {
+  opacity: 1;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.load-more-wrapper {
+  display: none;
+  justify-content: center;
+  margin: 2rem 0 4rem;
+}
+
+.load-more {
+  background: rgba(31,59,65,.9);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #FAD069;
+  font-family: inherit;
+  padding: .7rem 1.6rem;
+  border-radius: 999px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.load-more:hover {
+  transform: translateY(-2px);
+  background: rgba(46,87,96,1);
+  border-color: rgba(255,255,255,.4);
+}
+
+/* =========== MODAL (CARD OVERLAP STYLE) =========== */
+#modal {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: none;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+  z-index: 100;
+}
+
+#modalContent {
+  background: transparent;
+  border: none;
+  padding: 1rem;
+  width: min(94%, 1100px);
+  max-height: 90vh;
+  overflow: visible;
+  position: relative;
+}
+
+#closeModal {
+  position: absolute;
+  top: .3rem;
+  right: .7rem;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  z-index: 5; /* sits above card and panel */
+}
+
+/* Two-column overlap layout */
+.modal-inner {
+  display: grid;
+  grid-template-columns: auto 1fr; /* art | panel */
+  align-items: center;
+  position: relative;
+  z-index: 1; /* ensures close button can sit above */
+}
+
+/* === Card popup image + rim fix === */
+.modal-artwrap {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;  /* ensures ::after fits exactly */
+  margin-right: calc(-1 * var(--modal-overlap));  /* restore overlap */
+  z-index: 3; /* ensures card sits above the text panel */
+}
+
+.modal-artwrap img {
+  display: block;
+  width: min(38vw, 420px);
+  aspect-ratio: var(--card-ratio);
+  border-radius: 18px;  /* your chosen radius */
+  object-fit: cover;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  box-sizing: border-box; /* ensures same outline geometry */
+}
+
+/* Light rim that matches the card exactly */
+.modal-artwrap::after {
+  content: "";
+  position: absolute;
+  inset: 0; /* perfectly hugs the image edges */
+  border-radius: 18px; /* must match image */
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+
+/* Framed info panel on the right */
+.modal-panel {
+  background: rgba(20, 42, 46, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.4rem 1.8rem;
+  padding-left: calc(1.8rem + var(--modal-overlap));
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  min-height: 380px;
+  z-index: 1;
+  text-align: left;
+  max-width: 520px;
+}
+
+/* --- Click-through modal hitbox fix --- */
+
+/* Let empty parts of the container be click-through */
+#modalContent { pointer-events: none; }
+
+/* Re-enable interaction for the real content */
+#modalContent .modal-inner,
+#modalContent .modal-inner *,
+#closeModal {
+  pointer-events: auto;
+}
+
+/* Nice affordance: show it's clickable to dismiss */
+#modal { cursor: pointer; }
+#modal .modal-inner, #closeModal { cursor: default; }
+
+
+/* Text inside the panel */
+#modalName {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #FAD069;
+}
+
+#modalMeta {
+  opacity: 0.9;
+  margin: 0.4rem 0 1rem;
+}
+
+#modalCmd, #modalRules, #modalFlavor {
+  white-space: pre-wrap;
+  margin: 0.5rem 0;
+}
+
+#modalFlavor {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Responsive fallback */
+@media (max-width: 900px) {
+  .modal-artwrap { margin-right: -80px; }
+  :root { --modal-overlap: 80px; }
+  .modal-artwrap img { width: min(60vw, 380px); }
+}
+
+@media (max-width: 720px) {
+  .modal-inner {
+    grid-template-columns: 1fr;
+  }
+  .modal-artwrap {
+    margin-right: 0;
+  }
+  :root { --modal-overlap: 0px; }
+  .modal-panel {
+    margin-top: 1rem;
+  }
+}
+
+/* ===== SYNTAX GUIDE MODAL ===== */
+.syntax-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 150;
+}
+
+.syntax-modal.hidden { display: none; }
+
+.syntax-content {
+  background: rgba(31,59,65,0.95);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 18px;
+  width: min(90%, 900px);
+  max-height: 90vh;
+  overflow-y: auto;
+  color: #eaf0f5;
+  font-family: "Bookman Old Style", serif;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.syntax-content h2 {
+  text-align: center;
+  color: #FAD069;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+.syntax-body {
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.syntax-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #FAD069;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform .15s ease;
+}
+.syntax-close:hover { transform: scale(1.15); }
+
+/* restore the outer scroll container */
+.snap-container{
+  height: 100vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: auto; /* avoid bounce chaining */
+  /* keep scroll-behavior: auto; and no scroll-snap-* */
+}
+html, body { height: 100%; overflow: hidden; } /* optional: prevent window from scrolling */
+
+
+/* ===== SMOOTH ROTATING FADE (bottom ↔ top crossfade) ===== */
+/* bottom fade */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:linear-gradient(to top,
+    rgba(31,59,65,1) 0%,      /* solid bottom */
+    rgba(31,59,65,0.85) 30%,  /* strong tint */
+    rgba(31,59,65,0.6) 55%,   /* mid fade higher up */
+    rgba(31,59,65,0.2) 85%,   /* almost transparent */
+    rgba(31,59,65,0) 100%);   /* fully transparent top */
+  opacity: var(--bottom-fade-opacity, 1);  /* default visible at top */
+  transition: opacity .8s ease;
+}
+
+/* top fade */
+body::after{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:linear-gradient(to bottom,
+    rgba(31,59,65,1) 0%,
+    rgba(31,59,65,0.7) 40%,
+    rgba(31,59,65,0) 100%);
+  opacity: var(--top-fade-opacity, 0);     /* default hidden at top */
+  transition: opacity .8s ease;
+}

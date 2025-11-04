@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Old King's Crown - Card Library</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="snap-container">
+    <!-- HERO (parallax background) -->
+    <section id="hero">
+      <div class="hero-inner">
+        <img src="images/logo.png" class="hero-logo" alt="The Old King's Crown logo" />
+
+        <p class="hero-tagline">The unofficial database for The Old King's Crown</p>
+
+        <!-- Centered rounded search -->
+        <div class="search-wrap hero-search">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input id="searchInputHero" type="search" placeholder="Search…" aria-label="Search cards" />
+        </div>
+
+        <!-- Buttons under hero search -->
+        <div class="filters hero-filters">
+          <button class="chip" id="advancedBtn">Advanced Search</button>
+          <button class="chip" id="syntaxBtn">Syntax Guide</button>
+          <button class="chip" id="randomBtn">Random</button>
+        </div>
+      </div>
+
+      <!-- soft bottom gradient (like your mock) -->
+      <div class="hero-fade"></div>
+    </section>
+
+
+    <section id="cardInterface">
+      <!-- TOP NAV (appears after scrolling past hero) -->
+      <header id="topbar" aria-label="Search and actions">
+        <div class="topbar-left">
+          <img src="images/logo.png" class="topbar-logo" alt="The Old King's Crown logo small" />
+        </div>
+
+        <div class="topbar-center">
+          <div class="search-wrap">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input id="searchInputBar" type="search" placeholder="Search..." aria-label="Search cards" />
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="chip" id="advancedBtnTop">Advanced</button>
+          <button class="chip" id="syntaxBtnTop">Syntax</button>
+          <button class="chip" id="randomBtnTop">Random</button>
+        </div>
+      </header>
+
+      <!-- SCROLLABLE RESULTS AREA -->
+      <div id="cardArea">
+        <div id="cardGrid"></div>
+        <p id="noResults" class="hidden">No results.</p>
+
+        <!-- Load more button -->
+        <div class="load-more-wrapper">
+          <button id="loadMoreBtn" class="load-more">Next 28</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CARD MODAL -->
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <div id="modalContent">
+      <button id="closeModal" aria-label="Close">×</button>
+
+      <div class="modal-inner">
+        <div class="modal-artwrap">
+          <img id="modalArt" alt="" />
+        </div>
+
+        <aside class="modal-panel">
+          <h2 id="modalName"></h2>
+          <p id="modalMeta"></p>
+          <p id="modalCmd"></p>
+          <p id="modalRules"></p>
+          <p id="modalFlavor"></p>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============ SYNTAX GUIDE MODAL ============ -->
+  <div id="syntaxModal" class="syntax-modal hidden">
+    <div class="syntax-content">
+      <button id="closeSyntax" class="syntax-close">×</button>
+      <h2>Advanced Search Syntax</h2>
+      <div class="syntax-body">
+        <pre>
+📖 OLD KING'S CROWN — ADVANCED SEARCH SYNTAX
+
+GENERAL
+────────────────────────────────────────
+• Fielded search: field:value
+• Implicit AND between terms. Use OR and - (NOT).
+• Grouping: ( ... )
+• Wildcards: * (any chars), ? (single char)
+• Numeric ops: = != > >= < <= and ranges: a..b
+• Presence: has:field   (negate with -has:field)
+• Default target (unfielded words): title + rules + commands
+
+FIELDS & ALIASES
+────────────────────────────────────────
+title, name, n              → Card title
+type, t                     → tarot | hq | kingdom | favor | tactic
+faction, f                  → clans | uprising | gathering | nobility
+
+TAROT-ONLY FIELDS (require type:tarot)
+archetype, a               → ruse | trader | follower | agent | cavalry | war machine | machine | captain | heir | champion
+traits, tr, trait          → resilient | invulnerable | pathfinder
+strength, str, s           → number
+votes, v                   → number
+lore, l                    → number
+cost, c                    → number (advanced tarot only)
+
+KINGDOM-ONLY FIELDS (require type:kingdom)
+suit, s                    → swords | book | coins
+
+TEXT BOXES
+commands, cmd              → command text (day, autumn, night, etc.)
+rules, r, oracle           → rules text (supports tokens like <votes>, <lore>, <influence>)
+flavor, fl                 → flavor text (tarot/HQ typically)
+
+RELEASE & TAGS
+release, set, exp, module  → expansion/module/basegame keywords
+tag, tags                  → user tags (free text)
+has                        → presence checks (rules, flavor, tag, cost, etc.)
+is                         → derived: is:vanilla (no rules & no commands), is:legendary (in title/traits)
+
+TYPE-AWARE BEHAVIOR
+────────────────────────────────────────
+• archetype/traits/strength/votes/lore/cost only match when type:tarot
+• suit only matches when type:kingdom
+• Other fields (title/faction/rules/commands/flavor/release/tags) work on any type
+
+OPERATORS & EXAMPLES
+────────────────────────────────────────
+AND (default):
+  f:nobility type:tarot strength>=2
+
+OR:
+  (archetype:ruse OR archetype:agent) type:tarot
+
+NOT:
+  -fl:"winter"   -has:flavor   -tag:deprecated
+
+Wildcards & phrases:
+  title:king*     rules:"<influence>"     traits:resilient
+
+Ranges & numbers:
+  votes=2..4      cost<=3       strength>1
+
+Presence:
+  has:rules       -has:flavor   has:tag
+
+Release:
+  release:basegame
+  release:"Wild Kingdom"
+
+Kingdom examples:
+  type:kingdom suit:coins
+  type:kingdom f:gathering rules:river
+
+Tarot examples:
+  type:tarot archetype:ruse traits:resilient
+  type:tarot strength>=2 votes=2..4
+  type:tarot -has:flavor is:vanilla
+
+DEFAULT SEARCH
+────────────────────────────────────────
+Unfielded words search: title + rules + commands
+  example:  king deploy  → title/rules/commands contain both words
+</pre>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- your JS -->
+  <script src="app.js"></script>
+</body>
+</html>
