@@ -823,14 +823,31 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') dismissModal();
 });
 
-function smoothScrollTo(targetY, duration = 800) { // duration in ms → slower = bigger number
-  const startY = snapContainer.scrollTop;
-  const change = targetY - startY;
-  const startTime = performance.now();
+// ===== SNAP TIMING =====
+const SNAP_DURATION = 900; // ms — change to taste
 
-  function easeOutQuad(t) {
-    return t * (2 - t); // smooth ease, not linear
+// Cancellable, ease-in-out scroll with exact settle at the end
+let __scrollAnimId = 0;
+function smoothScrollTo(targetY, duration = SNAP_DURATION) {
+  const startId = ++__scrollAnimId;                // cancel previous anims
+  const startY = snapContainer.scrollTop;
+  const dist   = targetY - startY;
+  const t0     = performance.now();
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2;
   }
+
+  function frame(now) {
+    if (startId !== __scrollAnimId) return;        // cancelled
+    const t = Math.min((now - t0) / duration, 1);
+    const eased = easeInOutCubic(t);
+    snapContainer.scrollTop = startY + dist * eased;
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
 
   function animate(now) {
     const progress = Math.min((now - startTime) / duration, 1); // clamp 0→1
@@ -853,72 +870,115 @@ if (snapContainer) {
   function lock()   { isSnapping = true; }
   function unlock() { isSnapping = false; }
 
-  // Wait until we actually land at targetY, then unlock (prevents "escape")
-  function releaseWhenSettled(targetY) {
-    const scroller = snapContainer;
-    const check = () => {
-      const y = scroller.scrollTop;
-      if (Math.abs(y - targetY) < 1) { unlock(); return; }
-      requestAnimationFrame(check);
-    };
-    requestAnimationFrame(check);
-  }
+  // Align any arbitrary y to an exact page multiple
+  const PAGE = () => window.innerHeight;
+const clampToPage = (y) => Math.round(y / PAGE()) * PAGE();
 
-  // Animate to an exact page multiple and unlock on arrival
-  function snapTo(yTarget) {
-    const exact = clampToPage(yTarget);
-    lock();
-    smoothScrollTo(exact, 900);   // 900ms = slower, try 1200 for even slower
-    releaseWhenSettled(exact);
-  }
+let isSnapping = false;
+let justUnlockedUntil = 0;
+
+function lock(){ isSnapping = true; }
+function unlock(){
+  isSnapping = false;
+  justUnlockedUntil = performance.now() + 80; // absorb residual wheel for 80ms
+}
+
+// Wait until we land, then hard-set to exact and unlock
+function releaseWhenSettled(targetYExact) {
+  const check = () => {
+    const y = snapContainer.scrollTop;
+    if (Math.abs(y - targetYExact) < 1) {
+      // ensure pixel-perfect alignment
+      snapContainer.scrollTop = targetYExact;
+      // give the OS a beat to finish momentum
+      setTimeout(unlock, 40);
+      return;
+    }
+    requestAnimationFrame(check);
+  };
+  requestAnimationFrame(check);
+}
+
+function snapTo(yTarget) {
+  const exact = clampToPage(yTarget);
+  lock();
+  // cancel any in-flight scrolls before starting a new one
+  __scrollAnimId++;
+  smoothScrollTo(exact, SNAP_DURATION);
+  releaseWhenSettled(exact);
+}
+
 
   // Helpers for the inner grid
   const grid = document.getElementById("cardArea");
   const atTop    = () => grid.scrollTop <= 0;
   const atBottom = () => grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 1;
 
-  snapContainer.addEventListener("wheel", (e) => {
-    if (isSnapping) { e.preventDefault(); return; }
+snapContainer.addEventListener("wheel", (e) => {
+  const now = performance.now();
 
-    const overGrid = grid.contains(e.target);
-    const up = e.deltaY < 0;
-    const down = e.deltaY > 0;
+  // 1) Block all input while snapping, AND during brief cooldown right after landing
+  if (isSnapping || now < justUnlockedUntil) {
+    e.preventDefault();
+    return;
+  }
 
-    // === Inside card grid ===
-    if (overGrid) {
-      // Mid-grid → up: first glide to grid top, then snap a page up to Hero
-      if (up && !atTop()) {
-        e.preventDefault();
-        lock();
-        grid.scrollTo({ top: 0, behavior: "smooth" });
-        const wait = () => {
-          if (atTop()) { snapTo(snapContainer.scrollTop - PAGE()); }
-          else requestAnimationFrame(wait);
-        };
-        requestAnimationFrame(wait);
-        return;
-      }
+  const overGrid = grid.contains(e.target);
+  const up   = e.deltaY < 0;
+  const down = e.deltaY > 0;
 
-      // At edges → move a page
-      if (up && atTop())      { e.preventDefault(); snapTo(snapContainer.scrollTop - PAGE()); return; }
-      if (down && atBottom()) { e.preventDefault(); snapTo(snapContainer.scrollTop + PAGE()); return; }
+  // ===== INSIDE CARD GRID =====
+  if (overGrid) {
 
-      // Otherwise let the grid scroll normally
+    // A) Mid-grid → scroll up: first glide grid to top, then snap to previous page
+    if (up && !atTop()) {
+      e.preventDefault();
+      lock();
+      grid.scrollTo({ top: 0, behavior: "smooth" });
+      const wait = () => {
+        if (atTop()) {
+          // grid reached top → snap page up
+          snapTo(snapContainer.scrollTop - PAGE());
+        } else {
+          requestAnimationFrame(wait);
+        }
+      };
+      requestAnimationFrame(wait);
       return;
     }
 
-    // === Outside grid (Hero area etc.) ===
-    const mod = snapContainer.scrollTop % PAGE();
-    const aligned = Math.abs(mod) < 1 || Math.abs(mod - PAGE()) < 1;
-
-    if (aligned) {
+    // B) At top of grid → scroll up goes to previous page
+    if (up && atTop()) {
       e.preventDefault();
-      snapTo(snapContainer.scrollTop + (down ? +PAGE() : -PAGE()));
+      snapTo(snapContainer.scrollTop - PAGE());
+      return;
     }
-  }, { passive: false });
+
+    // C) At bottom of grid → scroll down goes to next page
+    if (down && atBottom()) {
+      e.preventDefault();
+      snapTo(snapContainer.scrollTop + PAGE());
+      return;
+    }
+
+    // Otherwise let the grid scroll normally
+    return;
+  }
+
+  // ===== OUTSIDE GRID (Hero section, etc.) =====
+  const mod = snapContainer.scrollTop % PAGE();
+  const aligned =
+    Math.abs(mod) < 1 ||
+    Math.abs(mod - PAGE()) < 1;
+
+  // Only snap when already aligned on a page boundary
+  if (aligned) {
+    e.preventDefault();
+    snapTo(snapContainer.scrollTop + (down ? +PAGE() : -PAGE()));
+  }
+}, { passive: false });
+
 }
-
-
 
 /* ===== LOAD CARDS FROM data.json (with normalization + fallback) ===== */
 const DATA_PATHS = ["data.json", "data/data.json"]; // try root first, then /data/
