@@ -818,19 +818,30 @@ if (snapContainer) {
     const up   = e.deltaY < 0;
     const down = e.deltaY > 0;
 
+    // Page math
+    const pageH   = PAGE();
+    const maxPage = Math.max(
+      0,
+      Math.floor((snapContainer.scrollHeight - snapContainer.clientHeight) / pageH)
+    );
+    const curPage = Math.round(snapContainer.scrollTop / pageH);
+
     // ===== INSIDE CARD GRID =====
     if (overGrid) {
-      // No forced glide to top; only snap if already at top and scrolling up
+      // Only snap if we're at an edge and there's a page to move to
       if (up && atTop()) {
-        e.preventDefault();
-        snapTo(snapContainer.scrollTop - PAGE());
+        if (curPage > 0) {
+          e.preventDefault();
+          snapTo((curPage - 1) * pageH);
+        }
         return;
       }
 
-      // At bottom of grid → downward scroll snaps to next page
       if (down && atBottom()) {
-        e.preventDefault();
-        snapTo(snapContainer.scrollTop + PAGE());
+        if (curPage < maxPage) {
+          e.preventDefault();
+          snapTo((curPage + 1) * pageH);
+        }
         return;
       }
 
@@ -839,15 +850,20 @@ if (snapContainer) {
     }
 
     // ===== OUTSIDE GRID (Hero section, etc.) =====
-    const mod = snapContainer.scrollTop % PAGE();
-    const aligned = Math.abs(mod) < 1 || Math.abs(mod - PAGE()) < 1;
-
     // Only snap when already aligned on a page boundary
+    const mod = snapContainer.scrollTop % pageH;
+    const aligned = Math.abs(mod) < 1 || Math.abs(mod - pageH) < 1;
+
     if (aligned) {
+      const next = curPage + (down ? 1 : -1);
+      // Don’t intercept if moving past bounds
+      if (next < 0 || next > maxPage) return;
+
       e.preventDefault();
-      snapTo(snapContainer.scrollTop + (down ? +PAGE() : -PAGE()));
+      snapTo(next * pageH);
     }
   }, { passive: false });
+
 }
 
 /* ===== LOAD CARDS FROM data.json (with normalization + fallback) ===== */
