@@ -112,7 +112,7 @@ body {
 #topbar.sticky{ top:0; opacity:1; }
 
 .topbar-left{ display:flex; align-items:center; }
-.topbar-logo{ height:140px; width:auto; }
+.topbar-logo{ height:140px; width:auto; cursor: pointer; }
 .topbar-center{ display:flex; justify-content:center; }
 .topbar-right{ display:flex; justify-content:flex-end; gap:.6rem; }
 

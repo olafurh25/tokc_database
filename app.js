@@ -197,12 +197,26 @@ function openRandom() {
   if (el) el.addEventListener("click", fn);
 });
 
-/* ===== TOPBAR LOGO → SNAP TO HERO ===== */
-document.getElementById("logoTop")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (!snapContainer) return;
-  smoothScrollTo(0, SNAP_DURATION);
-});
+//* ===== TOPBAR LOGO → SNAP TO HERO ===== */
+const logoEl = document.querySelector('.topbar-logo');
+if (logoEl) {
+  // make it accessible/clickable
+  logoEl.setAttribute('role', 'button');
+  logoEl.setAttribute('aria-label', 'Go to hero');
+  logoEl.tabIndex = 0;
+
+  const goHero = (e) => {
+    if (!snapContainer) return;
+    e?.preventDefault?.();
+    smoothScrollTo(0, SNAP_DURATION); // use your custom animator
+  };
+
+  logoEl.addEventListener('click', goHero);
+  logoEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') goHero(e);
+  });
+}
+
 
 /* ===== CARD DATA + RENDER ===== */
 const cardGrid = document.getElementById("cardGrid");
@@ -723,7 +737,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ===== SNAP TIMING ===== */
-const SNAP_DURATION = 900; // ms — change to taste
+const SNAP_DURATION = 750; // ms — change to taste
 
 // Cancellable, ease-in-out scroll with exact settle at the end
 let __scrollAnimId = 0;
