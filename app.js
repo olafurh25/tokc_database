@@ -16,7 +16,8 @@ function getTotalScroll(){
 function getMaxScroll(){
   const outerMax = (snapContainer ? (snapContainer.scrollHeight - snapContainer.clientHeight)
                                   : (document.documentElement.scrollHeight - window.innerHeight));
-  const innerMax = document.getElementById('cardArea')?.scrollHeight - document.getElementById('cardArea')?.clientHeight || 0;
+  const el = document.getElementById('cardArea');
+  const innerMax = el ? (el.scrollHeight - el.clientHeight) : 0;
   return Math.max(1, outerMax + innerMax);
 }
 
@@ -112,7 +113,6 @@ function goDown(){
 
 function focusTopbarAfterSnap() {
   const targetY = window.innerHeight;            // second section
-
   const check = () => {
     const y = snapContainer ? snapContainer.scrollTop : window.scrollY;
     if (Math.abs(y - targetY) < 2) {
@@ -195,6 +195,13 @@ function openRandom() {
 ].forEach(([id, fn]) => {
   const el = document.getElementById(id);
   if (el) el.addEventListener("click", fn);
+});
+
+/* ===== TOPBAR LOGO → SNAP TO HERO ===== */
+document.getElementById("logoTop")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (!snapContainer) return;
+  smoothScrollTo(0, SNAP_DURATION);
 });
 
 /* ===== CARD DATA + RENDER ===== */
@@ -573,6 +580,7 @@ function renderWithLeave(nextSlice) {
 
   nextSlice.forEach((c) => {
     const id = String(c.id);
+    theExisting = byId.get(id);
     const existing = byId.get(id);
     if (existing) {
       existing.classList.remove("card-enter", "card-leave", "card-exit");
@@ -739,32 +747,40 @@ function smoothScrollTo(targetY, duration = SNAP_DURATION) {
   requestAnimationFrame(frame);
 }
 
-/* ===== CUSTOM SNAP SMOOTH SCROLL ===== */
+/* ===== tiny helper: animate grid to top (cancellable by starting a new one) ===== */
+let __gridAnimId = 0;
 function smoothScrollGridTo(target, duration = 250) {
-  const start = grid.scrollTop;
+  const startId = ++__gridAnimId;
+  const start = cardArea.scrollTop;
   const dist  = target - start;
   const t0 = performance.now();
 
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+  }
+
   function frame(now) {
+    if (startId !== __gridAnimId) return; // cancelled
     const t = Math.min((now - t0) / duration, 1);
-    const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
-    grid.scrollTop = start + dist * eased;
+    const eased = easeInOutCubic(t);
+    cardArea.scrollTop = start + dist * eased;
     if (t < 1) requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 }
 
+/* ===== CUSTOM SNAP SMOOTH SCROLL ===== */
 if (snapContainer) {
   // one set of snap state + helpers
   let isSnapping = false;
   let justUnlockedUntil = 0;
   const PAGE = () => window.innerHeight;
   const clampToPage = (y) => Math.round(y / PAGE()) * PAGE();
-  
+
   function lock(){ isSnapping = true; }
   function unlock(){
     isSnapping = false;
-    justUnlockedUntil = performance.now() + 180; // absorb residual wheel for 250ms
+    justUnlockedUntil = performance.now() + 250; // absorb residual wheel for ~1/4s
   }
 
   // Wait until we land, then hard-set to exact and unlock
@@ -773,7 +789,7 @@ if (snapContainer) {
       const y = snapContainer.scrollTop;
       if (Math.abs(y - targetYExact) < 1) {
         snapContainer.scrollTop = targetYExact; // pixel-perfect alignment
-        setTimeout(unlock, 80);                 // let OS momentum finish
+        setTimeout(unlock, 120);                // let OS momentum finish
         return;
       }
       requestAnimationFrame(check);
@@ -814,7 +830,7 @@ if (snapContainer) {
       if (up && !atTop()) {
         e.preventDefault();
         lock();
-        smoothScrollGridTo(0, 250);
+        smoothScrollGridTo(0, 250); // controlled inner scroll (replaces native smooth)
         const wait = () => {
           if (atTop()) {
             snapTo(snapContainer.scrollTop - PAGE());
