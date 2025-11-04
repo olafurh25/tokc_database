@@ -32,7 +32,6 @@ function updateParallax() {
 (snapContainer || window).addEventListener('scroll', updateParallax, { passive:true });
 updateParallax(); // set initial background position
 
-
 (snapContainer || window).addEventListener('scroll', updateFades, { passive:true });
 updateFades();
 
@@ -72,8 +71,6 @@ function updateFades(){
   document.body.style.setProperty('--bottom-fade-opacity', bottomOpacity.toFixed(3));
 }
 
-
-
 /* ===== STICKY TOPBAR ===== */
 const topbar = document.getElementById("topbar");
 
@@ -94,24 +91,28 @@ function syncInputs(from, to) {
   applyQuery(true);
 }
 
+function debounce(fn, delay = 300) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
 const debouncedSync = debounce((from, to) => syncInputs(from, to), 300);
 
 heroInput.addEventListener("input", () => debouncedSync(heroInput, barInput));
 barInput.addEventListener("input", () => debouncedSync(barInput, heroInput));
 
-
 /* ===== HERO SEARCH FORCES DOWNWARD ===== */
 function goDown(){
   if (!snapContainer) return;
-  // scroll exactly one screen down (to the card interface)
-  snapContainer.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+  // scroll exactly one screen down (to the card interface) using custom animator
+  smoothScrollTo(window.innerHeight, SNAP_DURATION);
 }
 
 function focusTopbarAfterSnap() {
   const targetY = window.innerHeight;            // second section
-  const scroller = snapContainer || window;
 
-  // poll until the snap finishes, then focus topbar input
   const check = () => {
     const y = snapContainer ? snapContainer.scrollTop : window.scrollY;
     if (Math.abs(y - targetY) < 2) {
@@ -137,30 +138,26 @@ function handleEnter(e, sourceInput, targetInput, scrollDown = false) {
   sourceInput.blur();
 
   if (scrollDown && snapContainer) {
-    // Scroll down from hero to card interface
-    snapContainer.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+    // Scroll down from hero to card interface with custom speed/easing
+    smoothScrollTo(window.innerHeight, SNAP_DURATION);
   }
 
   // Wait until snap is roughly finished before re-enabling
   setTimeout(() => {
     heroInput.readOnly = false;
     barInput.readOnly = false;
-    // Focus the topbar search if we scrolled down
     if (scrollDown) targetInput.focus();
-  }, 800); // match your snap animation speed
+  }, 800); // keep roughly aligned with SNAP_DURATION
 }
 
 /* Hero: scrolls down + exits typing */
 heroInput.addEventListener("keydown", e =>
   handleEnter(e, heroInput, barInput, true)
 );
-
 /* Topbar: just exits typing (no scroll) */
 barInput.addEventListener("keydown", e =>
   handleEnter(e, barInput, heroInput, false)
 );
-
-
 
 /* ===== BUTTON ACTIONS ===== */
 function openAdvanced() {
@@ -180,7 +177,6 @@ document.getElementById("syntaxModal").addEventListener("click", e => {
     document.getElementById("syntaxModal").classList.add("hidden");
   }
 });
-
 
 function openRandom() {
   const pool = cards;
@@ -207,14 +203,6 @@ const modal = document.getElementById("modal");
 const closeModal = document.getElementById("closeModal");
 let cards = [];
 
-/* ===== INPUT DEBOUNCE HELPER ===== */
-function debounce(fn, delay = 300) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), delay);
-  };
-}
 /* === FIELD ALIASES & ENUMS (type-aware) === */
 const ALIAS = {
   // names
@@ -264,22 +252,13 @@ function matchesEnum(field, value){
   return list.some(x => x === v);
 }
 
-/* ========= ADVANCED QUERY ENGINE (boolean + ranges + negation) ========= */
-/* Fields supported: name, type, faction, cost, strength, commands, rules, flavor, release, tags
-   Features:
-   - Implicit AND, explicit OR, negation with leading '-'
-   - Parentheses for grouping: (f:crown OR f:rebels) s>=3
-   - Numeric ops & ranges: cost<=3, strength=2..4
-   - Wildcards: name:king*  type:Loc?tion
-   - Presence: has:rules  -has:flavor  has:tag
-*/
-
+/* ========= ADVANCED QUERY ENGINE ========= */
 const NUMERIC_KEYS = new Set(["cost","strength","votes","lore"]);
 const TEXT_KEYS = ["title","type","faction","archetype","traits","suit","commands","rules","flavor","release","tags"];
 
 // Tokenize: parentheses, OR, fielded tokens, quoted phrases, bare terms
 function tokenizeQuery(q) {
-  const re = /(\(|\)|\bOR\b|-?\w+(?::[<>!=]*[^()\s]+)?|"[^"]+"|-?\S+)/gi;
+  const re = /(\(|\)|\bOR\b|-?\w+(?::[<>]=?|=)?[^()\s]+|"[^"]+"|-?\S+)/gi;
   const out = [];
   let m;
   while ((m = re.exec(q))) out.push(m[0]);
@@ -387,7 +366,7 @@ function matchTerm(card, term){
     if (!inType(card,"kingdom")) return neg ? true : false;
   }
 
-  // enums (type/faction/suit/archetype/traits) — still use textCompare for partials
+  // enums (type/faction/suit/archetype/traits)
   if (key in ENUMS) {
     ok = matchesEnum(key, val) && textCompare(norm(card[key]), val);
     return neg ? !ok : ok;
@@ -406,22 +385,6 @@ function matchTerm(card, term){
     : norm(card[key]);
   ok = textCompare(fieldVal, val);
   return neg ? !ok : ok;
-}
-
-
-function pickField(card, key){
-  switch (key) {
-    case "text":      return [card.commands, card.rules, card.flavor].filter(Boolean).join(" ");
-    case "name":
-    case "type":
-    case "faction":
-    case "commands":
-    case "rules":
-    case "flavor":
-      return card[key] ?? "";
-    default:
-      return card[key] ?? "";
-  }
 }
 
 function contains(hay, needle){
@@ -464,8 +427,6 @@ function matchCard(card, rawQuery){
   const q = (rawQuery || "").trim();
   if (!q) return true;
   const ast = parseTokens(tokenizeQuery(q));
-  // Precompute a few derived fields so filters can use them
-  // (Your cards already normalize name/type/etc. in the loader)
   return evalNode(card, ast);
 }
 
@@ -483,13 +444,11 @@ const noResultsEl = document.getElementById('noResults');
 function setNoResults(show) {
   if (!noResultsEl) return;
   noResultsEl.classList.toggle('hidden', !show);
-  // optional: reset opacity/transform managed by the scroll fade
   if (show) {
     noResultsEl.style.opacity = '1';
     noResultsEl.style.transform = 'translateY(0)';
   }
 }
-
 
 /* Renders the visible batch of cards */
 function renderNextPage() {
@@ -498,13 +457,11 @@ function renderNextPage() {
   const end   = Math.min(page * PAGE_SIZE, total);
   const slice = filteredList.slice(start, end);
 
-  // append chunk
-const html = slice.map(c => `
-  <div class="card" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.title||''}">
-    <img src="${c.image}" alt="${c.name || ''}" loading="lazy">
-  </div>
-`).join("");
-
+  const html = slice.map(c => `
+    <div class="card" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.title||''}">
+      <img src="${c.image}" alt="${c.name || ''}" loading="lazy">
+    </div>
+  `).join("");
 
   cardGrid.insertAdjacentHTML("beforeend", html);
   if (typeof animateCardsInRange === "function") animateCardsInRange(start);
@@ -515,7 +472,6 @@ function applyQuery(reset = true) {
   const q = (barInput.value || heroInput.value || "").trim();
   const query = q.toLowerCase();
 
-  // filter safely
   try {
     filteredList = cards.filter(c =>
       !query || (typeof matchCard === "function" ? matchCard(c, query) : true)
@@ -525,7 +481,7 @@ function applyQuery(reset = true) {
   }
 
   page = 1;
-  cardGrid.innerHTML = "";        // clear immediately
+  cardGrid.innerHTML = "";
 
   if (filteredList.length === 0) {
     setNoResults(true);
@@ -534,11 +490,9 @@ function applyQuery(reset = true) {
   }
 
   setNoResults(false);
-  renderNextPage();               // ⬅️ append first 28 plainly
+  renderNextPage();
   updateLoadUi();
 }
-
-
 
 /* Manage the button visibility */
 function updateLoadUi() {
@@ -549,16 +503,14 @@ function updateLoadUi() {
   if (!loadWrap || !loadBtn) return;
 
   if (remaining > 0) {
-    loadWrap.style.display = "flex";                 // show wrapper
+    loadWrap.style.display = "flex";
     loadBtn.disabled = false;
     loadBtn.textContent = `Next ${Math.min(PAGE_SIZE, remaining)}`;
   } else {
-    loadWrap.style.display = "none";                 // hide wrapper when done or no results
+    loadWrap.style.display = "none";
     loadBtn.disabled = true;
   }
 }
-
-
 
 /* ===== CARD ANIMATION HELPERS ===== */
 
@@ -574,9 +526,8 @@ function animateCardsOut(callback) {
 
   const totalDuration = all.length * STAGGER + 400; // animation length + stagger
   setTimeout(() => {
-    // remove old cards and reset
     cardGrid.innerHTML = '';
-    callback?.(); // proceed to render new cards
+    callback?.();
   }, totalDuration);
 }
 
@@ -587,26 +538,23 @@ function animateCardsInRange(startIndex = 0) {
   const STAGGER = 60;
 
   newOnes.forEach(el => {
-    // fully reset any previous animations/classes so we can retrigger
     el.classList.remove("card-enter", "card-leave", "card-exit");
-    el.style.animation = "none";      // hard reset
-    el.offsetHeight;                  // force reflow
-    el.style.animation = "";          // clear inline override
-    el.style.animationDelay = "0ms";  // reset delay before we set a new one
+    el.style.animation = "none";
+    el.offsetHeight;
+    el.style.animation = "";
+    el.style.animationDelay = "0ms";
   });
 
   newOnes.forEach((el, i) => {
     el.style.animationDelay = `${i * STAGGER}ms`;
-    el.classList.add("card-enter");   // plays cardStaggerIn
+    el.classList.add("card-enter");
   });
 }
 
-/* Smoothly replace current page of cards with leave + enter */
 /* Smooth replace with stable order + correct targeting of new cards only */
 function renderWithLeave(nextSlice) {
   const nextIds = new Set(nextSlice.map(c => String(c.id)));
 
-  // 1) Mark & animate cards that are NOT in the next list
   const currentNodes = Array.from(cardGrid.querySelectorAll(".card"));
   currentNodes.forEach((el) => {
     if (!nextIds.has(el.dataset.id)) {
@@ -616,24 +564,21 @@ function renderWithLeave(nextSlice) {
     }
   });
 
-  // 2) Rebuild the desired order while reusing existing nodes when possible
   const byId = new Map(
     Array.from(cardGrid.querySelectorAll(".card")).map(el => [el.dataset.id, el])
   );
 
   const frag = document.createDocumentFragment();
-  const newNodes = []; // collect only the truly new ones
+  const newNodes = [];
 
   nextSlice.forEach((c) => {
     const id = String(c.id);
     const existing = byId.get(id);
     if (existing) {
-      // Reuse node, clear any old animation classes; appending reorders it.
       existing.classList.remove("card-enter", "card-leave", "card-exit");
       existing.style.animation = "";
       frag.appendChild(existing);
     } else {
-      // Create a fresh node and flag as "new" so we animate only these
       const node = document.createElement("div");
       node.className = "card";
       node.dataset.id = id;
@@ -648,46 +593,42 @@ function renderWithLeave(nextSlice) {
     }
   });
 
-  // 3) Commit the new order in one go (no flicker, no reflows)
   cardGrid.appendChild(frag);
 
-  // 4) Animate ONLY the new nodes (staggered)
   const STAGGER = 60;
   newNodes.forEach((el, i) => {
-    // hard reset to ensure the animation will fire
     el.classList.remove("card-enter", "card-leave", "card-exit");
     el.style.animation = "none";
-    el.offsetHeight;           // reflow
+    el.offsetHeight;
     el.style.animation = "";
     el.style.animationDelay = `${i * STAGGER}ms`;
-    el.classList.add("card-enter"); // plays cardStaggerIn
+    el.classList.add("card-enter");
     delete el.dataset.new;
   });
 }
-
 
 /* ===== LOAD MORE BUTTON ===== */
 const loadBtn = document.getElementById("loadMoreBtn");
 loadBtn.addEventListener("click", () => {
   page++;
-  renderNextPage(); // render next page without resetting
+  renderNextPage();
 });
 
 /* ===== CARD STAGGER ANIMATION ===== */
 function animateCardsIn() {
-  const cards = Array.from(cardGrid.querySelectorAll('.card'));
+  const cardsEls = Array.from(cardGrid.querySelectorAll('.card'));
   const cols = getComputedStyle(cardGrid)
     .gridTemplateColumns.split(' ').length || 1;
 
   const STAGGER = 70; // ms delay per card
 
-  cards.forEach(el => {
+  cardsEls.forEach(el => {
     el.classList.remove('card-enter');
     el.style.animationDelay = '0ms';
-    el.offsetHeight; // force reflow
+    el.offsetHeight;
   });
 
-  cards.forEach((el, i) => {
+  cardsEls.forEach((el, i) => {
     const delay = i * STAGGER;
     el.style.animationDelay = `${delay}ms`;
     el.classList.add('card-enter');
@@ -708,57 +649,7 @@ cardGrid.addEventListener('keydown', (e) => {
   openModal(el.dataset.id);
 });
 
-/* ===== MODAL ===== */
-function openModal(id) {
-  const c = cards.find(x => String(x.id) === String(id));
-  if (!c) return;
-  
- // show modal
-  modal.style.display = "flex";
-
-  // elements
-  const art     = document.getElementById("modalArt");
-  const nameEl  = document.getElementById("modalName");
-  const metaEl  = document.getElementById("modalMeta");
-  const cmdEl   = document.getElementById("modalCmd");
-  const rulesEl = document.getElementById("modalRules");
-  const flavEl  = document.getElementById("modalFlavor");
-
-  // art + title
-  art.src = c.image || "";
-  art.alt = c.title || "";
-  nameEl.textContent = c.title || "";
-
-  // meta line: Type • Faction • Cost/STR/Votes/Lore • Release
-  const relBits = [
-    c.release?.basegame ? "Base Game" : "",
-    c.release?.expansion || "",
-    c.release?.module || ""
-  ].filter(Boolean).join(" — ");
-
-  const powerBits = [
-    c.cost != null ? `Cost ${c.cost}` : "",
-    c.strength != null ? `STR ${c.strength}` : "",
-    c.votes != null ? `Votes ${c.votes}` : "",
-    c.lore != null ? `Lore ${c.lore}` : ""
-  ].filter(Boolean).join(" • ");
-
-  const metaBits = [
-    [c.type, c.faction].filter(Boolean).join(" • "),
-    powerBits,
-    relBits ? `Release: ${relBits}` : ""
-  ].filter(Boolean).join(" • ");
-
-  metaEl.textContent  = metaBits;
-
-  // body texts
-  cmdEl.textContent   = c.commands || "";
-  rulesEl.textContent = c.rules || "";
-  flavEl.textContent  = c.flavor || "";
-}
-
-
-/* ===== MODAL ===== */
+/* ===== MODAL (single definition) ===== */
 function openModal(id) {
   const c = cards.find(x => String(x.id) === String(id));
   if (!c) return;
@@ -805,7 +696,7 @@ function openModal(id) {
 // --- modal close (outside click, button, ESC) ---
 function dismissModal() {
   modal.style.display = 'none';
-  document.body.classList.remove('lock-scroll'); // if used
+  document.body.classList.remove('lock-scroll');
 }
 
 modal.addEventListener('click', (e) => {
@@ -823,7 +714,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') dismissModal();
 });
 
-// ===== SNAP TIMING =====
+/* ===== SNAP TIMING ===== */
 const SNAP_DURATION = 900; // ms — change to taste
 
 // Cancellable, ease-in-out scroll with exact settle at the end
@@ -848,167 +739,132 @@ function smoothScrollTo(targetY, duration = SNAP_DURATION) {
   requestAnimationFrame(frame);
 }
 
-
-  function animate(now) {
-    const progress = Math.min((now - startTime) / duration, 1); // clamp 0→1
-    const eased = easeOutQuad(progress);
-    snapContainer.scrollTop = startY + change * eased;
-    if (progress < 1) requestAnimationFrame(animate);
-  }
-
-  requestAnimationFrame(animate);
-}
-
 /* ===== CUSTOM SNAP SMOOTH SCROLL ===== */
 if (snapContainer) {
+  // one set of snap state + helpers
   let isSnapping = false;
-
-  // Align any arbitrary y to an exact page multiple
+  let justUnlockedUntil = 0;
   const PAGE = () => window.innerHeight;
   const clampToPage = (y) => Math.round(y / PAGE()) * PAGE();
 
-  function lock()   { isSnapping = true; }
-  function unlock() { isSnapping = false; }
+  function lock(){ isSnapping = true; }
+  function unlock(){
+    isSnapping = false;
+    justUnlockedUntil = performance.now() + 80; // absorb residual wheel for 80ms
+  }
 
-  // Align any arbitrary y to an exact page multiple
-  const PAGE = () => window.innerHeight;
-const clampToPage = (y) => Math.round(y / PAGE()) * PAGE();
-
-let isSnapping = false;
-let justUnlockedUntil = 0;
-
-function lock(){ isSnapping = true; }
-function unlock(){
-  isSnapping = false;
-  justUnlockedUntil = performance.now() + 80; // absorb residual wheel for 80ms
-}
-
-// Wait until we land, then hard-set to exact and unlock
-function releaseWhenSettled(targetYExact) {
-  const check = () => {
-    const y = snapContainer.scrollTop;
-    if (Math.abs(y - targetYExact) < 1) {
-      // ensure pixel-perfect alignment
-      snapContainer.scrollTop = targetYExact;
-      // give the OS a beat to finish momentum
-      setTimeout(unlock, 40);
-      return;
-    }
+  // Wait until we land, then hard-set to exact and unlock
+  function releaseWhenSettled(targetYExact) {
+    const check = () => {
+      const y = snapContainer.scrollTop;
+      if (Math.abs(y - targetYExact) < 1) {
+        snapContainer.scrollTop = targetYExact; // pixel-perfect alignment
+        setTimeout(unlock, 40);                 // let OS momentum finish
+        return;
+      }
+      requestAnimationFrame(check);
+    };
     requestAnimationFrame(check);
-  };
-  requestAnimationFrame(check);
-}
+  }
 
-function snapTo(yTarget) {
-  const exact = clampToPage(yTarget);
-  lock();
-  // cancel any in-flight scrolls before starting a new one
-  __scrollAnimId++;
-  smoothScrollTo(exact, SNAP_DURATION);
-  releaseWhenSettled(exact);
-}
-
+  function snapTo(yTarget) {
+    const exact = clampToPage(yTarget);
+    lock();
+    __scrollAnimId++;               // cancel any in-flight animation
+    smoothScrollTo(exact, SNAP_DURATION);
+    releaseWhenSettled(exact);
+  }
 
   // Helpers for the inner grid
   const grid = document.getElementById("cardArea");
   const atTop    = () => grid.scrollTop <= 0;
   const atBottom = () => grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 1;
 
-snapContainer.addEventListener("wheel", (e) => {
-  const now = performance.now();
+  // === Wheel (trackpad/mouse) handler ===
+  snapContainer.addEventListener("wheel", (e) => {
+    const now = performance.now();
 
-  // 1) Block all input while snapping, AND during brief cooldown right after landing
-  if (isSnapping || now < justUnlockedUntil) {
-    e.preventDefault();
-    return;
-  }
-
-  const overGrid = grid.contains(e.target);
-  const up   = e.deltaY < 0;
-  const down = e.deltaY > 0;
-
-  // ===== INSIDE CARD GRID =====
-  if (overGrid) {
-
-    // A) Mid-grid → scroll up: first glide grid to top, then snap to previous page
-    if (up && !atTop()) {
+    // Block during snap and brief cooldown
+    if (isSnapping || now < justUnlockedUntil) {
       e.preventDefault();
-      lock();
-      grid.scrollTo({ top: 0, behavior: "smooth" });
-      const wait = () => {
-        if (atTop()) {
-          // grid reached top → snap page up
-          snapTo(snapContainer.scrollTop - PAGE());
-        } else {
-          requestAnimationFrame(wait);
-        }
-      };
-      requestAnimationFrame(wait);
       return;
     }
 
-    // B) At top of grid → scroll up goes to previous page
-    if (up && atTop()) {
-      e.preventDefault();
-      snapTo(snapContainer.scrollTop - PAGE());
+    const overGrid = grid.contains(e.target);
+    const up   = e.deltaY < 0;
+    const down = e.deltaY > 0;
+
+    // ===== INSIDE CARD GRID =====
+    if (overGrid) {
+      // Mid-grid → scroll up: first glide grid to top, then snap to previous page
+      if (up && !atTop()) {
+        e.preventDefault();
+        lock();
+        grid.scrollTo({ top: 0, behavior: "smooth" });
+        const wait = () => {
+          if (atTop()) {
+            snapTo(snapContainer.scrollTop - PAGE());
+          } else {
+            requestAnimationFrame(wait);
+          }
+        };
+        requestAnimationFrame(wait);
+        return;
+      }
+
+      // At top of grid → scroll up goes to previous page
+      if (up && atTop()) {
+        e.preventDefault();
+        snapTo(snapContainer.scrollTop - PAGE());
+        return;
+      }
+
+      // At bottom of grid → scroll down goes to next page
+      if (down && atBottom()) {
+        e.preventDefault();
+        snapTo(snapContainer.scrollTop + PAGE());
+        return;
+      }
+
+      // Otherwise let the grid scroll normally
       return;
     }
 
-    // C) At bottom of grid → scroll down goes to next page
-    if (down && atBottom()) {
+    // ===== OUTSIDE GRID (Hero section, etc.) =====
+    const mod = snapContainer.scrollTop % PAGE();
+    const aligned = Math.abs(mod) < 1 || Math.abs(mod - PAGE()) < 1;
+
+    // Only snap when already aligned on a page boundary
+    if (aligned) {
       e.preventDefault();
-      snapTo(snapContainer.scrollTop + PAGE());
-      return;
+      snapTo(snapContainer.scrollTop + (down ? +PAGE() : -PAGE()));
     }
-
-    // Otherwise let the grid scroll normally
-    return;
-  }
-
-  // ===== OUTSIDE GRID (Hero section, etc.) =====
-  const mod = snapContainer.scrollTop % PAGE();
-  const aligned =
-    Math.abs(mod) < 1 ||
-    Math.abs(mod - PAGE()) < 1;
-
-  // Only snap when already aligned on a page boundary
-  if (aligned) {
-    e.preventDefault();
-    snapTo(snapContainer.scrollTop + (down ? +PAGE() : -PAGE()));
-  }
-}, { passive: false });
-
+  }, { passive: false });
 }
 
 /* ===== LOAD CARDS FROM data.json (with normalization + fallback) ===== */
 const DATA_PATHS = ["data.json", "data/data.json"]; // try root first, then /data/
 
 function normalizeCard(raw, idx) {
-  // keep flexible input keys but normalize casing
   const c = { ...raw };
 
-  // required fallbacks
   c.id     = String(c.id ?? `X${idx + 1}`);
   c.title  = String(c.title ?? c.name ?? "Unknown Card");
   c.image  = String(c.image ?? "images/placeholder.jpg");
 
-  // normalize some text-y fields to strings
   ["type","faction","archetype","suit","commands","rules","flavor"].forEach(k => {
     if (c[k] != null) c[k] = String(c[k]);
   });
 
-  // array fields
   if (!Array.isArray(c.traits)) c.traits = c.traits ? String(c.traits).split(/\s*,\s*/) : [];
   if (!Array.isArray(c.tags))   c.tags   = c.tags   ? String(c.tags).split(/\s*,\s*/)   : [];
 
-  // numeric fields
   ["cost","strength","votes","lore"].forEach(k => {
     if (c[k] != null && c[k] !== "") c[k] = Number(c[k]);
   });
 
   return c;
 }
-
 
 /* ===== LOAD CARDS (robust) ===== */
 async function loadCards() {
@@ -1026,7 +882,6 @@ async function loadCards() {
 
   if (!Array.isArray(data) || data.length === 0) {
     console.warn("[OKC] No data.json found or empty; using placeholders");
-    // give you something visible so the section isn’t blank
     data = Array.from({ length: 90 }, (_, i) => ({
       id: `P${i + 1}`,
       name: `Placeholder ${i + 1}`,
@@ -1037,11 +892,9 @@ async function loadCards() {
     }));
   }
 
-  cards = data.map(normalizeCard);  // instead of: cards = data;
-  applyQuery(true);          // <- draw first 30
+  cards = data.map(normalizeCard);
+  applyQuery(true);
   console.log("[OKC] cards loaded:", cards.length);
 }
 
 loadCards();
-
-
