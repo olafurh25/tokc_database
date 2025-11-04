@@ -740,17 +740,31 @@ function smoothScrollTo(targetY, duration = SNAP_DURATION) {
 }
 
 /* ===== CUSTOM SNAP SMOOTH SCROLL ===== */
+function smoothScrollGridTo(target, duration = 250) {
+  const start = grid.scrollTop;
+  const dist  = target - start;
+  const t0 = performance.now();
+
+  function frame(now) {
+    const t = Math.min((now - t0) / duration, 1);
+    const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    grid.scrollTop = start + dist * eased;
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
 if (snapContainer) {
   // one set of snap state + helpers
   let isSnapping = false;
   let justUnlockedUntil = 0;
   const PAGE = () => window.innerHeight;
   const clampToPage = (y) => Math.round(y / PAGE()) * PAGE();
-
+  
   function lock(){ isSnapping = true; }
   function unlock(){
     isSnapping = false;
-    justUnlockedUntil = performance.now() + 80; // absorb residual wheel for 80ms
+    justUnlockedUntil = performance.now() + 180; // absorb residual wheel for 250ms
   }
 
   // Wait until we land, then hard-set to exact and unlock
@@ -759,7 +773,7 @@ if (snapContainer) {
       const y = snapContainer.scrollTop;
       if (Math.abs(y - targetYExact) < 1) {
         snapContainer.scrollTop = targetYExact; // pixel-perfect alignment
-        setTimeout(unlock, 40);                 // let OS momentum finish
+        setTimeout(unlock, 80);                 // let OS momentum finish
         return;
       }
       requestAnimationFrame(check);
@@ -800,7 +814,7 @@ if (snapContainer) {
       if (up && !atTop()) {
         e.preventDefault();
         lock();
-        grid.scrollTo({ top: 0, behavior: "smooth" });
+        smoothScrollGridTo(0, 250);
         const wait = () => {
           if (atTop()) {
             snapTo(snapContainer.scrollTop - PAGE());
