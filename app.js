@@ -845,17 +845,17 @@ function openModal(id) {
   const leftBits = [
     // Type + (Faction or Suit for kingdom)
     [typePretty, c.type === "kingdom" ? suitPretty : factionPretty]
-      .filter(Boolean).join(" • "),
+      .filter(Boolean).join(" ⬥ "),
 
     // Tarot/faction-card extra descriptors
-    [archetypePretty, traitsPretty].filter(Boolean).join(" • ")
-  ].filter(Boolean).join(" • ");
+    [archetypePretty, traitsPretty].filter(Boolean).join(" ⬥ ")
+  ].filter(Boolean).join(" ⬥ ");
 
   const metaBits = [
     leftBits,
     powerBits,
     releasePretty
-  ].filter(Boolean).join(" • ");
+  ].filter(Boolean).join(" ⬥ ");
 
   metaEl.textContent  = metaBits;
 
