@@ -4,7 +4,7 @@
     "title": "Saga the Unifier",
     "type": "basic",
     "archetype": "heir",
-    "traits": ["resilient", "pathfinder"],
+    "traits": ["pathfinder","resilient"],
     "faction": "clans",
     "cost": null,
     "strength": 10,
