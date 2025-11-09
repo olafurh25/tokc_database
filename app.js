@@ -809,6 +809,106 @@ function prettyPowerBits(card) {
   return out.join(" ⬥ ");
 }
 
+/* ===== TOKEN → ICONS (SVG) ===== */
+
+// any tokens you want to keep in full color (emoji-style)
+const COLOR_ICONS = new Set([
+  "<autumn>", "<day>", "<winter>", "<spring>", "<night>"   // keep this as a colored leaf
+  // "<winter>",  // uncomment to keep winter full color too
+]);
+
+// helper to define one entry
+const iconEntry = (name, extraCls = "") => {
+  const token = `<${name}>`;
+  const path  = `images/iconography/svg/${name}.svg`;
+  const isColor = COLOR_ICONS.has(token);
+  return [token, { mode: isColor ? "img" : "mask", path, cls: extraCls }];
+};
+
+// master map
+const ICONS = Object.fromEntries([
+  // phases / seasons
+  iconEntry("day", "icon--phase"),
+  iconEntry("night", "icon--phase"),
+  iconEntry("spring", "icon--phase"),
+  iconEntry("autumn", "icon--phase"),
+  iconEntry("winter", "icon--phase"),
+
+  // suits
+  iconEntry("swords"),
+  iconEntry("book"),
+  iconEntry("coins"),
+
+  // factions / card types
+  iconEntry("clans"),
+  iconEntry("uprising"),
+  iconEntry("gathering"),
+  iconEntry("nobility"),
+  iconEntry("hq"),
+  iconEntry("kingdom"),
+  iconEntry("favour"),
+
+  // archetypes
+  iconEntry("agent","icon--arch"),
+  iconEntry("captain","icon--arch"),
+  iconEntry("cavalry","icon--arch"),
+  iconEntry("champion","icon--arch"),
+  iconEntry("follower","icon--arch"),
+  iconEntry("heir","icon--arch"),
+  iconEntry("machine","icon--arch"),
+  iconEntry("ruse","icon--arch"),
+  iconEntry("trader","icon--arch"),
+
+  // traits
+  iconEntry("resilient"),
+  iconEntry("invulnerable"),
+  iconEntry("pathfinder"),
+
+  // stats / symbols
+  iconEntry("cost"),
+  iconEntry("votes"),
+  iconEntry("lore"),
+  iconEntry("influence"),
+
+  // misc you uploaded
+  iconEntry("sim"),
+]);
+
+function renderIconToken(token) {
+  const meta = ICONS[token];
+  if (!meta) return token; // passthrough
+  if (meta.mode === "img") {
+    // full-color image (keeps its own fills/gradients)
+    return `<img class="icon icon--img ${meta.cls||""}" src="${meta.path}" alt="${token.replace(/[<>]/g,'')}" />`;
+  }
+  // text-colored via CSS mask (inherits currentColor)
+  return `<span class="icon icon--mask ${meta.cls||""}" style="--icon:url('${meta.path}');" aria-hidden="true"></span>`;
+}
+
+/* Replace known tokens in strings; tolerate arrays in data.json */
+function injectIconsToHTML(value) {
+  if (value == null) return "";
+  const s = Array.isArray(value) ? value.join("\n") : String(value);
+  let out = s;
+  for (const tok of Object.keys(ICONS)) {
+    // fast global replace without regex pitfalls
+    out = out.split(tok).join(renderIconToken(tok));
+  }
+  return out;
+}
+
+/* Optional: convert bare timing at line start into tokens (e.g., 'day:' → '<day>') */
+function normalizeTimingSyntax(text) {
+  if (!text) return text;
+  const s = Array.isArray(text) ? text.join("\n") : String(text);
+  return s
+    .replace(/(^|\n)\s*day:/gi,    m => m.replace(/day:/i,    "<day>"))
+    .replace(/(^|\n)\s*night:/gi,  m => m.replace(/night:/i,  "<night>"))
+    .replace(/(^|\n)\s*spring:/gi, m => m.replace(/spring:/i, "<spring>"))
+    .replace(/(^|\n)\s*autumn:/gi, m => m.replace(/autumn:/i, "<autumn>"))
+    .replace(/(^|\n)\s*winter:/gi, m => m.replace(/winter:/i, "<winter>"));
+}
+
 /* ===== MODAL (single definition, with hardcoded pretty labels) ===== */
 function openModal(id) {
   const c = cards.find(x => String(x.id) === String(id));
@@ -860,8 +960,11 @@ function openModal(id) {
   metaEl.textContent  = metaBits;
 
   // ---- Body texts (left as-is; you can also hardcode headings elsewhere) ----
-  cmdEl.textContent   = c.commands || "";
-  rulesEl.textContent = c.rules || "";
+  // normalize bare "day:" / "night:" at line starts to tokens, then inject icons
+  cmdEl.innerHTML   = injectIconsToHTML(normalizeTimingSyntax(c.commands));
+  rulesEl.innerHTML = injectIconsToHTML(normalizeTimingSyntax(c.rules));
+  // after computing metaBits:
+  metaEl.innerHTML = injectIconsToHTML(metaBits);
   flavEl.textContent  = c.flavor || "";
 }
 
