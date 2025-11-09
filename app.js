@@ -342,7 +342,8 @@ function matchTerm(card, term){
 
   // Unfielded → search title + rules + commands
   if (!key) {
-    const hay = (String(card.title||"") + " " + (card.rules||"") + " " + (card.commands||"")).toLowerCase();
+  const cmdText = Array.isArray(card.commands) ? card.commands.join(" ") : (card.commands||"");
+  const hay = (String(card.title||"") + " " + (card.rules||"") + " " + cmdText).toLowerCase();
     ok = hay.includes(val.toLowerCase());
     return neg ? !ok : ok;
   }
@@ -885,15 +886,48 @@ function renderIconToken(token) {
   return `<span class="icon icon--mask ${meta.cls||""}" style="--icon:url('${meta.path}');" aria-hidden="true"></span>`;
 }
 
+/* Render rules with a leading tag pulled out as a big left icon */
+function renderRulesBlock(text) {
+  // normalize "day:" → "<day>" etc., then work with a string
+  const normalized = normalizeTimingSyntax(text);
+  const s = Array.isArray(normalized) ? normalized.join("\n") : String(normalized || "");
+
+  // look for a leading tag that matches our ICONS (e.g., "<day>")
+  const m = s.match(/^\s*(<[^>]+>)/);
+  const token = m && m[1];
+
+  if (token && ICONS[token]) {
+    // left icon (2x) + full text (icons injected) to the right
+    const iconHTML = renderIconToken(token);
+    const rest = s.slice(m[0].length).replace(/^\s+/, "");
+
+    return `
+      <div class="rule-with-tag">
+        <div class="rule-tag">${iconHTML}</div>
+        <div class="rule-text">${injectIconsToHTML(rest)}</div>
+      </div>
+    `;
+  }
+
+  // no leading tag → just inject icons normally
+  return injectIconsToHTML(s);
+}
+
 /* Replace known tokens in strings; tolerate arrays in data.json */
 function injectIconsToHTML(value) {
   if (value == null) return "";
   const s = Array.isArray(value) ? value.join("\n") : String(value);
   let out = s;
+
+  // wrap any line that's exactly "OR" (case-insensitive) for styling
+  out = out.replace(/^\s*or\s*$/gim, '<span class="or-line">OR</span>');
+
+
+  // then inject icons
   for (const tok of Object.keys(ICONS)) {
-    // fast global replace without regex pitfalls
     out = out.split(tok).join(renderIconToken(tok));
   }
+
   return out;
 }
 
@@ -962,7 +996,8 @@ function openModal(id) {
   // ---- Body texts (left as-is; you can also hardcode headings elsewhere) ----
   // normalize bare "day:" / "night:" at line starts to tokens, then inject icons
   cmdEl.innerHTML   = injectIconsToHTML(normalizeTimingSyntax(c.commands));
-  rulesEl.innerHTML = injectIconsToHTML(normalizeTimingSyntax(c.rules));
+  // rules: big leading tag on left (if present)
+  rulesEl.innerHTML = renderRulesBlock(c.rules);
   // after computing metaBits:
   metaEl.innerHTML = injectIconsToHTML(metaBits);
   flavEl.textContent  = c.flavor || "";
@@ -1128,9 +1163,21 @@ function normalizeCard(raw, idx) {
   c.title  = String(c.title ?? c.name ?? "Unknown Card");
   c.image  = String(c.image ?? "images/placeholder.jpg");
 
-  ["type","faction","archetype","suit","commands","rules","flavor"].forEach(k => {
+  // keep scalar text fields as strings (NOT commands)
+  ["type","faction","archetype","suit","rules","flavor"].forEach(k => {
     if (c[k] != null) c[k] = String(c[k]);
   });
+
+  // normalize commands → always an array of lines
+  if (c.commands == null || c.commands === "") {
+    c.commands = [];
+  } else if (Array.isArray(c.commands)) {
+    c.commands = c.commands.map(s => String(s).trim()).filter(Boolean);
+  } else {
+    const s = String(c.commands);
+    c.commands = s.split(/[\n,]+/).map(x => x.trim()).filter(Boolean);
+  }
+
 
   if (!Array.isArray(c.traits)) c.traits = c.traits ? String(c.traits).split(/\s*,\s*/) : [];
   if (!Array.isArray(c.tags))   c.tags   = c.tags   ? String(c.tags).split(/\s*,\s*/)   : [];

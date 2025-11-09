@@ -404,6 +404,39 @@ body {
   }
 }
 
+/* ========== Rules: leading tag pulled left at 2x ========== */
+.rule-with-tag {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;            /* space between big icon and text block */
+  margin: 0.5rem 0;       /* match your existing spacing rhythm */
+}
+
+.rule-tag {
+  line-height: 1;
+  flex: 0 0 auto;         /* keep icon from stretching */
+}
+
+/* double-size the icon, both masked spans and full-color <img> */
+.rule-tag .icon--mask,
+.rule-tag .icon--img {
+  width: 2.2em;           /* 2x your base 1.1em */
+  height: 2.2em;
+  vertical-align: middle;
+}
+
+/* the text block to the right — preserves line breaks like the original */
+.rule-text {
+  white-space: pre-wrap;
+  flex: 1 1 auto;
+}
+
+/* optional: keep inline icons inside rule text aligned nicely */
+.rule-text .icon {
+  vertical-align: -0.15em;
+}
+
+
 /* ===== SYNTAX GUIDE MODAL ===== */
 .syntax-modal {
   position: fixed;
@@ -533,4 +566,39 @@ body::after{
 /* tiny per-family tweaks */
 .icon--phase { transform: translateY(1px); }
 .icon--arch  { opacity: .95; }
+
+/* ===== Commands section layout & spacing ===== */
+#modalCmd {
+  font-weight: 450;
+  white-space: pre-line;   /* each array item/newline stays on its own line */
+  line-height: 3;        /* consistent vertical rhythm */
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+/* larger seasonal icons (only inside commands) */
+#modalCmd .icon--phase {
+  width: 2.3em;
+  height: 2.3em;
+  margin-left: 0.35em;
+  margin-right: 0.1em;
+  vertical-align: middle;
+  position: relative;
+  top: -0.25em;            /* slightly above text center */
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.35));
+}
+
+/* compact inline OR line */
+#modalCmd span.or-line {
+  text-align: left;
+  font-size: 0.8em;
+  line-height: 0.1;
+  margin: 0em 0;
+  opacity: 0.8;
+  margin-left: 1em;
+  font-style: italic;
+  padding-left: 0.1em;
+}
+
+
 
