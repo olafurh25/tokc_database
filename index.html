@@ -1,3 +1,7 @@
+<!-- ======================================================
+     Old King's Crown — Card Library
+     Structure only; behavior in app.js, styles in style.css
+     ====================================================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +11,7 @@
 </head>
 <body>
   <main class="snap-container">
-    <!-- HERO (parallax background) -->
+    <!-- HERO  -->
     <section id="hero">
       <div class="hero-inner">
         <img src="images/logo.png" class="hero-logo" alt="The Old King's Crown logo" />
@@ -28,7 +32,7 @@
         </div>
       </div>
 
-      <!-- soft bottom gradient (like your mock) -->
+      <!-- soft bottom gradient  -->
       <div class="hero-fade"></div>
     </section>
 
@@ -54,7 +58,7 @@
         </div>
       </header>
 
-      <!-- SCROLLABLE RESULTS AREA -->
+      <!-- SCROLLABLE CARD AREA -->
       <div id="cardArea">
         <div id="cardGrid"></div>
         <p id="noResults" class="hidden">No results.</p>
@@ -80,7 +84,7 @@
             <h2 id="modalName"></h2>
             <div id="modalTypeFaction"></div>
           </div>
-          <p id="modalMeta"></p>  <!-- ← add this back -->
+          <p id="modalMeta"></p>
           <p id="modalCmd"></p>
           <p id="modalRules"></p>
           <p id="modalFlavor"></p>
@@ -193,7 +197,7 @@ Unfielded words search: title + rules + commands
     </div>
   </div>
 
-  <!-- your JS -->
+  <!--JS -->
   <script src="app.js"></script>
 </body>
 </html>

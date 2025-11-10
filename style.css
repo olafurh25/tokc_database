@@ -1,3 +1,11 @@
+/* =========================================================
+   Old King's Crown — Styles
+   - Layout (hero, topbar, grid)
+   - Card & modal visuals
+   - Icon system
+   - Animations & fades
+   ========================================================= */
+
 /* ======= COMPLETE FONT IMPORTS ======= */
 
 /* Source Serif Pro — static weights 200–900 + italics */
@@ -11,13 +19,13 @@
 /* =========== GLOBAL =========== */
 
 :root{
-  --accent: #1F3B41;            /* requested teal accent */
-  --glass: rgba(255,255,255,.70); /* translucent white for search */
+  --accent: #1F3B41;            
+  --glass: rgba(255,255,255,.70); 
   --ink: #0b0f12;
   --card-ratio: calc(2.75 / 4.75); 
-  --modal-overlap: 120px; /* how far the card overlaps the info panel */
-  --card-radius-grid: 16px;     /* what grid uses now */
-  --card-radius-modal-pct: 5.5%;/* tweak: ~16px at ~290–300px width */
+  --modal-overlap: 120px; 
+  --card-radius-grid: 16px;     
+  --card-radius-modal-pct: 5.5%;
 }
 
 /* ====== FONT ROLES ====== */
@@ -49,7 +57,7 @@ html, body { margin: 0; padding: 0; }
 
 body {
   color: #eaf0f5;
-  background-color: var(--accent); /* fallback */
+  background-color: var(--accent);
   background-image: url("images/box_art.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -101,7 +109,7 @@ body {
   box-shadow:0 8px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6);
   backdrop-filter: blur(10px);
   padding:.9rem .9rem;
-  width:clamp(560px, 52vw, 760px);       /* wide like the mock */
+  width:clamp(560px, 52vw, 760px);       
 }
 
 .search-wrap input{
@@ -112,12 +120,12 @@ body {
 
 .search-icon{ position:absolute; left:1rem; color:#0a0e12; opacity:.55; }
 
-/* ===== Custom Search Icon (SVG mask) ===== */
+/* ===== Custom Search Icon ===== */
 .icon-search {
   display: inline-block;
   width: 1.2rem;
   height: 1.2rem;
-  background: currentColor; /* inherits from .search-wrap */
+  background: currentColor;
   -webkit-mask-image: url("images/iconography/svg/search.svg");
           mask-image: url("images/iconography/svg/search.svg");
   -webkit-mask-repeat: no-repeat;
@@ -168,8 +176,6 @@ body {
 .topbar-center{ display:flex; justify-content:center; }
 .topbar-right{ display:flex; justify-content:flex-end; gap:.6rem; }
 
-
-/* match search style in bar but a tad shorter */
 #topbar .search-wrap{ width:clamp(560px, 48vw, 1100px); padding:.45rem .9rem; }
 
 /* =========== CARD AREA (scrolling) =========== */
@@ -180,14 +186,14 @@ body {
   position:relative;
   overscroll-behavior: contain;
 
-   /* tune how tall the fade edge is */
-  --top-fade: 10px; /* try 10–20px to taste */
+   
+  --top-fade: 10px; 
 
   -webkit-mask-image: linear-gradient(
     to bottom,
-    rgba(255,255,255,0) 0,                  /* invisible at the very top edge */
+    rgba(255,255,255,0) 0,                  
     rgba(255,255,255,0.6) calc(var(--top-fade) * 0.5),
-    rgba(255,255,255,1) var(--top-fade)      /* fully visible after the thin strip */
+    rgba(255,255,255,1) var(--top-fade)      
   );
           mask-image: linear-gradient(
     to bottom,
@@ -204,7 +210,7 @@ body {
 
 #cardArea {
   flex: 1;
-  overflow-y: auto;      /* allows cards to scroll */
+  overflow-y: auto;     
   scroll-snap-align: none;
 }
 
@@ -219,7 +225,6 @@ body {
 @media(max-width:800px){  #cardGrid{ grid-template-columns:repeat(2,1fr); } }
 @media(max-width:520px){  #cardGrid{ grid-template-columns:1fr; } }
 
-/* Frosted card shells */
 .card{
   position: relative;
   background: rgba(255,255,255,.08);
@@ -246,8 +251,8 @@ body {
 .card img{
   display:block;
   width:100%;
-  aspect-ratio: var(--card-ratio); /* FULL-BLEED tarot size */
-  object-fit: cover;               /* fill & crop */
+  aspect-ratio: var(--card-ratio); 
+  object-fit: cover;               
   border-radius: var(--card-radius-grid);
 }
 
@@ -351,39 +356,39 @@ body {
 /* Two-column overlap layout */
 .modal-inner {
   display: grid;
-  grid-template-columns: auto 1fr; /* art | panel */
+  grid-template-columns: auto 1fr;
   align-items: center;
   position: relative;
-  z-index: 1; /* ensures close button can sit above */
+  z-index: 1; 
 }
 
-/* === Card popup image + rim fix === */
+/* === Card popup image === */
 .modal-artwrap {
   position: relative;
   display: inline-block;
   padding: 0;
   margin: 0;
-  box-sizing: border-box;  /* ensures ::after fits exactly */
-  margin-right: calc(-1 * var(--modal-overlap));  /* restore overlap */
-  z-index: 3; /* ensures card sits above the text panel */
+  box-sizing: border-box;  
+  margin-right: calc(-1 * var(--modal-overlap));  
+  z-index: 3; 
 }
 
 .modal-artwrap img {
   display: block;
   width: min(38vw, 420px);
   aspect-ratio: var(--card-ratio);
-  border-radius: 18px;  /* your chosen radius */
+  border-radius: 18px;  
   object-fit: cover;
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
-  box-sizing: border-box; /* ensures same outline geometry */
+  box-sizing: border-box; 
 }
 
-/* Light rim that matches the card exactly */
+
 .modal-artwrap::after {
   content: "";
   position: absolute;
-  inset: 0; /* perfectly hugs the image edges */
-  border-radius: 18px; /* must match image */
+  inset: 0; 
+  border-radius: 18px; 
   box-sizing: border-box;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
@@ -404,8 +409,6 @@ body {
   text-align: left;
   max-width: 640px;
 }
-
-/* --- Click-through modal hitbox fix --- */
 
 /* Let empty parts of the container be click-through */
 #modalContent { pointer-events: none; }
@@ -459,14 +462,14 @@ body {
 }
 
 #modalMeta {
-  font-family: "Source Serif 4", serif; /* remove the extra space */
+  font-family: "Source Serif 4", serif; 
   font-optical-sizing: auto;
-  font-weight: 400;                      /* 100 is too thin; 300–400 looks right */
+  font-weight: 400;                      
   font-style: normal;
   font-size: 1rem;
   line-height: 1.4;
   opacity: 1;
-  margin: 0.6rem 0 1rem;                 /* keep the consolidated spacing */
+  margin: 0.6rem 0 1rem;                 
   white-space: normal;
 }
 
@@ -474,10 +477,10 @@ body {
 #modalCmd {
   font-family: "Source Serif Pro", serif;
   font-optical-sizing: auto;
-  font-weight: 600;            /* 500 if you want lighter, 700 if heavier */
+  font-weight: 600;            
   font-style: normal;
   white-space: pre-line;
-  line-height: 3;            /* was 3 — much tighter */
+  line-height: 3;            
   font-size: 1.05rem;
   color: #eaf0f5;
   margin: 0.5rem 0;
@@ -527,12 +530,11 @@ body {
 }
 
 /* ===== Meta rows ===== */
-/* ===== Votes ⬩ Lore row (inline centered) ===== */
 .meta-row {
   display: flex;
   justify-content: left;
   align-items: baseline;
-  gap: 0.6rem;                /* space around diamond */
+  gap: 0.6rem;                
   margin-top: 0.5rem;
   font-weight: 600;
   font-family: "Source Serif Pro", serif;
@@ -540,17 +542,14 @@ body {
   color: #eaf0f5;
 }
 
-/* ensure consistent order: votes left, lore right */
 #metaVotes { order: 0; }
 #metaLore  { order: 2; }
 
-/* reset icon vertical alignment for this row */
 .meta-row .icon {
   top: 0;
   vertical-align: -0.1em;
 }
 
-/* Release line — Source Serif 4 Variable regular */
 #metaRelease {
   font-family: "Source Serif 4", serif;
   font-optical-sizing: auto;
@@ -579,19 +578,19 @@ body {
 .rule-with-tag {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;            /* space between big icon and text block */
-  margin: 0.5rem 0;       /* match your existing spacing rhythm */
+  gap: 0.5rem;            
+  margin: 0.5rem 0;       
 }
 
 .rule-tag {
   line-height: 1;
-  flex: 0 0 auto;         /* keep icon from stretching */
+  flex: 0 0 auto;         
 }
 
 /* double-size the icon, both masked spans and full-color <img> */
 .rule-tag .icon--mask,
 .rule-tag .icon--img {
-  width: 2.2em;           /* 2x your base 1.1em */
+  width: 2.2em;           
   height: 2.2em;
   vertical-align: middle;
 }
@@ -602,7 +601,6 @@ body {
   flex: 1 1 auto;
 }
 
-/* optional: keep inline icons inside rule text aligned nicely */
 .rule-text .icon {
   vertical-align: -0.15em;
 }
@@ -661,15 +659,13 @@ body {
 }
 .syntax-close:hover { transform: scale(1.15); }
 
-/* restore the outer scroll container */
 .snap-container{
   height: 100vh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scroll-behavior: auto; /* avoid bounce chaining */
-  /* keep scroll-behavior: auto; and no scroll-snap-* */
+  scroll-behavior: auto; 
 }
-html, body { height: 100%; overflow: hidden; } /* optional: prevent window from scrolling */
+html, body { height: 100%; overflow: hidden; } 
 
 
 /* ===== SMOOTH ROTATING FADE (bottom ↔ top crossfade) ===== */
@@ -699,7 +695,7 @@ body::after{
     rgba(31,59,65,1) 0%,
     rgba(31,59,65,0.7) 40%,
     rgba(31,59,65,0) 100%);
-  opacity: var(--top-fade-opacity, 0);     /* default hidden at top */
+  opacity: var(--top-fade-opacity, 0);     
   transition: opacity .8s ease;
 }
 
@@ -746,7 +742,7 @@ body::after{
   margin-right: 0.1em;
   vertical-align: middle;
   position: relative;
-  top: -0.25em;            /* slightly above text center */
+  top: -0.25em;            
   filter: drop-shadow(0 0 4px rgba(0,0,0,0.35));
 }
 
@@ -758,7 +754,7 @@ body::after{
   vertical-align: -0.15em;
   margin: 0 0.15em;
   position: relative;
-  top: 2px; /* nudges all icons downward slightly */
+  top: 2px; 
 }
 
 /* Phase icons (seasonal) stay where they are or slightly higher */
@@ -767,7 +763,6 @@ body::after{
   transform: translateY(1px);
 }
 
-/* compact inline OR line */
 /* Tighten spacing only around OR connector */
 #modalCmd .or-line {
   display: block;
@@ -779,7 +774,6 @@ body::after{
   line-height: 1.2;
 }
 
-/* NEW: tighten spacing immediately after OR lines */
 #modalCmd .or-line + * {
   margin-top: 0.4rem; /* cancels extra top gap on the following line */
 }

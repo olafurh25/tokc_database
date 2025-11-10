@@ -1,3 +1,12 @@
+/* =========================================================
+   Old King's Crown — UI & Search
+   - Parallax + fades
+   - Search + query engine
+   - Grid rendering + pagination
+   - Modal rendering
+   - Data loading/normalization
+   ========================================================= */
+
 /* ===== FULL-PAGE PARALLAX (slows near bottom) ===== */
 const HERO = document.getElementById("hero");
 const cardArea = document.getElementById("cardArea");
@@ -48,7 +57,7 @@ const noResults = document.getElementById("noResults");
   const y = snapContainer ? snapContainer.scrollTop : window.scrollY;
   const progress = Math.min(1, y / heroHeight);
 
-  const opacity = Math.max(0, Math.min(1, progress * 1.5)); // 0→1 as you leave hero
+  const opacity = Math.max(0, Math.min(1, progress * 1.5)); 
   noResults.style.opacity = opacity.toFixed(2);
   noResults.style.transform = `translateY(${(1 - opacity) * -20}px)`;
 }, { passive: true });
@@ -161,7 +170,7 @@ barInput.addEventListener("keydown", e =>
 
 /* ===== BUTTON ACTIONS ===== */
 function openAdvanced() {
-  alert("🔍 Advanced Search coming soon!");
+  alert("🔍 Advanced Search Engine coming soon!");
 }
 /* ===== OPEN / CLOSE SYNTAX GUIDE ===== */
 function openSyntaxGuide() {
@@ -200,7 +209,6 @@ function openRandom() {
 /* ===== TOPBAR LOGO → SNAP TO HERO ===== */
 const logoEl = document.querySelector('.topbar-logo');
 if (logoEl) {
-  // make it accessible/clickable
   logoEl.setAttribute('role', 'button');
   logoEl.setAttribute('aria-label', 'Go to hero');
   logoEl.tabIndex = 0;
@@ -208,7 +216,7 @@ if (logoEl) {
   const goHero = (e) => {
     if (!snapContainer) return;
     e?.preventDefault?.();
-    smoothScrollTo(0, SNAP_DURATION); // use your custom animator
+    smoothScrollTo(0, SNAP_DURATION);
   };
 
   logoEl.addEventListener('click', goHero);
@@ -228,8 +236,8 @@ const ALIAS = {
   n: "title", name: "title", title: "title",
 
   // core kinds
-  t: "type", type: "type",                      // tarot | hq | kingdom | favor | tactic
-  f: "faction", faction: "faction",             // clans | uprising | gathering | nobility
+  t: "type", type: "type",                      // tarot | hq | kingdom | favor | tactic TODO: forge, ambition, scheme, threat
+  f: "faction", faction: "faction",             // clans | uprising | gathering | nobility TODO: simulacrum
 
   // tarot-only
   a: "archetype", archetype: "archetype",
@@ -384,24 +392,20 @@ function matchTerm(card, term){
     return neg ? !ok : ok;
   }
 
-  // tarot fields (archetype, traits, strength, votes, lore) only apply to faction cards
   if (["archetype","traits","strength","votes","lore"].includes(key)) {
     if (!isFactionCard(card)) return neg ? true : false;
   }
-  // cost is now allowed on every card — no gating
 
   if (key === "suit") {
     if (!inType(card,"kingdom")) return neg ? true : false;
   }
 
-  // Special-case: allow type:tarot to mean either tarot subtype
   if (key === "type") {
     const v = String(val).toLowerCase();
     let ok;
     if (v === "faction") {
       ok = isFactionCard(card); // matches both Basic/Advanced Faction Card
     } else {
-      // keep the existing enum + wildcard behavior
       ok = matchesEnum("type", val) && textCompare(norm(card.type), val);
     }
     return neg ? !ok : ok;
@@ -481,7 +485,7 @@ let filteredList = [];
 const loadWrap = document.querySelector('.load-more-wrapper');
 const noResultsEl = document.getElementById('noResults');
 
-// ---- No-results popup control (robust) ----
+// ---- No-results popup control ----
 function setNoResults(show) {
   const el = noResultsEl;
   if (!el) return;
@@ -696,7 +700,7 @@ cardGrid.addEventListener('keydown', (e) => {
 
 /* ===== PRETTY LABELS (hardcoded for every field) ===== */
 
-// Maps for exact, human-pretty labels. Add/modify as you like.
+// Maps for exact, human-pretty labels.
 const TYPE_LABELS = {
   basic: "Basic Faction Card",
   advanced: "Advanced Faction Card",
@@ -737,7 +741,8 @@ const TRAIT_LABELS = {
   pathfinder: "Pathfinder"
 };
 
-// If you have known Expansion/Module names, map them here (optional).
+// Map expansion modules here
+
 // Unknown values fall back to Title Case.
 const RELEASE_EXPANSION_LABELS = {
   // "wild_kingdom": "Wild Kingdom",
@@ -785,7 +790,6 @@ function prettyArray(key, arr, sep = ", ") {
   ).join(sep);
 }
 
-// Replace the whole prettyRelease() with this:
 function prettyRelease(rel) {
   if (!rel) return "";
 
@@ -805,7 +809,7 @@ function prettyRelease(rel) {
 }
 
 
-// Numbers/power line (you can rename labels here, too)
+// Numbers/power line
 function prettyPowerBits(card) {
   const out = [];
   if (card.cost != null)      out.push(`Cost ${card.cost}`);
@@ -817,10 +821,9 @@ function prettyPowerBits(card) {
 
 /* ===== TOKEN → ICONS (SVG) ===== */
 
-// any tokens you want to keep in full color (emoji-style)
+// any tokens to keep in full color (emoji-style)
 const COLOR_ICONS = new Set([
-  "<autumn>", "<day>", "<winter>", "<spring>", "<night>"   // keep this as a colored leaf
-  // "<winter>",  // uncomment to keep winter full color too
+  "<autumn>", "<day>", "<winter>", "<spring>", "<night>"   
 ]);
 
 // helper to define one entry
@@ -1031,7 +1034,7 @@ function openModal(id) {
   typeFactionEl.innerHTML = [typeWithIcon, rightLabel].filter(Boolean).join(" ⬩ ");
 
 
-  // ---- Body texts (left as-is; you can also hardcode headings elsewhere) ----
+  // ---- Body texts ----
   // normalize bare "day:" / "night:" at line starts to tokens, then inject icons
   cmdEl.innerHTML = renderCommandsBlock(c.commands);
   // rules: big leading tag on left (if present)
@@ -1045,7 +1048,7 @@ function openModal(id) {
     ? iconLabel(c.faction, prettyScalar("faction", c.faction))
     : "";
 
-  // strength plain text (you asked to keep strength as text)
+  // strength
   const strengthPretty  = (c.strength != null) ? `Strength ${c.strength}` : "";
 
   // cost (with icon)
@@ -1104,7 +1107,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ===== SNAP TIMING ===== */
-const SNAP_DURATION = 750; // ms — change to taste
+const SNAP_DURATION = 750;
 
 // Cancellable, ease-in-out scroll with exact settle at the end
 let __scrollAnimId = 0;
@@ -1119,7 +1122,7 @@ function smoothScrollTo(targetY, duration = SNAP_DURATION) {
   }
 
   function frame(now) {
-    if (startId !== __scrollAnimId) return;        // cancelled
+    if (startId !== __scrollAnimId) return;        
     const t = Math.min((now - t0) / duration, 1);
     const eased = easeInOutCubic(t);
     snapContainer.scrollTop = startY + dist * eased;
@@ -1270,7 +1273,7 @@ function normalizeCard(raw, idx) {
 
 /* ===== LOAD CARDS (robust) ===== */
 async function loadCards() {
-  const paths = ["data.json", "data/data.json"]; // try both
+  const paths = ["data.json", "data/data.json"];
   let data = null;
 
   for (const p of paths) {
