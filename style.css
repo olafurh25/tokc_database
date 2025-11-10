@@ -1,4 +1,15 @@
+/* ======= COMPLETE FONT IMPORTS ======= */
+
+/* Source Serif Pro — static weights 200–900 + italics */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Source Serif 4 — full optical-size and weight range + italics */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+
+/* Spectral SC — all weights 200–900 + italics */
+@import url('https://fonts.googleapis.com/css2?family=Spectral+SC:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 /* =========== GLOBAL =========== */
+
 :root{
   --accent: #1F3B41;            /* requested teal accent */
   --glass: rgba(255,255,255,.70); /* translucent white for search */
@@ -9,10 +20,34 @@
   --card-radius-modal-pct: 5.5%;/* tweak: ~16px at ~290–300px width */
 }
 
+/* ====== FONT ROLES ====== */
+
+/* Default body — Source Serif 4 Variable */
+body {
+  font-family: "Source Serif 4", "Bookman Old Style", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Titles (section headers, modal titles, etc.) — Source Serif Pro Bold */
+h1, h2, h3, h4, h5, h6,
+#topbar, #hero, .chip, .syntax-content h2 {
+  font-family: "Source Serif Pro", serif;
+  font-style: normal;
+}
+
+/* Card Names — Spectral SC Medium */
+#modalName, .card h3 {
+  font-family: "Spectral SC", serif;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+
 html, body { margin: 0; padding: 0; }
 
 body {
-  font-family: "Bookman Old Style", "Bookman Old Face", "Bookman", serif;
   color: #eaf0f5;
   background-color: var(--accent); /* fallback */
   background-image: url("images/box_art.jpg");
@@ -77,6 +112,23 @@ body {
 
 .search-icon{ position:absolute; left:1rem; color:#0a0e12; opacity:.55; }
 
+/* ===== Custom Search Icon (SVG mask) ===== */
+.icon-search {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: currentColor; /* inherits from .search-wrap */
+  -webkit-mask-image: url("images/iconography/svg/search.svg");
+          mask-image: url("images/iconography/svg/search.svg");
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-position: center;
+          mask-position: center;
+  opacity: 0.6;
+}
+
 /* =========== CHIPS / ACTION BUTTONS =========== */
 .filters{ display:flex; gap:.75rem; justify-content:center; margin-top:1rem; }
 
@@ -127,6 +179,26 @@ body {
   overflow-y:auto;
   position:relative;
   overscroll-behavior: contain;
+
+   /* tune how tall the fade edge is */
+  --top-fade: 10px; /* try 10–20px to taste */
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0) 0,                  /* invisible at the very top edge */
+    rgba(255,255,255,0.6) calc(var(--top-fade) * 0.5),
+    rgba(255,255,255,1) var(--top-fade)      /* fully visible after the thin strip */
+  );
+          mask-image: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0) 0,
+    rgba(255,255,255,0.6) calc(var(--top-fade) * 0.5),
+    rgba(255,255,255,1) var(--top-fade)
+  );
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
 }
 
 
@@ -271,7 +343,7 @@ body {
   border: none;
   padding: 1rem;
   width: min(94%, 1100px);
-  max-height: 90vh;
+  max-height: 92vh;
   overflow: visible;
   position: relative;
 }
@@ -342,7 +414,7 @@ body {
   min-height: 380px;
   z-index: 1;
   text-align: left;
-  max-width: 520px;
+  max-width: 640px;
 }
 
 /* --- Click-through modal hitbox fix --- */
@@ -361,27 +433,89 @@ body {
 #modal { cursor: pointer; }
 #modal .modal-inner, #closeModal { cursor: default; }
 
+/* ===== Modal Header Row: name left, type/faction right ===== */
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+  gap: 0.5rem;
+}
 
-/* Text inside the panel */
+/* Card Name — left-aligned */
 #modalName {
-  margin-top: 0;
-  font-size: 1.5rem;
+  font-family: "Spectral SC", serif;
+  font-weight: 500;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: #FAD069;
+  font-size: 1.4rem;
+  margin: 0;
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+/* Type + Faction info — right-aligned on same line */
+#modalTypeFaction {
+  font-family: "Source Serif Pro", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1rem;
+  color: #FAD069;
+  opacity: 0.7;
+  text-align: right;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 #modalMeta {
+  font-family: "Source Serif 4", serif; /* remove the extra space */
+  font-optical-sizing: auto;
+  font-weight: 400;                      /* 100 is too thin; 300–400 looks right */
+  font-style: normal;
+  font-size: 1rem;
+  line-height: 1.4;
   opacity: 0.9;
-  margin: 0.4rem 0 1rem;
+  margin: 0.6rem 0 1rem;                 /* keep the consolidated spacing */
+  white-space: normal;
 }
 
-#modalCmd, #modalRules, #modalFlavor {
-  white-space: pre-wrap;
+/* ===== Commands section ===== */
+#modalCmd {
+  font-family: "Source Serif Pro", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;            /* 500 if you want lighter, 700 if heavier */
+  font-style: normal;
+  white-space: pre-line;
+  line-height: 3;            /* was 3 — much tighter */
+  font-size: 1.05rem;
+  color: #eaf0f5;
   margin: 0.5rem 0;
 }
 
+
+#modalRules {
+  font-family: "Source Serif 4", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.02rem;
+  line-height: 1.2;
+  color: #eaf0f5;
+}
+
 #modalFlavor {
+  font-family: "Source Serif 4", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
   font-style: italic;
   opacity: 0.9;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: #eaf0f5;
+  margin-top: 0.8rem;
 }
 
 /* Responsive fallback */
@@ -403,6 +537,49 @@ body {
     margin-top: 1rem;
   }
 }
+
+/* ===== Meta rows ===== */
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: .6rem;
+  font-weight: 600;
+}
+
+#metaVotes, #metaLore {
+  font-family: "Source Serif Pro", serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 1.1rem;
+  margin-top: 0.6rem;
+}
+
+/* Release line — Source Serif 4 Variable regular */
+#metaRelease {
+  font-family: "Source Serif 4", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 0.95rem;
+  opacity: 0.5;
+  margin-top: 0.8rem;
+}
+
+/* Inline icon + label for meta bits (faction, cost, archetype, traits, votes, lore) */
+.meta-iconlabel {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.meta-iconlabel .icon {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.15em;
+}
+
+.meta-labeltext { line-height: 1; }
 
 /* ========== Rules: leading tag pulled left at 2x ========== */
 .rule-with-tag {
@@ -567,15 +744,6 @@ body::after{
 .icon--phase { transform: translateY(1px); }
 .icon--arch  { opacity: .95; }
 
-/* ===== Commands section layout & spacing ===== */
-#modalCmd {
-  font-weight: 450;
-  white-space: pre-line;   /* each array item/newline stays on its own line */
-  line-height: 3;        /* consistent vertical rhythm */
-  margin-top: 0.6rem;
-  margin-bottom: 0.6rem;
-}
-
 /* larger seasonal icons (only inside commands) */
 #modalCmd .icon--phase {
   width: 2.3em;
@@ -589,16 +757,22 @@ body::after{
 }
 
 /* compact inline OR line */
-#modalCmd span.or-line {
-  text-align: left;
-  font-size: 0.8em;
-  line-height: 0.1;
-  margin: 0em 0;
-  opacity: 0.8;
-  margin-left: 1em;
+/* Tighten spacing only around OR connector */
+#modalCmd .or-line {
+  display: block;
+  font-size: 0.9em;
   font-style: italic;
-  padding-left: 0.1em;
+  opacity: 0.85;
+  text-align: left;
+  margin: -0.5rem 0 -0.8rem 1em; /* pulls both sides in */
+  line-height: 1.2;
 }
+
+/* NEW: tighten spacing immediately after OR lines */
+#modalCmd .or-line + * {
+  margin-top: 0.4rem; /* cancels extra top gap on the following line */
+}
+
 
 
 

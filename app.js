@@ -786,19 +786,25 @@ function prettyArray(key, arr, sep = ", ") {
   ).join(sep);
 }
 
-// Pretty print the "Release" blob: Base Game / Expansion / Module
+// Replace the whole prettyRelease() with this:
 function prettyRelease(rel) {
   if (!rel) return "";
+
+  // Treat any truthy `basegame` as Base Game, and ignore module if set.
+  if (rel.basegame) return "Release: Base Game";
+
+  // Otherwise, show Expansion and (optionally) Module.
   const bits = [];
+  if (rel.expansion && String(rel.expansion).trim()) {
+    bits.push(prettyScalar("releaseExpansion", rel.expansion));
+  }
+  if (rel.module && String(rel.module).trim()) {
+    bits.push(prettyScalar("releaseModule", rel.module));
+  }
 
-  if (rel.basegame) bits.push("Base Game");
-  if (rel.expansion) bits.push(prettyScalar("releaseExpansion", rel.expansion));
-  if (rel.module) bits.push(prettyScalar("releaseModule", rel.module));
-
-  if (!bits.length) return "";
-  // If you want the explicit "Release: " label:
-  return `Release: ${bits.join(" — ")}`;
+  return bits.length ? `Release: ${bits.join(" — ")}` : "";
 }
+
 
 // Numbers/power line (you can rename labels here, too)
 function prettyPowerBits(card) {
@@ -807,7 +813,7 @@ function prettyPowerBits(card) {
   if (card.strength != null)  out.push(`Strength ${card.strength}`);
   if (card.votes != null)     out.push(`Votes ${card.votes}`);
   if (card.lore != null)      out.push(`Lore ${card.lore}`);
-  return out.join(" ⬥ ");
+  return out.join(" ⬩ ");
 }
 
 /* ===== TOKEN → ICONS (SVG) ===== */
@@ -875,6 +881,21 @@ const ICONS = Object.fromEntries([
   iconEntry("sim"),
 ]);
 
+function renderCommandsBlock(lines) {
+  // normalize to array of trimmed lines
+  const arr = Array.isArray(lines) ? lines : String(lines || "").split(/\n+/);
+  const html = arr.map(raw => {
+    const s = String(raw).trim();
+    if (!s) return "";
+    if (/^or$/i.test(s)) {
+      return `<div class="or-line">OR</div>`;
+    }
+    // inject icons into this one command line only
+    return `<div class="cmd-line">${injectIconsToHTML(normalizeTimingSyntax(s))}</div>`;
+  }).join("");
+  return html;
+}
+
 function renderIconToken(token) {
   const meta = ICONS[token];
   if (!meta) return token; // passthrough
@@ -911,6 +932,13 @@ function renderRulesBlock(text) {
 
   // no leading tag → just inject icons normally
   return injectIconsToHTML(s);
+}
+
+/* Icon + text inline, using existing ICONS + renderIconToken() */
+function iconLabel(tokenName, text) {
+  const token = `<${String(tokenName).toLowerCase()}>`;
+  const icon = ICONS[token] ? renderIconToken(token) : "";
+  return `<span class="meta-iconlabel">${icon}<span class="meta-labeltext">${text}</span></span>`;
 }
 
 /* Replace known tokens in strings; tolerate arrays in data.json */
@@ -954,53 +982,74 @@ function openModal(id) {
   const art     = document.getElementById("modalArt");
   const nameEl  = document.getElementById("modalName");
   const metaEl  = document.getElementById("modalMeta");
+  const typeFactionEl = document.getElementById("modalTypeFaction");
   const cmdEl   = document.getElementById("modalCmd");
   const rulesEl = document.getElementById("modalRules");
   const flavEl  = document.getElementById("modalFlavor");
+  const votesEl = document.getElementById("metaVotes");
+  const loreEl  = document.getElementById("metaLore");
+  const relEl   = document.getElementById("metaRelease");
 
   // Art + title
   art.src = c.image || "";
   art.alt = c.title || "";
   nameEl.textContent = c.title || "";
 
-  // ---- Pretty field values (hardcoded maps) ----
-  const typePretty      = prettyScalar("type", c.type);
-  const factionPretty   = prettyScalar("faction", c.faction);
-  const suitPretty      = prettyScalar("suit", c.suit);
-  const archetypePretty = prettyScalar("archetype", c.archetype);
-  const traitsPretty    = prettyArray("traits", c.traits, ", ");
-  const tagsPretty      = prettyArray("tags", c.tags, ", ");
-
-  const releasePretty   = prettyRelease(c.release);
-  const powerBits       = prettyPowerBits(c);
-
-  // ---- Build the top meta row exactly how you want it ----
-  // Example grouping: [Type (+ Faction / Suit)] • [Archetype/Traits if present] • [Power] • [Release]
-  const leftBits = [
-    // Type + (Faction or Suit for kingdom)
-    [typePretty, c.type === "kingdom" ? suitPretty : factionPretty]
-      .filter(Boolean).join(" ⬥ "),
-
-    // Tarot/faction-card extra descriptors
-    [archetypePretty, traitsPretty].filter(Boolean).join(" ⬥ ")
-  ].filter(Boolean).join(" ⬥ ");
-
-  const metaBits = [
-    leftBits,
-    powerBits,
-    releasePretty
-  ].filter(Boolean).join(" ⬥ ");
-
-  metaEl.textContent  = metaBits;
+  // === Type + Faction (now in the top header row, right-aligned) ===
+  const typeLabel = prettyScalar("type", c.type);
+  const factionLabel = c.faction
+    ? iconLabel(c.faction, prettyScalar("faction", c.faction))
+    : "";
+  typeFactionEl.innerHTML = [typeLabel, factionLabel].filter(Boolean).join(" ⬩ ");
 
   // ---- Body texts (left as-is; you can also hardcode headings elsewhere) ----
   // normalize bare "day:" / "night:" at line starts to tokens, then inject icons
-  cmdEl.innerHTML   = injectIconsToHTML(normalizeTimingSyntax(c.commands));
+  cmdEl.innerHTML = renderCommandsBlock(c.commands);
   // rules: big leading tag on left (if present)
   rulesEl.innerHTML = renderRulesBlock(c.rules);
   // after computing metaBits:
-  metaEl.innerHTML = injectIconsToHTML(metaBits);
+  // ==== TOP META (separate lines, with icons for faction / cost / archetype / traits) ====
+  const typePretty      = prettyScalar("type", c.type);
+
+  // faction (with icon) — works with clans/uprising/gathering/nobility
+  const factionPretty   = c.faction
+    ? iconLabel(c.faction, prettyScalar("faction", c.faction))
+    : "";
+
+  // strength plain text (you asked to keep strength as text)
+  const strengthPretty  = (c.strength != null) ? `Strength ${c.strength}` : "";
+
+  // cost (with icon)
+  const costPretty      = (c.cost != null) ? iconLabel("cost", `Cost ${c.cost}`) : "";
+
+  // archetype (with icon) — heir/cavalry/captain/etc.
+  const archetypePretty = c.archetype
+    ? iconLabel(c.archetype, prettyScalar("archetype", c.archetype))
+    : "";
+
+  // traits (each with its own icon)
+  const traitsPretty = (Array.isArray(c.traits) && c.traits.length)
+    ? c.traits.map(t => iconLabel(t, prettyScalar("trait", t))).join(" ⬩ ")
+    : "";
+
+  // line 1: Type ⬥ Faction
+  let metaHTML = [typePretty, factionPretty].filter(Boolean).join(" ⬩ ");
+
+  // line 2: Strength ⬥ Cost
+  const powerLine = [strengthPretty, costPretty].filter(Boolean).join(" ⬩ ");
+  if (powerLine) metaHTML += `<br>${powerLine}`;
+
+  // line 3: Archetype
+  if (archetypePretty) metaHTML += `<br>${archetypePretty}`;
+
+  // line 4: Traits
+  if (traitsPretty) metaHTML += `<br>${traitsPretty}`;
+
+  metaEl.innerHTML = metaHTML;
   flavEl.textContent  = c.flavor || "";
+  votesEl.innerHTML = (c.votes != null) ? iconLabel("votes", `Votes ${c.votes}`) : "";
+  loreEl.innerHTML  = (c.lore  != null) ? iconLabel("lore",  `Lore ${c.lore}`)   : "";
+  relEl.textContent = prettyRelease(c.release);
 }
 
 

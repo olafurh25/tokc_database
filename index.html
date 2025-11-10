@@ -16,7 +16,7 @@
 
         <!-- Centered rounded search -->
         <div class="search-wrap hero-search">
-          <span class="search-icon" aria-hidden="true">🔍</span>
+          <span class="search-icon icon-search"></span>
           <input id="searchInputHero" type="search" placeholder="Search…" aria-label="Search cards" />
         </div>
 
@@ -42,7 +42,7 @@
 
         <div class="topbar-center">
           <div class="search-wrap">
-            <span class="search-icon" aria-hidden="true">🔍</span>
+            <span class="search-icon icon-search"></span>
             <input id="searchInputBar" type="search" placeholder="Search..." aria-label="Search cards" />
           </div>
         </div>
@@ -78,11 +78,24 @@
         </div>
 
         <aside class="modal-panel">
-          <h2 id="modalName"></h2>
-          <p id="modalMeta"></p>
+          <div class="modal-header-row">
+            <h2 id="modalName"></h2>
+            <div id="modalTypeFaction"></div>
+          </div>
+          <p id="modalMeta"></p>  <!-- ← add this back -->
           <p id="modalCmd"></p>
           <p id="modalRules"></p>
           <p id="modalFlavor"></p>
+          
+          <!-- stats row: votes left, lore right -->
+          <div class="meta-row" id="metaStats">
+            <span id="metaVotes"></span>
+            <span id="metaLore"></span>
+          </div>
+
+          <!-- release line at very bottom -->
+          <p id="metaRelease"></p>
+
         </aside>
       </div>
     </div>
