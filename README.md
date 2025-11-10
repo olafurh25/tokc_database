@@ -1,6 +1,6 @@
 # The Old King's Crown Card Database
 
-A **fan-made web app and searchable card library** for *The Old King's Crown*, created by **Ólafur Þór Helgason** as a personal, non-commercial project.  
+A **fan-made web app and searchable card library** for *The Old King's Crown*, created as a personal, non-commercial project.  
 The goal is to give players and fans an easy way to browse, search, and study cards, archetypes, factions, and rules from the world of *The Old King's Crown*.
 
 ---
