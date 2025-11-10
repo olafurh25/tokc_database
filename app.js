@@ -220,7 +220,6 @@ if (logoEl) {
 /* ===== CARD DATA + RENDER ===== */
 const cardGrid = document.getElementById("cardGrid");
 const modal = document.getElementById("modal");
-const closeModal = document.getElementById("closeModal");
 let cards = [];
 
 /* === FIELD ALIASES & ENUMS (type-aware) === */
@@ -881,6 +880,17 @@ const ICONS = Object.fromEntries([
   iconEntry("sim"),
 ]);
 
+// ---- Paragraph helpers ----
+function normalizeParagraphs(val) {
+  if (Array.isArray(val)) {
+    return val.map(s => String(s).trim()).filter(Boolean);
+  }
+  const s = String(val || "").replace(/\r\n/g, "\n").trim();
+  if (!s) return [];
+  // split by blank lines → paragraphs
+  return s.split(/\n{2,}/).map(p => p.trim());
+}
+
 function renderCommandsBlock(lines) {
   // normalize to array of trimmed lines
   const arr = Array.isArray(lines) ? lines : String(lines || "").split(/\n+/);
@@ -995,12 +1005,31 @@ function openModal(id) {
   art.alt = c.title || "";
   nameEl.textContent = c.title || "";
 
-  // === Type + Faction (now in the top header row, right-aligned) ===
-  const typeLabel = prettyScalar("type", c.type);
-  const factionLabel = c.faction
-    ? iconLabel(c.faction, prettyScalar("faction", c.faction))
-    : "";
-  typeFactionEl.innerHTML = [typeLabel, factionLabel].filter(Boolean).join(" ⬩ ");
+  // === Type + Faction/Suit (top header row, right-aligned) ===
+
+  // Pretty text values
+  const typeHeader    = prettyScalar("type", c.type);
+  const factionHeader = prettyScalar("faction", c.faction);
+  const suitHeader   = prettyScalar("suit", c.suit);
+
+  // Add icons for specific card types
+  // (HQ → hq.svg, Favour → favour.svg, Kingdom → kingdom.svg)
+  let typeWithIcon = typeHeader;
+  if (c.type === "hq")       typeWithIcon = iconLabel("hq", typeHeader);
+  if (c.type === "favour")   typeWithIcon = iconLabel("favour", typeHeader);
+  if (c.type === "kingdom")  typeWithIcon = iconLabel("kingdom", typeHeader);
+
+  // Right-side label: use suit for Kingdoms, faction for everything else
+  let rightLabel = "";
+  if (c.type === "kingdom" && c.suit) {
+    rightLabel = iconLabel(c.suit, suitHeader);
+  } else if (c.faction) {
+    rightLabel = iconLabel(c.faction, factionHeader);
+  }
+
+  // Combine and inject into the header container
+  typeFactionEl.innerHTML = [typeWithIcon, rightLabel].filter(Boolean).join(" ⬩ ");
+
 
   // ---- Body texts (left as-is; you can also hardcode headings elsewhere) ----
   // normalize bare "day:" / "night:" at line starts to tokens, then inject icons
@@ -1033,7 +1062,7 @@ function openModal(id) {
     : "";
 
   // line 1: Type ⬥ Faction
-  let metaHTML = [typePretty, factionPretty].filter(Boolean).join(" ⬩ ");
+  let metaHTML = "";
 
   // line 2: Strength ⬥ Cost
   const powerLine = [strengthPretty, costPretty].filter(Boolean).join(" ⬩ ");
@@ -1047,8 +1076,16 @@ function openModal(id) {
 
   metaEl.innerHTML = metaHTML;
   flavEl.textContent  = c.flavor || "";
-  votesEl.innerHTML = (c.votes != null) ? iconLabel("votes", `Votes ${c.votes}`) : "";
-  loreEl.innerHTML  = (c.lore  != null) ? iconLabel("lore",  `Lore ${c.lore}`)   : "";
+  // Stats row: show diamond only if both exist
+  const votesHTML = (c.votes != null) ? iconLabel("votes", `Votes ${c.votes}`) : "";
+  const loreHTML  = (c.lore  != null)  ? iconLabel("lore",  `Lore ${c.lore}`)  : "";
+
+  if (votesHTML && loreHTML) {
+    document.getElementById("metaStats").innerHTML = `${votesHTML} ⬩ ${loreHTML}`;
+  } else {
+    document.getElementById("metaStats").innerHTML = votesHTML || loreHTML;
+  }
+
   relEl.textContent = prettyRelease(c.release);
 }
 
@@ -1059,16 +1096,8 @@ function dismissModal() {
   document.body.classList.remove('lock-scroll');
 }
 
-modal.addEventListener('click', (e) => {
-  const clickedBackdrop = e.target === modal || e.target.id === 'modalContent';
-  const inside = e.target.closest('.modal-inner');
-  if (clickedBackdrop || !inside) dismissModal();
-});
-
-document.querySelector('#modalContent .modal-inner')
-  ?.addEventListener('click', (e) => e.stopPropagation());
-
-closeModal.addEventListener('click', dismissModal);
+// Close modal when clicking anywhere on the screen
+modal.addEventListener('click', dismissModal);
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') dismissModal();
@@ -1211,6 +1240,7 @@ function normalizeCard(raw, idx) {
   c.id     = String(c.id ?? `X${idx + 1}`);
   c.title  = String(c.title ?? c.name ?? "Unknown Card");
   c.image  = String(c.image ?? "images/placeholder.jpg");
+  c.rules = normalizeParagraphs(c.rules);
 
   // keep scalar text fields as strings (NOT commands)
   ["type","faction","archetype","suit","rules","flavor"].forEach(k => {

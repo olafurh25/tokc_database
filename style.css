@@ -348,18 +348,6 @@ body {
   position: relative;
 }
 
-#closeModal {
-  position: absolute;
-  top: .3rem;
-  right: .7rem;
-  font-size: 1.8rem;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  z-index: 5; /* sits above card and panel */
-}
-
 /* Two-column overlap layout */
 .modal-inner {
   display: grid;
@@ -477,7 +465,7 @@ body {
   font-style: normal;
   font-size: 1rem;
   line-height: 1.4;
-  opacity: 0.9;
+  opacity: 1;
   margin: 0.6rem 0 1rem;                 /* keep the consolidated spacing */
   white-space: normal;
 }
@@ -511,7 +499,7 @@ body {
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: italic;
-  opacity: 0.9;
+  opacity: 0.8;
   font-size: 1.02rem;
   line-height: 1.5;
   color: #eaf0f5;
@@ -539,21 +527,27 @@ body {
 }
 
 /* ===== Meta rows ===== */
+/* ===== Votes ⬩ Lore row (inline centered) ===== */
 .meta-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   align-items: baseline;
-  gap: 1rem;
-  margin-top: .6rem;
+  gap: 0.6rem;                /* space around diamond */
+  margin-top: 0.5rem;
   font-weight: 600;
+  font-family: "Source Serif Pro", serif;
+  font-size: 1rem;
+  color: #eaf0f5;
 }
 
-#metaVotes, #metaLore {
-  font-family: "Source Serif Pro", serif;
-  font-weight: 600;
-  font-style: normal;
-  font-size: 1.1rem;
-  margin-top: 0.6rem;
+/* ensure consistent order: votes left, lore right */
+#metaVotes { order: 0; }
+#metaLore  { order: 2; }
+
+/* reset icon vertical alignment for this row */
+.meta-row .icon {
+  top: 0;
+  vertical-align: -0.1em;
 }
 
 /* Release line — Source Serif 4 Variable regular */
@@ -754,6 +748,23 @@ body::after{
   position: relative;
   top: -0.25em;            /* slightly above text center */
   filter: drop-shadow(0 0 4px rgba(0,0,0,0.35));
+}
+
+/* General icon vertical alignment tweak */
+.icon {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.15em;
+  margin: 0 0.15em;
+  position: relative;
+  top: 2px; /* nudges all icons downward slightly */
+}
+
+/* Phase icons (seasonal) stay where they are or slightly higher */
+.icon--phase {
+  top: 0; /* reset to baseline */
+  transform: translateY(1px);
 }
 
 /* compact inline OR line */
