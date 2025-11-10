@@ -113,6 +113,39 @@ const debouncedSync = debounce((from, to) => syncInputs(from, to), 300);
 heroInput.addEventListener("input", () => debouncedSync(heroInput, barInput));
 barInput.addEventListener("input", () => debouncedSync(barInput, heroInput));
 
+// ===== CLEAR BUTTONS (custom X) =====
+document.querySelectorAll('.search-wrap').forEach(wrap => {
+  const input = wrap.querySelector('input[type="search"]');
+  const clear = wrap.querySelector('.search-clear');
+  if (!input || !clear) return;
+
+  // a11y
+  clear.setAttribute('role', 'button');
+  clear.tabIndex = 0;
+
+  function doClear() {
+    // clear both bars so they stay in sync
+    heroInput.value = '';
+    barInput.value  = '';
+    // apply immediately (don’t wait for debounce)
+    applyQuery(true);
+    input.focus();
+  }
+
+  clear.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    doClear();
+  });
+
+  clear.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      doClear();
+    }
+  });
+});
+
 /* ===== HERO SEARCH FORCES DOWNWARD ===== */
 function goDown(){
   if (!snapContainer) return;
