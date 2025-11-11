@@ -26,6 +26,14 @@
   --modal-overlap: 120px; 
   --card-radius-grid: 16px;     
   --card-radius-modal-pct: 5.5%;
+  color-scheme: light dark; /* tells browser to support both */
+  color: black;              /* default icon color (light mode) */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: white;            /* switches favicon to white in dark mode */
+  }
 }
 
 /* ====== FONT ROLES ====== */
