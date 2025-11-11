@@ -1014,6 +1014,31 @@ function iconLabel(tokenName, text) {
   return `<span class="meta-iconlabel">${icon}<span class="meta-labeltext">${text}</span></span>`;
 }
 
+// ---- Inline formatting helpers (bold) ----
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])
+  );
+}
+
+function applyInlineFormatting(s) {
+  let out = String(s);
+
+  // b:"multi word"
+  out = out.replace(/\bb:"([^"]+)"\b/g, (_, t) =>
+    `<strong>${escapeHtml(t)}</strong>`);
+
+  // b:(multi word)
+  out = out.replace(/\bb:\(([^)]+)\)\b/g, (_, t) =>
+    `<strong>${escapeHtml(t)}</strong>`);
+
+  // b:word_or_phrase  (underscores → spaces)
+  out = out.replace(/\bb:([A-Za-z0-9_/-]+)\b/g, (_, t) =>
+    `<strong>${escapeHtml(t.replace(/_/g, ' '))}</strong>`);
+
+  return out;
+}
+
 /* Replace known tokens in strings; tolerate arrays in data.json */
 function injectIconsToHTML(value) {
   if (value == null) return "";
@@ -1023,6 +1048,8 @@ function injectIconsToHTML(value) {
   // wrap any line that's exactly "OR" (case-insensitive) for styling
   out = out.replace(/^\s*or\s*$/gim, '<span class="or-line">OR</span>');
 
+  // inline bold syntax (b:word, b:"multi word", b:(multi word))
+  out = applyInlineFormatting(out);
 
   // then inject icons
   for (const tok of Object.keys(ICONS)) {

@@ -318,7 +318,7 @@
     "type": "hq",
     "faction": "clans",
     "cost": 2,
-    "rules": ["Your <trader> gain <day> Flank. Whenever any of your cards are removed from a Council, you may move them to your Hand.", "<day> Move any number of your Active cards with Flank into a Council."],
+    "rules": ["Your <trader> gain <day> b:Flank. Whenever any of your cards are removed from a Council, you may move them to your Hand.", "<day> Move any number of your Active cards with b:Flank into a Council."],
     "flavor": "All gold & light, like sun over winter waves.",
     "release": { "basegame": true },
     "image": "images/cards/uprising/wanderingembassy.jpg"
