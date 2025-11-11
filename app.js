@@ -201,6 +201,27 @@ barInput.addEventListener("keydown", e =>
   handleEnter(e, barInput, heroInput, false)
 );
 
+// ===== TYPING FEEDBACK (smooth) =====
+let typingTimer;
+const TYPING_DELAY = 450; // adjust to taste
+
+function startTypingHint() {
+  if (!document.body.classList.contains('typing')) {
+    document.body.classList.add('typing');
+  }
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(() => {
+    document.body.classList.remove('typing');
+  }, TYPING_DELAY);
+}
+
+// react immediately on keydown (feels snappier), also on input for pasted text
+[heroInput, barInput].forEach(el => {
+  el.addEventListener('keydown', startTypingHint, { passive: true });
+  el.addEventListener('input',  startTypingHint, { passive: true });
+});
+
+
 /* ===== BUTTON ACTIONS ===== */
 function openAdvanced() {
   alert("🔍 Advanced Search Engine coming soon!");
@@ -955,30 +976,36 @@ function renderIconToken(token) {
 
 /* Render rules with a leading tag pulled out as a big left icon */
 function renderRulesBlock(text) {
-  // normalize "day:" → "<day>" etc., then work with a string
-  const normalized = normalizeTimingSyntax(text);
-  const s = Array.isArray(normalized) ? normalized.join("\n") : String(normalized || "");
+  const parasIn = Array.isArray(text) ? text : normalizeParagraphs(text);
+  const paras = parasIn.map(p => normalizeTimingSyntax(String(p || "")));
+  if (!paras.length) return "";
 
-  // look for a leading tag that matches our ICONS (e.g., "<day>")
-  const m = s.match(/^\s*(<[^>]+>)/);
-  const token = m && m[1];
-
-  if (token && ICONS[token]) {
-    // left icon (2x) + full text (icons injected) to the right
-    const iconHTML = renderIconToken(token);
-    const rest = s.slice(m[0].length).replace(/^\s+/, "");
-
-    return `
-      <div class="rule-with-tag">
-        <div class="rule-tag">${iconHTML}</div>
-        <div class="rule-text">${injectIconsToHTML(rest)}</div>
-      </div>
-    `;
+  function takeLeadingToken(s) {
+    const m = s.match(/^\s*(<[^>]+>)(.*)$/s);
+    if (!m) return { token: null, rest: s };
+    const raw = m[1];
+    const rest = m[2].replace(/^\s+/, "");
+    const tok = raw.toLowerCase().replace(/\s+/g, ""); // "< Day >" → "<day>"
+    return { token: tok, rest };
   }
 
-  // no leading tag → just inject icons normally
-  return injectIconsToHTML(s);
+  const out = [];
+  for (const para of paras) {
+    const { token, rest } = takeLeadingToken(para);
+    if (token && ICONS[token]) {
+      out.push(`
+        <div class="rule-with-tag">
+          <div class="rule-tag">${renderIconToken(token)}</div>
+          <div class="rule-text">${injectIconsToHTML(rest)}</div>
+        </div>
+      `);
+    } else {
+      out.push(`<p class="rule-par">${injectIconsToHTML(para)}</p>`);
+    }
+  }
+  return out.join("");
 }
+
 
 /* Icon + text inline, using existing ICONS + renderIconToken() */
 function iconLabel(tokenName, text) {
@@ -1085,7 +1112,7 @@ function openModal(id) {
   const strengthPretty  = (c.strength != null) ? `Strength ${c.strength}` : "";
 
   // cost (with icon)
-  const costPretty      = (c.cost != null) ? iconLabel("cost", `Cost ${c.cost}`) : "";
+  const costPretty      = (c.cost != null) ? iconLabel("cost", `Lore Cost ${c.cost}`) : "";
 
   // archetype (with icon) — heir/cavalry/captain/etc.
   const archetypePretty = c.archetype
@@ -1276,12 +1303,13 @@ function normalizeCard(raw, idx) {
   c.id     = String(c.id ?? `X${idx + 1}`);
   c.title  = String(c.title ?? c.name ?? "Unknown Card");
   c.image  = String(c.image ?? "images/placeholder.jpg");
-  c.rules = normalizeParagraphs(c.rules);
+  c.rules = normalizeParagraphs(c.rules); // <- stay as array
 
-  // keep scalar text fields as strings (NOT commands)
-  ["type","faction","archetype","suit","rules","flavor"].forEach(k => {
+  // keep scalar text fields as strings (NOT rules or commands)
+  ["type","faction","archetype","suit","flavor"].forEach(k => {
     if (c[k] != null) c[k] = String(c[k]);
   });
+
 
   // normalize commands → always an array of lines
   if (c.commands == null || c.commands === "") {

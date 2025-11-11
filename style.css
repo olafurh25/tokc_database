@@ -582,10 +582,27 @@ body {
 /* ========== Rules: leading tag pulled left at 2x ========== */
 .rule-with-tag {
   display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;            
-  margin: 0.5rem 0;       
+  align-items: center;          /* center vertically */
+  gap: 0.75rem;                 /* slightly wider spacing */
+  margin: 0.6rem 0;
 }
+
+/* optional fine-tuning if the icon looks low/high */
+.rule-with-tag .rule-tag {
+  display: flex;
+  align-items: center;          /* center the icon inside its container */
+}
+
+/* scale and offset adjustments if needed */
+.rule-with-tag .rule-tag .icon--mask,
+.rule-with-tag .rule-tag .icon--img {
+  width: 2.2em;
+  height: 2.2em;
+  vertical-align: middle;
+  position: relative;
+  top: 0;                       /* ensure no manual offset */
+}
+
 
 .rule-tag {
   line-height: 1;
@@ -905,6 +922,20 @@ input[type="search"]::-webkit-search-cancel-button {
 .search-wrap:has(input:focus) .search-clear:hover {
   opacity: 0.9;
   transform: scale(1.1);
+}
+
+/* --- Smooth global fade while typing --- */
+#cardGrid {
+  transition: opacity .35s cubic-bezier(.4,0,.2,1);
+}
+
+body.typing #cardGrid {
+  opacity: 0.65; /* how much to dim; tweak between 0.5–0.8 */
+}
+
+#modalRules .rule-par {
+  white-space: pre-wrap;
+  margin: 0.6rem 0;
 }
 
 
