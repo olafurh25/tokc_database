@@ -16,7 +16,7 @@
   --accent: #1F3B41;
   --glass: rgba(255, 255, 255, 0.658);
   --ink: #0b0f12;
-  --card-ratio: calc(2.75 / 4.75);
+  --card-ratio: calc(1 / 1.71);
   --modal-overlap: 120px;
   --card-radius-grid: 16px;
   --card-radius-modal: 18px;
@@ -134,7 +134,7 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
 }
 #cardGrid{
   width:min(1300px,92%); margin:1.2rem auto 4rem;
-  display:grid; gap:1.1rem; grid-template-columns:repeat(4,1fr);
+  display:grid; gap:1.1rem; grid-template-columns:repeat(4, 1fr);
   transition:opacity .35s cubic-bezier(.4,0,.2,1);
 }
 @media(max-width:1100px){ #cardGrid{ grid-template-columns:repeat(3,1fr); } }
@@ -142,12 +142,12 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
 @media(max-width:520px){  #cardGrid{ grid-template-columns:1fr; } }
 body.typing #cardGrid{ opacity:.65; }
 
-.card{
+.card {
   position:relative; aspect-ratio:var(--card-ratio);
   background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
   border-radius:var(--card-radius-grid); cursor:pointer; backdrop-filter:blur(6px);
-  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
-  opacity:0; transform:translateY(-10px); will-change:transform,opacity;
+  transition: transform .35s cubic-bezier(.2,.7,.2,1), opacity .35s cubic-bezier(.2,.7,.2,1);
+  opacity:0; transform:translateY(0px); 
 }
 .card::after{
   content:""; position:absolute; inset:0; border-radius:var(--card-radius-grid);
@@ -156,6 +156,7 @@ body.typing #cardGrid{ opacity:.65; }
 /* 1) Non-HQ hover: just nudge down 1px (no scale) */
 .card:not(.is-hq):hover{
   transform: translateY(1px);
+  scale: 1.2rem;
   box-shadow: 0 10px 28px rgba(0,0,0,.24);
   filter: saturate(1.03);
 }
@@ -164,37 +165,34 @@ body.typing #cardGrid{ opacity:.65; }
    so they don't affect HQ cards. */
 
 
-/* 2) HQ in GRID: rotate the whole frame on hover (no keyframes) */
-.card.is-hq{
+/* HQ cards in the grid — rotated on hover */
+.card.is-hq {
   overflow: hidden;
   transform-origin: center;
-  transform: none; /* sideways by default (your files are CCW) */
-  transition: transform .26s cubic-bezier(.33,1.02,.44,1);
+  transition: transform 0.35s cubic-bezier(.33,1.02,.44,1), box-shadow .2s ease;
 }
 
-/* Rotate to upright on hover; rim & img follow automatically */
-.card.is-hq:hover{
+/* Hover effect: rotate both the container and the image */
+.card.is-hq:hover {
   transform: rotate(90deg);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  filter: saturate(1.05);
 }
 
-/* Make sure children don’t apply their own transforms */
-.card.is-hq img,
-.card.is-hq::after{
-  transform: none !important;
-}
-
-/* Keep image sizing sane when the frame rotates */
-.card.is-hq img{
+/* Rotate image and rim together with container */
+.card.is-hq img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: var(--card-radius-grid);
+  transform: rotate(0deg);
+  transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
 }
 
-/* Optional: lighter polish on HQ hover without altering transform here */
-.card.is-hq:hover{
-  box-shadow: 0 12px 36px rgba(0,0,0,.28);
-  filter: saturate(1.05);
+/* Keep the rim synced too */
+.card.is-hq::after {
+  transform: rotate(0deg);
+  transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
 }
 
 
@@ -364,14 +362,6 @@ body::after{
   opacity:var(--top-fade-opacity,0);
 }
 
-/* ===== Reduced motion ===== */
-@media (prefers-reduced-motion: reduce){
-  .search-wrap,.search-wrap input,#cardGrid,.card,.load-more,
-  .card.is-hq:hover img,.card.is-hq:hover::after,
-  .modal-artwrap.is-hq:hover img,.modal-artwrap.is-hq:hover::after{
-    transition:none !important; animation:none !important; transform:none !important;
-  }
-}
 
 /* ============================================
    Disable HQ animations inside MODAL
@@ -388,6 +378,53 @@ body::after{
   transition: none !important;
   animation: none !important;
 }
+
+/* Card appear / leave animations */
+.card-enter {
+  animation: cardIn 350ms ease both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.card-leave {
+  animation: cardOut 320ms ease both;
+}
+
+@keyframes cardOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(6px); }
+}
+
+.card-exit {
+  animation: cardOut 320ms ease both;
+}
+
+.card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--card-radius-grid);
+  display: block;
+}
+
+/* Ensure the grid is a stacking context so z-index works predictably */
+#cardGrid { position: relative; isolation: isolate; }
+
+/* Default: cards sit at 0 */
+.card { position: relative; z-index: 0; }
+
+/* Hover/focus: pop above neighbors */
+.card:hover,
+.card:focus-within { z-index: 100; }
+
+/* If you want HQ hovers to be on top of everything else */
+.card.is-hq:hover,
+.card.is-hq:focus-within { z-index: 120; }
+
+
 
 
 
