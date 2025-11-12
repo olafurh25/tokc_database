@@ -1,99 +1,33 @@
 [
   {
     "id": "C-001",
-    "title": "Saga the Unifier",
+    "title": "Ruse!",
     "type": "basic",
-    "archetype": "heir",
-    "traits": ["pathfinder","resilient"],
+    "archetype": "ruse",
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "clans",
     "cost": null,
-    "strength": 10,
-    "votes": 1,
-    "lore": 1,
-    "commands": "Rally (self) <autumn>",
+    "strength": 0,
+    "votes": null,
+    "lore": null,
+    "commands": [
+      "Ambush <day>",
+      "OR",
+      "Retreat <day>"
+    ],
     "rules": "",
-    "flavor": "A wild eye, all sea, all sky. Prow, ring, kith, and kin. The brightest unbowed thing.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_sagatheunifier10.png",
+    "u": "In mist & waves we leave no trace.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_ruse.jpg",
     "tags": []
   },
   {
     "id": "C-002",
-    "title": "Raid & Raze",
-    "type": "advanced",
-    "archetype": "cavalry",
-    "traits": [],
-    "faction": "clans",
-    "cost": 3,
-    "strength": 3,
-    "votes": null,
-    "lore": null,
-    "commands": [
-    "Flank <day>",
-    "Deadly <night>"
-  ],
-    "rules": "When this cards Flanks, you may move any number of your Supporters from this card's current Region to the new Region.",
-    "flavor": "The sight of a flame, snatched by the wind.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_raidandraze3.png",
-    "tags": []
-  },
-  {
-    "id": "C-003",
-    "title": "Snowdrop Scouts",
-    "type": "basic",
-    "archetype": "follower",
-    "traits": ["invulnerable"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 1,
-    "votes": null,
-    "lore": 1,
-    "commands": "",
-    "rules": "",
-    "flavor": "Gathered on the shore, eyes fixed on the future.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_snowdropscouts1.png",
-    "tags": []
-  },
-  {
-    "id": "C-004",
-    "title": "Creel Haulers",
-    "type": "basic",
-    "archetype": "follower",
-    "traits": ["invulnerable"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 2,
-    "votes": null,
-    "lore": 1,
-    "commands": "",
-    "rules": "",
-    "flavor": "To catch the bright, scattering scales.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_creelhaulers2.png",
-    "tags": []
-  },
-  {
-    "id": "C-005",
-    "title": "Priestess of the Peaks",
-    "type": "basic",
-    "archetype": "follower",
-    "traits": ["invulnerable"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 3,
-    "votes": null,
-    "lore": 1,
-    "commands": "",
-    "rules": "",
-    "flavor": "Little separates mountains from the sky, or the divine.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_priestessofthepeaks3.png",
-    "tags": []
-  },
-  {
-    "id": "C-006",
     "title": "Purser",
     "type": "basic",
     "archetype": "trader",
@@ -105,179 +39,102 @@
     "lore": 2,
     "commands": "Rally (any two) <autumn>",
     "rules": "",
-    "flavor": "Well, look what the sea dragged in!",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_purser0.png",
+    "u": "“Well, look what the sea dragged in!”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_purser.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-003",
+    "title": "Snowdrop Scouts",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [
+      "invulnerable"
+    ],
+    "faction": "clans",
+    "cost": null,
+    "strength": 1,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Gathered on the shore, eyes fixed on the future.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_snowdropscouts.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-004",
+    "title": "Creel Haulers",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 2,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "To catch the bright, scattering scales.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_creelhaulers.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-005",
+    "title": "Priestesses of the Peaks",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 3,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Little separates mountains from the sky, or the divine.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_priestessesofthepeaks.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-006",
+    "title": "Sea Breakers",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 4,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Mother to daughter, the shields pass on.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_seabreakers.jpg",
     "tags": []
   },
   {
     "id": "C-007",
-    "title": "Riders of the North Sky",
-    "type": "advanced",
-    "archetype": "cavalry",
-    "traits": ["invulnerable", "pathfinder"],
-    "faction": "clans",
-    "cost": 5,
-    "strength": 11,
-    "votes": null,
-    "lore": 2,
-    "commands": "Flank <day>",
-    "rules": "When you win a Clash in a Region where this card is Active, before claiming any rewards, gain 1<influence>.",
-    "flavor": "They turn the world as they ride.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_ridersofthenorthsky11.png",
-    "tags": []
-  },
-  {
-    "id": "C-008",
-    "title": "Ruse!",
-    "type": "basic",
-    "archetype": "ruse",
-    "traits": ["invulnerable"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 0,
-    "votes": null,
-    "lore": null,
-    "commands": [
-    "Ambush <day>",
-    "OR",
-    "Retreat <day>"
-    ],
-    "rules": "",
-    "flavor": "In mist & waves we leave no trace.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_ruse0.png",
-    "tags": []
-  },
-  {
-    "id": "C-009",
-    "title": "Sea Breakers",
-    "type": "basic",
-    "archetype": "follower",
-    "traits": ["invulnerable"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 4,
-    "votes": 0,
-    "lore": 1,
-    "commands": "",
-    "rules": "",
-    "flavor": "Mother to daugther, the shields pass on.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_seabreakers4.png",
-    "tags": []
-  },
-  {
-    "id": "C-010",
-    "title": "Shore Runner Sleds",
-    "type": "basic",
-    "archetype": "cavalry",
-    "traits": ["pathfinder"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 5,
-    "votes": 1,
-    "lore": 1,
-    "commands": "Flank <day>",
-    "rules": "",
-    "flavor": "Bright sleighs that neither snow nor arrow seem to slow.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_shorerunnersleds5.png",
-    "tags": []
-  },
-  {
-    "id": "C-011",
-    "title": "Gall",
-    "type": "basic",
-    "archetype": "captain",
-    "traits": ["pathfinder"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 9,
-    "votes": 1,
-    "lore": 1,
-    "commands": "",
-    "rules": "",
-    "flavor": "A loud knocking at the door. Then the door was no more.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_gall9.png",
-    "tags": []
-  },
-  {
-    "id": "C-012",
-    "title": "Hall upon the Waves",
-    "type": "basic",
-    "archetype": "machine",
-    "traits": ["invulnerable"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 5,
-    "votes": null,
-    "lore": null,
-    "commands": "Deploy (1) <autumn>",
-    "rules": "",
-    "flavor": "A people marching on the shoulders of the sea.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_halluponthewaves5.png",
-    "tags": []
-  },
-  {
-    "id": "C-013",
-    "title": "The Branded Seer",
-    "type": "basic",
-    "archetype": "captain",
-    "traits": ["pathfinder"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 7,
-    "votes": 1,
-    "lore": 1,
-    "commands": "",
-    "rules": "",
-    "flavor": "I see all futures in that stone. My burden is I know their ends.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_brandedseer7.png",
-    "tags": []
-  },
-  {
-    "id": "C-014",
-    "title": "The Storyteller",
-    "type": "advanced",
-    "archetype": "champion",
-    "traits": ["resilient","pathfinder"],
-    "faction": "clans",
-    "cost": 2,
-    "strength": 11,
-    "votes": null,
-    "lore": 2,
-    "commands": "",
-    "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
-    "flavor": "The hero long ago, of tale & song, was actually him all along.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_storyteller11.png",
-    "tags": []
-  },
-  {
-    "id": "C-015",
-    "title": "Shrike of the Steppes",
-    "type": "basic",
-    "archetype": "captain",
-    "traits": ["pathfinder"],
-    "faction": "clans",
-    "cost": null,
-    "strength": 6,
-    "votes": 1,
-    "lore": 1,
-    "commands": "",
-    "rules": "",
-    "flavor": "Found in an eyrie, gowned in wings.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_shrikeofthesteppes6.png",
-    "tags": []
-  },
-  {
-    "id": "C-016",
     "title": "Nixing Knife",
     "type": "basic",
     "archetype": "agent",
@@ -288,18 +145,105 @@
     "votes": 2,
     "lore": 1,
     "commands": "Deadly <night>",
-    "rules": "<night> If there are any Active opponent <follower> in the Clash, Eliminate this card.",
-    "flavor": "Dread work done, they slipped into the sea.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_knixingknife5.png",
+    "rules": "5 - If there are any Active opponent [f] in the Clash, Eliminate this card.",
+    "u": "Dread work done, they slipped into the sea.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_nixingknife.jpg",
     "tags": []
   },
   {
-    "id": "C-017",
+    "id": "C-008",
+    "title": "Shore Runner Sleds",
+    "type": "basic",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 5,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Flank <day>",
+    "rules": "",
+    "u": "Bright sleighs that neither snow nor arrow seem to slow.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_shorerunnersleds.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-009",
+    "title": "Hall Upon the Waves",
+    "type": "basic",
+    "archetype": "war machine",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 5,
+    "votes": null,
+    "lore": null,
+    "commands": "Deploy (1) <autumn>",
+    "rules": "",
+    "u": "A people marching on the shoulders of the sea.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_halluponthewaves.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-010",
+    "title": "Shrike of the Steppes",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 6,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Found in an eyrie, gowned in wings.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_shrikeofthesteppes.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-011",
+    "title": "The Branded Seer",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 7,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "“I see all futures in that stone. My burden is I know their ends.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_thebrandedseer.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-012",
     "title": "Lethe",
     "type": "basic",
     "archetype": "captain",
-    "traits": ["pathfinder"],
+    "traits": [],
     "faction": "clans",
     "cost": null,
     "strength": 8,
@@ -307,62 +251,1579 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "flavor": "Oh to forget & rest, like time under the waves.",
-    "release": { "expansion": "Base Game", "basegame": true },
-    "image": "images/tarot/img_lethe8.png",
+    "u": "“Oh to forget & rest, like time under the waves.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_lethe.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-013",
+    "title": "Gall",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 9,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "A loud knocking at the door. Then the door was no more.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_gall.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-014",
+    "title": "Saga the Unifier",
+    "type": "basic",
+    "archetype": "heir",
+    "traits": [
+      "pathfinder",
+      "resilient"
+    ],
+    "faction": "clans",
+    "cost": null,
+    "strength": 10,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Rally (self) <autumn>",
+    "rules": "",
+    "u": "A wild eye, all sea, all sky. Prow, ring, kith, and kin. The brightest unbowed thing.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_sagatheunifier.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-015",
+    "title": "The Storyteller",
+    "type": "advanced",
+    "archetype": "champion",
+    "traits": [],
+    "faction": "clans",
+    "cost": 2,
+    "strength": 11,
+    "votes": null,
+    "lore": 2,
+    "commands": "",
+    "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
+    "u": "The hero long ago, of tale & song, was actually him all along.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_thestoryteller.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-016",
+    "title": "Raid & Raze",
+    "type": "advanced",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "clans",
+    "cost": 3,
+    "strength": 3,
+    "votes": null,
+    "lore": null,
+    "commands": [
+      "Flank <day>",
+      "Deadly <night>"
+    ],
+    "rules": "When this card Flanks, you may move any number of your Supporters from this card's current Region to the new Region.",
+    "u": "The sight of a flame, snatched by the wind.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_raidandraze.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-017",
+    "title": "Riders of the North Sky",
+    "type": "advanced",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "clans",
+    "cost": 5,
+    "strength": 11,
+    "votes": null,
+    "lore": 2,
+    "commands": "Flank <day>",
+    "rules": "When you win a Clash in a Region where this card is Active, before claiming any rewards, gain 1<influence>.",
+    "u": "They turn the world as they ride.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_ridersofthenorthsky.jpg",
     "tags": []
   },
   {
     "id": "C-018",
     "title": "Wandering Embassy",
-    "type": "hq",
+    "type": "advanced",
+    "archetype": "hq",
+    "traits": [],
     "faction": "clans",
     "cost": 2,
-    "rules": ["Your <trader> gain <day> b:Flank. Whenever any of your cards are removed from a Council, you may move them to your Hand.", "<day> Move any number of your Active cards with b:Flank into a Council."],
-    "flavor": "All gold & light, like sun over winter waves.",
-    "release": { "basegame": true },
-    "image": "images/cards/uprising/wanderingembassy.jpg"
+    "strength": null,
+    "votes": null,
+    "lore": null,
+    "commands": "-",
+    "rules": [
+      "Your <trader> gain <day> Flank.\nWhenever any of your cards are removed from a Council, \nyou may move them to your Hand.",
+      "<day> Move any number of your Active cards with Flank into a Council."
+    ],
+    "u": "All gold & light, like the sun over winter waves.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_wanderingembassy.jpg",
+    "tags": []
   },
   {
     "id": "C-019",
     "title": "New Havens Harbour",
-    "type": "hq",
+    "type": "advanced",
+    "archetype": "hq",
+    "traits": [],
     "faction": "clans",
     "cost": 2,
-    "rules": ["All your cards without <resilient> gain <resilient>.","<spring> Move up to two of your Supporters from the Lost Pile to a Region."],
-    "flavor": "A place for all those who dream of the sea.",
-    "release": { "basegame": true },
-    "image": "images/cards/uprising/wanderingembassy.jpg"
+    "strength": null,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "All your cards without <ruse> gain <ruse>.",
+      "<spring> Move up to t of your Supporters from the Lost Pile to a Region."
+    ],
+    "u": "A place for all those who dream of the sea.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_newhavensharbour.jpg",
+    "tags": []
   },
   {
-  "id": "C-020",
-  "title": "Prophet of the Waves",
-  "type": "favour",
-  "faction": "clans",
-  "rules": "<day> Move your Herald to a Location in the current Region. Move up to two Supporters from other Regions to the current Region.",
-  "release": { "basegame": true },
-  "image": "images/cards/favour/.jpg"
+    "id": "U-001",
+    "title": "Ruse!",
+    "type": "basic",
+    "archetype": "ruse",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 0,
+    "votes": null,
+    "lore": null,
+    "commands": "Retreat or  <day> Ambush <day>",
+    "rules": "",
+    "u": "“A good runaround should slow them down.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_ruse.jpg",
+    "tags": []
   },
   {
-  "id": "C-21",
-  "title": "School of the Storms",
-  "type": "tactic",
-  "faction": "clans",
-  "rules": ["You place the Clash Markers this Round.","<spring> For the rest of the Round, when a Region is resolved, before resolving rewards, gain 1<influence> if you have the most Supporters in that Region, and 1<lore> if you have the most Active cards in that Region."],
-  "release": { "basegame": true },
-  "image": "images/cards/tactics/ambush.jpg"
+    "id": "U-002",
+    "title": "The Fence",
+    "type": "basic",
+    "archetype": "trader",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 0,
+    "votes": 2,
+    "lore": 2,
+    "commands": "Rally (any two) <autumn>",
+    "rules": "",
+    "u": "“It’s all for a good cause.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_thefence.jpg",
+    "tags": []
   },
-
-
   {
-  "id": "K-001",
-  "title": "Adventuring Party",
-  "type": "kingdom",
-  "suit": "coins",
-  "rules": ["All your cards gain <pathfinder>.", "Your Active cards are also considered to be in your Hand for the purposes of Journeying."],
-  "flavor": "",
-  "release": { "basegame": true },
-  "image": "images/cards/kingdoms/iron_citadel.jpg"
-}
-
+    "id": "U-003",
+    "title": "Secret Postal Service",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 1,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "The pigeon is reliable & true. Ubiquitous too.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_secretpostalservice.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-004",
+    "title": "The Irregulars",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 2,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "“You’ll never want for stories.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_theirregulars.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-005",
+    "title": "Hawkers",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 3,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Spread the message, spread the cause.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_hawkers.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-006",
+    "title": "The Pickets",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 4,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "“Let’s demonstrate where we stand.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_thepickets.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-007",
+    "title": "Night Carnival",
+    "type": "basic",
+    "archetype": "agent",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 5,
+    "votes": 2,
+    "lore": 1,
+    "commands": "Deadly <night>",
+    "rules": "5 - If there are any Active opponent [f] in the Clash, Eliminate this card.",
+    "u": "“They’ve grown accustomed to not wearing chains.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_nightcarnival.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-008",
+    "title": "Ornithopter Club",
+    "type": "basic",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 5,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Flank <day>",
+    "rules": "",
+    "u": "“That’s the strangest bird I’ve ever seen.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_ornithopterclub.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-009",
+    "title": "Experimental Academies",
+    "type": "basic",
+    "archetype": "war machine",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 5,
+    "votes": null,
+    "lore": null,
+    "commands": "Deploy (1) <autumn>",
+    "rules": "",
+    "u": "“May they never have to be deployed.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_experimentalacademies.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-010",
+    "title": "The Librarian",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 6,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "“If all battles required swords, who’d be left to reap rewards?”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_thelibrarian.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-011",
+    "title": "The Deadlifter",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 7,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "A strong supporter of the cause.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_thedeadlifter.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-012",
+    "title": "Baron Cuttlefish",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 8,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "He revels in unpicking those old strings of power.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_baroncuttlefish.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-013",
+    "title": "Captain Mooncurser",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 9,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Secreted away over fugitive creeks & wild leagues.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_captainmooncurser.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-014",
+    "title": "The Secret Society",
+    "type": "basic",
+    "archetype": "heir",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 10,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Rally (self) <autumn>",
+    "rules": "",
+    "u": "For every one uncovered, another takes their place.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_thesecretsociety.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-015",
+    "title": "Arch Agitant",
+    "type": "advanced",
+    "archetype": "champion",
+    "traits": [],
+    "faction": "uprising",
+    "cost": 2,
+    "strength": 11,
+    "votes": 2,
+    "lore": 2,
+    "commands": "",
+    "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
+    "u": "Such a fine display of defiance.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_archagitant.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-016",
+    "title": "Black Powder Ploy",
+    "type": "advanced",
+    "archetype": "agent",
+    "traits": [],
+    "faction": "uprising",
+    "cost": 3,
+    "strength": 5,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": "<night> Eliminate all opponent [h]/<clans> in the current Clash. If at least one card was Eliminated this way, choose one: Gain 1<influence> or Gain 1<lore>.",
+    "u": "The hour to act has arrived.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_blackpowderploy.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-017",
+    "title": "Guerrilla Fighters",
+    "type": "advanced",
+    "archetype": "agent",
+    "traits": [],
+    "faction": "uprising",
+    "cost": 5,
+    "strength": 5,
+    "votes": null,
+    "lore": null,
+    "commands": "Ambush <day>",
+    "rules": [
+      "If this card is Active in a Clash, treat all printed information, except for Strength, on opponents’ non-[h] Faction Cards in the Region as blank.",
+      "<night> If there are any Active opponent [h] in the Clash, Eliminate this card."
+    ],
+    "u": "Size means nothing with an arrow in your eye.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_guerrillafighters.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-018",
+    "title": "Moonshine\nCove",
+    "type": "advanced",
+    "archetype": "hq",
+    "traits": [],
+    "faction": "uprising",
+    "cost": 2,
+    "strength": null,
+    "votes": null,
+    "lore": null,
+    "commands": "-",
+    "rules": [
+      "This card acts as an additional space on which to Occupy a Kingdom Card.",
+      "<autumn> - Choose a face-up Kingdom Card on the Great Road. Acquire it with a <clans>/<champion> from your Hand. Any card acquired this way may only be Occupied on this space."
+    ],
+    "u": "Even the sun can’t find the place.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_moonshinecove.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-019",
+    "title": "The Syndicate",
+    "type": "advanced",
+    "archetype": "hq",
+    "traits": [],
+    "faction": "uprising",
+    "cost": 2,
+    "strength": null,
+    "votes": null,
+    "lore": null,
+    "commands": "-",
+    "rules": [
+      "Whenever you acquire a Kingdom Card, place a Faction Marker on a Council that matches that card's Suit (max of 2 per Council). Each marker gives you +1 <votes> in its Council.",
+      "Abilities that remove cards from a Council can also remove your markers from Councils."
+    ],
+    "u": "Like roots, we make the underground home. Like roots, we sunder stone.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_thesyndicate.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-001",
+    "title": "Ruse!",
+    "type": "basic",
+    "archetype": "ruse",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 0,
+    "votes": null,
+    "lore": null,
+    "commands": [
+      "Retreat or <day>",
+      "Ambush <day>"
+    ],
+    "rules": "",
+    "u": "The slow passage of time is one great sleight of hand.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_ruse.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-002",
+    "title": "Guild of Dawn Traders",
+    "type": "basic",
+    "archetype": "trader",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 0,
+    "votes": 2,
+    "lore": 2,
+    "commands": "Rally (any two) <autumn>",
+    "rules": "",
+    "u": "Gold & silver never sleep.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_guildofdawntraders.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-003",
+    "title": "Watchers at the Walls",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 1,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Those sentries remain still.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_watchersatthewalls.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-004",
+    "title": "Hunting Parties",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 2,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "A horn that harries the hunted.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_huntingparties.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-005",
+    "title": "The Tithe",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 3,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Dust settles silently over all that wealth.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_thetithe.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-006",
+    "title": "Keepers of the Gates",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 4,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "We all end as ruins claimed by the country.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_keepersofthegates.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-007",
+    "title": "Vial Sect",
+    "type": "basic",
+    "archetype": "agent",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 5,
+    "votes": 2,
+    "lore": 1,
+    "commands": "Deadly <night>",
+    "rules": "5 - If there are any Active opponent f in the Clash, Eliminate this card.",
+    "u": "“Something to soothe the nerves?”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_vialsect.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-008",
+    "title": "Knights of the Pasture",
+    "type": "basic",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 5,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Flank <day>",
+    "rules": "",
+    "u": "“Let us ride out together, one last time.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_knightsofthepasture.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-009",
+    "title": "Woe",
+    "type": "basic",
+    "archetype": "war machine",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 5,
+    "votes": null,
+    "lore": null,
+    "commands": "Deploy (1) <autumn>",
+    "rules": "",
+    "u": "“Whoever named it, named it well.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_woe.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-010",
+    "title": "Master of Records",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 6,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "The binding of history. The fastening of ancient obligations.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_masterofrecords.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-011",
+    "title": "The Count",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 7,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "No one now lives who knows his true age.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_thecount.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-012",
+    "title": "The Magistrate",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 8,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "She stalks those serpentine corridors of power.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_themagistrate.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-013",
+    "title": "Master of Arms",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 9,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "“Death & I have met before. We no longer dance but stroll as old friends.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_masterofarms.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-014",
+    "title": "Titus of Dawns & Dusks",
+    "type": "basic",
+    "archetype": "heir",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 10,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Rally (self) <autumn>",
+    "rules": "",
+    "u": "Reared to inherit & to ensure that the Oldest of Orders endures.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_titusofdawnsanddusks.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-015",
+    "title": "The Viceroy",
+    "type": "advanced",
+    "archetype": "champion",
+    "traits": [],
+    "faction": "nobility",
+    "cost": 2,
+    "strength": 11,
+    "votes": 2,
+    "lore": null,
+    "commands": "",
+    "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
+    "u": "He watches the throne, waiting.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_theviceroy.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-016",
+    "title": "The High Court",
+    "type": "advanced",
+    "archetype": "trader",
+    "traits": [],
+    "faction": "nobility",
+    "cost": 3,
+    "strength": 5,
+    "votes": 2,
+    "lore": null,
+    "commands": "",
+    "rules": "<autumn> If this card is in a Council, move it to another Council.",
+    "u": "Wrought in stone & weighted scales.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_thehighcourt.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-017",
+    "title": "The Queen, Long Ago",
+    "type": "advanced",
+    "archetype": "heir",
+    "traits": [],
+    "faction": "nobility",
+    "cost": 4,
+    "strength": 10,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "When you acquire this card, Govern with up to three of your cards from the Lost Pile and/or Discard Pile.\nEach card must be Governed into a different Council.",
+    "u": "A queen from stone, a pact wreathed in reeds.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_thequeenlongago.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-018",
+    "title": "Gilded Wall",
+    "type": "advanced",
+    "archetype": "war machine",
+    "traits": [],
+    "faction": "nobility",
+    "cost": 2,
+    "strength": 3,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": "<autumn> - If you have t or more Supporters in this card’s Region, place 1<influence> on this card",
+    "u": "Ranging solemn & stone-slow westward with the sun.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_gildedwall.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-019",
+    "title": "Royal Bank",
+    "type": "advanced",
+    "archetype": "hq",
+    "traits": [],
+    "faction": "nobility",
+    "cost": 3,
+    "strength": null,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "Your Faction Cards with no printed <votes> gain +1 <votes>.",
+      "<autumn> Choose one:\nMove one <clans> from your Discard Pile to your Hand or Gain 1 <influence>.",
+      "If you are not first on the Order Track, you may do both."
+    ],
+    "u": "That domain of gold, so imperious and cold.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_royalbank.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-001",
+    "title": "Ruse!",
+    "type": "basic",
+    "archetype": "ruse",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 0,
+    "votes": null,
+    "lore": null,
+    "commands": [
+      "Retreat or <day>",
+      "Ambush <day>"
+    ],
+    "rules": "",
+    "u": "As it burnt it cracked & the moon shone through.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_ruse.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-002",
+    "title": "The Nightjar",
+    "type": "basic",
+    "archetype": "trader",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 0,
+    "votes": 2,
+    "lore": 2,
+    "commands": "Rally (any two) <autumn>",
+    "rules": "",
+    "u": "“We sell everything under the moon.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_thenightjar.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-003",
+    "title": "Effigies",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 1,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Each morning there are more shapes, burning on the hills.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_effigies.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-004",
+    "title": "Speakers of the Wood",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 2,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "They converse with the drifting motes & inching moss.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_speakersofthewood.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-005",
+    "title": "The Wandering Lost",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 3,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "“We found the ones that went missing…they have no wish to return.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_thewanderinglost.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-006",
+    "title": "The Moon-Stung",
+    "type": "basic",
+    "archetype": "follower",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 4,
+    "votes": null,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "See them stand, deep in the dusk.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_themoonstung.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-007",
+    "title": "Cult of Dreams",
+    "type": "basic",
+    "archetype": "agent",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 5,
+    "votes": 2,
+    "lore": 1,
+    "commands": "Deadly <night>",
+    "rules": "5 - If there are any Active opponent [f] in the Clash, Eliminate this card.",
+    "u": "“Three…t…one. \nSleep.”",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_cultofdreams.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-008",
+    "title": "The Loping",
+    "type": "basic",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 5,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Flank <day>",
+    "rules": "",
+    "u": "When all are sleeping, they bound the walls & wander the lanes.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_theloping.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-009",
+    "title": "The Burning Wood",
+    "type": "basic",
+    "archetype": "war machine",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 5,
+    "votes": null,
+    "lore": null,
+    "commands": "Deploy (1) <autumn>",
+    "rules": "",
+    "u": "The wood walks. It has come to our very walls, alight & alive.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_theburningwood.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-010",
+    "title": "The Owl",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 6,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "It made its home high in a tower of flint.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_theowl.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-011",
+    "title": "The Goat",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 7,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "See her out beyond the lights, talking with something just out of sight.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_thegoat.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-012",
+    "title": "The Fox",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 8,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "Only their rings & shiny things remain.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_thefox.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-013",
+    "title": "The Stag",
+    "type": "basic",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 9,
+    "votes": 1,
+    "lore": 1,
+    "commands": "",
+    "rules": "",
+    "u": "A cloven hoof, bent against airs & arts. A glaive gone blood-searching.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_thestag.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-014",
+    "title": "Petrichor the Unmasked",
+    "type": "basic",
+    "archetype": "heir",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 10,
+    "votes": 1,
+    "lore": 1,
+    "commands": "Rally (self) <autumn>",
+    "rules": "",
+    "u": "She speaks in the music of the spheres, sounding the true names of the stars.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_petrichortheunmasked.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-015",
+    "title": "The Mask Maker",
+    "type": "advanced",
+    "archetype": "champion",
+    "traits": [],
+    "faction": "gathering",
+    "cost": 2,
+    "strength": 11,
+    "votes": 1,
+    "lore": 2,
+    "commands": "",
+    "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
+    "u": "Another face finished, rigid & unflinching.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_themaskmaker.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-016",
+    "title": "Bringer of the Word",
+    "type": "advanced",
+    "archetype": "captain",
+    "traits": [],
+    "faction": "gathering",
+    "cost": 2,
+    "strength": 5,
+    "votes": 1,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "<autumn> If this card is in a Council, place a Faction Marker on any Council. When this card is in a Council, each marker on a Council contributes 1<votes> to you.",
+      "When this card is removed from a Council, \nyou may move it to the Lost Pile."
+    ],
+    "u": "Come closer, and I shall whisper their true name.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_bringeroftheword.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-017",
+    "title": "Ritual of the Tooth",
+    "type": "advanced",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "gathering",
+    "cost": 3,
+    "strength": 5,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": "<day> Burn one of your cards in the Lost Pile.\nThis card adds the Burned card's printed Strength, Traits, Commands, and rules text to its own until the end of the Round.",
+    "u": "A fanged rite, performed in the dead of night.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_ritualofthetooth.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-018",
+    "title": "Ritual of the Eye",
+    "type": "advanced",
+    "archetype": "agent",
+    "traits": [],
+    "faction": "gathering",
+    "cost": 4,
+    "strength": 3,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": "If this card is Active in the current Clash, the player with the lowest total Strength above 0 wins the current Clash instead of the player with the highest total Strength.",
+    "u": "All the kingdom’s sleepers will see what must be seen.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_ritualoftheeye.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-019",
+    "title": "The Door in the Night",
+    "type": "advanced",
+    "archetype": "hq",
+    "traits": [],
+    "faction": "gathering",
+    "cost": 2,
+    "strength": null,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "When you acquire this card, place three Faction Markers here.",
+      "<day> Remove a marker from here to give one of your Active cards in the current Clash <day> Ambush until the end of the Round. Then you may remove an additional marker to allow that card to Ambush with a card from your Discard Pile instead of your Hand."
+    ],
+    "u": "It has no lock, it rejects all keys, it opens on impossible geometries.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_thedoorinthenight.jpg",
+    "tags": []
+  },
+  {
+    "id": "X-005",
+    "title": "Peregrine the Captain",
+    "type": "basic",
+    "archetype": "champion",
+    "traits": [],
+    "faction": "aeronauts",
+    "cost": null,
+    "strength": 11,
+    "votes": 2,
+    "lore": null,
+    "commands": "",
+    "rules": "While this card is in a Council or is Active, whenever one or more of your cards would be Eliminated, you may discard this card instead.",
+    "u": "He has seen them true, through every tempest & time.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/a_peregrinethecaptain.jpg",
+    "tags": []
+  },
+  {
+    "id": "X-006",
+    "title": "Waxwing the Sniper",
+    "type": "basic",
+    "archetype": "agent",
+    "traits": [],
+    "faction": "aeronauts",
+    "cost": null,
+    "strength": 5,
+    "votes": null,
+    "lore": 2,
+    "commands": "Retreat <day>",
+    "rules": [
+      "<day> If this card is Active in the current Clash, choose one:\n- This card gains <night> Deadly until the end of the Round.\n- Move one Active card in another Region to its owner’s Discard Pile.",
+      "If you do either, you may not Retreat this card for the rest of the Round."
+    ],
+    "u": "He missed only once & it cost him all he loved.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/a_waxwingthesniper.jpg",
+    "tags": []
+  },
+  {
+    "id": "X-007",
+    "title": "Lark the Medic",
+    "type": "basic",
+    "archetype": "trader",
+    "traits": [],
+    "faction": "aeronauts",
+    "cost": null,
+    "strength": 1,
+    "votes": 2,
+    "lore": null,
+    "commands": "Rally (any two) <autumn>",
+    "rules": "<autumn> - Move up to three cards from your Discard Pile to the bottom of your Deck. If you do this you may not Rally this card back to your Hand, this Round.",
+    "u": "There is little in life she has not tended to.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/a_larkthemedic.jpg",
+    "tags": []
+  },
+  {
+    "id": "X-008",
+    "title": "Rook the Engineer",
+    "type": "basic",
+    "archetype": "cavalry",
+    "traits": [],
+    "faction": "aeronauts",
+    "cost": null,
+    "strength": 5,
+    "votes": null,
+    "lore": 2,
+    "commands": [
+      "Flank <day>",
+      "Deploy (1) <autumn>"
+    ],
+    "rules": "When this card Flanks, you may move any number of your Supporters and/or Active cards in the Region it Flanks from to the Region it Flanks to.",
+    "flavour": "If only she could recall the equation to get them home.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/a_rooktheengineer.jpg",
+    "tags": []
+  },
+  {
+    "id": "C-020",
+    "title": "The Bear",
+    "type": "basic",
+    "archetype": "creature",
+    "traits": [],
+    "faction": "clans",
+    "cost": null,
+    "strength": 13,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
+      "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
+    ],
+    "u": "It arrived like an avalanche.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/c_thebear.jpg",
+    "tags": []
+  },
+  {
+    "id": "U-020",
+    "title": "The Engine",
+    "type": "basic",
+    "archetype": "creature",
+    "traits": [],
+    "faction": "uprising",
+    "cost": null,
+    "strength": 13,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
+      "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
+    ],
+    "u": "It heralds a new age of change.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/u_theengine.jpg",
+    "tags": []
+  },
+  {
+    "id": "N-020",
+    "title": "The Raven",
+    "type": "basic",
+    "archetype": "creature",
+    "traits": [],
+    "faction": "nobility",
+    "cost": null,
+    "strength": 13,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
+      "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
+    ],
+    "u": "Wings like the black sails on ships.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/n_theraven.jpg",
+    "tags": []
+  },
+  {
+    "id": "G-020",
+    "title": "The Moth",
+    "type": "basic",
+    "archetype": "creature",
+    "traits": [],
+    "faction": "gathering",
+    "cost": null,
+    "strength": 13,
+    "votes": null,
+    "lore": null,
+    "commands": "",
+    "rules": [
+      "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
+      "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
+    ],
+    "u": "It dreams of burning upon the stars.",
+    "release": {
+      "expansion": "Base Game",
+      "basegame": true
+    },
+    "image": "images/tarot/g_themoth.jpg",
+    "tags": []
+  }
 ]

@@ -307,7 +307,7 @@ const ALIAS = {
   // text boxes
   cmd: "commands", commands: "commands",
   r: "rules", rules: "rules", oracle: "rules",
-  fl: "flavor", flavor: "flavor",
+  fl: "flavour", flavour: "flavour",
 
   // release / tags
   set: "release", exp: "release", module: "release", release: "release",
@@ -341,7 +341,7 @@ function matchesEnum(field, value){
 
 /* ========= ADVANCED QUERY ENGINE ========= */
 const NUMERIC_KEYS = new Set(["cost","strength","votes","lore"]);
-const TEXT_KEYS = ["title","type","faction","archetype","traits","suit","commands","rules","flavor","release","tags"];
+const TEXT_KEYS = ["title","type","faction","archetype","traits","suit","commands","rules","flavour","release","tags"];
 
 // Tokenize: parentheses, OR, fielded tokens, quoted phrases, bare terms
 function tokenizeQuery(q) {
@@ -413,7 +413,7 @@ function matchTerm(card, term){
   if (key === "has") {
     const f = (ALIAS[val] || val).toLowerCase();
     const v = f === "tags" ? (card.tags||[]) :
-              f === "text" ? (card.rules||"")+(card.commands||"")+(card.flavor||"") :
+              f === "text" ? (card.rules||"")+(card.commands||"")+(card.flavour||"") :
               card[f];
     ok = hasAny(v);
     return neg ? !ok : ok;
@@ -758,7 +758,6 @@ cardGrid.addEventListener('keydown', (e) => {
 const TYPE_LABELS = {
   basic: "Basic Faction Card",
   advanced: "Advanced Faction Card",
-  hq: "HQ Card",
   kingdom: "Kingdom Card",
   favour: "Kingdom's Favour Ability",
   tactic: "Tactic"
@@ -786,7 +785,8 @@ const ARCHETYPE_LABELS = {
   machine: "War Machine",
   captain: "Captain",
   heir: "Heir",
-  champion: "Champion"
+  champion: "Champion",
+  hq: "HQ Card"
 };
 
 const TRAIT_LABELS = {
@@ -1085,7 +1085,7 @@ function openModal(id) {
   const typeFactionEl = document.getElementById("modalTypeFaction");
   const cmdEl   = document.getElementById("modalCmd");
   const rulesEl = document.getElementById("modalRules");
-  const flavEl  = document.getElementById("modalFlavor");
+  const flavEl  = document.getElementById("modalFlavour");
   const votesEl = document.getElementById("metaVotes");
   const loreEl  = document.getElementById("metaLore");
   const relEl   = document.getElementById("metaRelease");
@@ -1118,7 +1118,7 @@ function openModal(id) {
   }
 
   // Combine and inject into the header container
-  typeFactionEl.innerHTML = [typeWithIcon, rightLabel].filter(Boolean).join(" ⬩ ");
+  typeFactionEl.innerHTML = [typeWithIcon, rightLabel].filter(Boolean).join(" ");
 
 
   // ---- Body texts ----
@@ -1165,7 +1165,7 @@ function openModal(id) {
   if (traitsPretty) metaHTML += `<br>${traitsPretty}`;
 
   metaEl.innerHTML = metaHTML;
-  flavEl.textContent  = c.flavor || "";
+  flavEl.textContent  = c.flavour || "";
   // Stats row: show diamond only if both exist
   const votesHTML = (c.votes != null) ? iconLabel("votes", `Votes ${c.votes}`) : "";
   const loreHTML  = (c.lore  != null)  ? iconLabel("lore",  `Lore ${c.lore}`)  : "";
@@ -1333,7 +1333,7 @@ function normalizeCard(raw, idx) {
   c.rules = normalizeParagraphs(c.rules); // <- stay as array
 
   // keep scalar text fields as strings (NOT rules or commands)
-  ["type","faction","archetype","suit","flavor"].forEach(k => {
+  ["type","faction","archetype","suit","flavour"].forEach(k => {
     if (c[k] != null) c[k] = String(c[k]);
   });
 
