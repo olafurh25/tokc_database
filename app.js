@@ -316,10 +316,10 @@ const ALIAS = {
 };
 
 const ENUMS = {
-  type:      ["basic","advanced","hq","kingdom","favour","tactic"],
-  faction:   ["clans","uprising","gathering","nobility"],
+  type:      ["basic","advanced","kingdom","favour","tactic"],
+  faction:   ["clans","uprising","gathering","nobility","aeronauts","simulacrum"],
   suit:      ["swords","book","coins"],
-  archetype: ["ruse","trader","follower","agent","cavalry","war machine","machine","captain","heir","champion"],
+  archetype: ["hq","ruse","trader","follower","agent","cavalry","war machine","machine","captain","heir","champion"],
   traits:    ["resilient","invulnerable","pathfinder"]
 };
 
@@ -560,11 +560,14 @@ function renderNextPage() {
   const end   = Math.min(page * PAGE_SIZE, total);
   const slice = filteredList.slice(start, end);
 
-  const html = slice.map(c => `
-    <div class="card" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.title||''}">
-      <img src="${c.image}" alt="${c.name || ''}" loading="lazy">
-    </div>
-  `).join("");
+  const html = slice.map(c => {
+    const isHQ = String(c.archetype || "").toLowerCase() === "hq";
+    return `
+      <div class="card ${isHQ ? "is-hq" : ""}" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.title||''}">
+        <img src="${c.image}" alt="${c.name || ''}" loading="lazy">
+      </div>
+    `;
+  }).join("");
 
   cardGrid.insertAdjacentHTML("beforeend", html);
   if (typeof animateCardsInRange === "function") animateCardsInRange(start);
@@ -1090,6 +1093,11 @@ function openModal(id) {
   const loreEl  = document.getElementById("metaLore");
   const relEl   = document.getElementById("metaRelease");
 
+    // Flag modal art wrapper when archetype is HQ (for CSS rotation/hover)
+  const artWrap = document.querySelector(".modal-artwrap");
+  const isHQ = String(c.archetype || "").toLowerCase() === "hq";
+  if (artWrap) artWrap.classList.toggle("is-hq", isHQ);
+
   // Art + title
   art.src = c.image || "";
   art.alt = c.title || "";
@@ -1105,11 +1113,9 @@ function openModal(id) {
   // Add icons for specific card types
   // (HQ → hq.svg, Favour → favour.svg, Kingdom → kingdom.svg)
   let typeWithIcon = typeHeader;
-  if (c.type === "hq")       typeWithIcon = iconLabel("hq", typeHeader);
   if (c.type === "favour")   typeWithIcon = iconLabel("favour", typeHeader);
   if (c.type === "kingdom")  typeWithIcon = iconLabel("kingdom", typeHeader);
 
-  // Right-side label: use suit for Kingdoms, faction for everything else
   let rightLabel = "";
   if (c.type === "kingdom" && c.suit) {
     rightLabel = iconLabel(c.suit, suitHeader);
@@ -1117,9 +1123,7 @@ function openModal(id) {
     rightLabel = iconLabel(c.faction, factionHeader);
   }
 
-  // Combine and inject into the header container
   typeFactionEl.innerHTML = [typeWithIcon, rightLabel].filter(Boolean).join(" ");
-
 
   // ---- Body texts ----
   // normalize bare "day:" / "night:" at line starts to tokens, then inject icons
@@ -1176,7 +1180,10 @@ function openModal(id) {
     document.getElementById("metaStats").innerHTML = votesHTML || loreHTML;
   }
 
-  relEl.textContent = prettyRelease(c.release);
+  const releaseText = prettyRelease(c.release);
+  const idText = c.id ? `ID: ${c.id}` : "";
+  relEl.textContent = [releaseText, idText].filter(Boolean).join(" • ");
+
 }
 
 

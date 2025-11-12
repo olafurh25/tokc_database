@@ -1,949 +1,395 @@
 /* =========================================================
-   Old King's Crown — Styles
+   Old King's Crown — Styles (clean)
    - Layout (hero, topbar, grid)
    - Card & modal visuals
    - Icon system
    - Animations & fades
    ========================================================= */
 
-/* ======= COMPLETE FONT IMPORTS ======= */
-
-/* Source Serif Pro — static weights 200–900 + italics */
+/* ======= FONTS ======= */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-/* Source Serif 4 — full optical-size and weight range + italics */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
-
-/* Spectral SC — all weights 200–900 + italics */
 @import url('https://fonts.googleapis.com/css2?family=Spectral+SC:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-/* =========== GLOBAL =========== */
 
+/* ======= ROOT / THEME ======= */
 :root{
-  --accent: #1F3B41;            
-  --glass: rgba(255, 255, 255, 0.658); 
+  --accent: #1F3B41;
+  --glass: rgba(255, 255, 255, 0.658);
   --ink: #0b0f12;
-  --card-ratio: calc(2.75 / 4.75); 
-  --modal-overlap: 120px; 
-  --card-radius-grid: 16px;     
-  --card-radius-modal-pct: 5.5%;
-  color-scheme: light dark; /* tells browser to support both */
-  color: black;              /* default icon color (light mode) */
+  --card-ratio: calc(2.75 / 4.75);
+  --modal-overlap: 120px;
+  --card-radius-grid: 16px;
+  --card-radius-modal: 18px;
+  color-scheme: light dark;
+  color: black;
 }
+@media (prefers-color-scheme: dark){ :root{ color:white; } }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: white;            /* switches favicon to white in dark mode */
-  }
+/* ======= BASE ======= */
+html, body { margin:0; padding:0; height:100%; overflow:hidden; }
+body{
+  font-family:"Source Serif 4","Bookman Old Style",serif;
+  font-optical-sizing:auto;
+  color:#eaf0f5;
+  background: var(--accent) url("images/box_art.jpg") center 0 / cover no-repeat;
+  overflow-x:hidden;
+  min-height:100vh;
 }
-
-/* ====== FONT ROLES ====== */
-
-/* Default body — Source Serif 4 Variable */
-body {
-  font-family: "Source Serif 4", "Bookman Old Style", serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-}
-
-/* Titles (section headers, modal titles, etc.) — Source Serif Pro Bold */
-h1, h2, h3, h4, h5, h6,
-#topbar, #hero, .chip, .syntax-content h2 {
-  font-family: "Source Serif Pro", serif;
-  font-style: normal;
-}
-
-/* Card Names — Spectral SC Medium */
-#modalName, .card h3 {
-  font-family: "Spectral SC", serif;
-  font-style: normal;
-  letter-spacing: 0.02em;
-  text-transform: none;
-}
-
-
-html, body { margin: 0; padding: 0; }
-
-body {
-  color: #eaf0f5;
-  background-color: var(--accent);
-  background-image: url("images/box_art.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 0;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-
-
-
+h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Source Serif Pro",serif; }
+#modalName,.card h3{ font-family:"Spectral SC",serif; letter-spacing:.02em; }
 
 /* ================= HERO ================= */
-#hero {
-  position: relative;
-  height: 100vh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-
-.hero-inner {
-  text-align: center;
-}
-
-.hero-logo {
-  width: min(34vw, 380px);
-  height: auto;
-  display: block;
-  margin-inline: auto;
-}
-
-.hero-tagline {
-  margin: 1.4rem 0 1rem;
-  font-size: 1.4rem;
-  font-style: italic;
-  text-align: center;
-  opacity: 0.95;
-  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.65);
+#hero{ position:relative; height:100vh; display:grid; place-items:center; overflow:hidden; }
+.hero-inner{ text-align:center; }
+.hero-logo{ width:min(34vw,380px); height:auto; display:block; margin-inline:auto; }
+.hero-tagline{
+  margin:1.4rem 0 1rem; font-size:1.4rem; font-style:italic; text-align:center;
+  opacity:.95; text-shadow:0 3px 6px rgba(0,0,0,.65);
 }
 
 /* =========== SEARCH (hero + topbar) =========== */
 .search-wrap{
-  position:relative;
-  display:flex; align-items:center;
-  background: var(--glass);
-  border:1px solid rgba(255,255,255,.55);
-  border-radius:999px;
-  box-shadow:0 8px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6);
+  position:relative; display:flex; align-items:center;
+  background:var(--glass); border:1px solid rgba(255,255,255,.55);
+  border-radius:999px; box-shadow:0 8px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6);
   backdrop-filter: blur(10px);
-  padding:.9rem .9rem;
-  width:clamp(560px, 52vw, 760px);       
+  padding:.9rem .9rem; width:clamp(560px,52vw,760px);
+  transition: background .25s ease, box-shadow .25s ease, transform .15s ease;
+  will-change: box-shadow, transform;
 }
-
 .search-wrap input{
-  flex:1; background:transparent; border:none; outline:none;
-  color: var(--ink);
-  font-size:1.08rem; padding:.55rem .3rem .55rem 2.2rem;
-
-  font-family: "Source Serif 4", serif;  
-  font-size: 1.1rem;                 
-  letter-spacing: 0.02em;             
-  font-weight: 500;                    
+  flex:1; background:transparent; border:none; outline:none; color:var(--ink);
+  font: 500 1.1rem/1 "Source Serif 4",serif; letter-spacing:.02em;
+  padding:.55rem 2rem .55rem 2.2rem;
+  transition: color .2s ease, font-weight .2s ease, transform .15s ease;
+  transform-origin:left center;
 }
-
 .search-icon{ position:absolute; left:1rem; color:#0a0e12; opacity:.55; }
-
-/* ===== Custom Search Icon ===== */
-.icon-search {
-  display: inline-block;
-  width: 1.2rem;
-  height: 1.2rem;
-  background: currentColor;
-  -webkit-mask-image: url("images/iconography/svg/search.svg");
-          mask-image: url("images/iconography/svg/search.svg");
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-          mask-size: contain;
-  -webkit-mask-position: center;
-          mask-position: center;
-  opacity: 0.6;
+.icon-search{
+  display:inline-block; width:1.2rem; height:1.2rem; background:currentColor;
+  -webkit-mask: url("images/iconography/svg/search.svg") no-repeat center / contain;
+          mask: url("images/iconography/svg/search.svg") no-repeat center / contain;
+  opacity:.6;
 }
-
-/* =========== CHIPS / ACTION BUTTONS =========== */
 .filters{ display:flex; gap:.75rem; justify-content:center; margin-top:1rem; }
-
 .chip{
-  appearance:none;
-  border:1px solid rgba(255,255,255,.22);
-  background: rgba(31,59,65,.9);
-  color:#FAD069;;
-  padding:.6rem 1.1rem;
-  border-radius:12px;
-  cursor:pointer;
-  font-size:1rem;
-  line-height:1;
+  appearance:none; border:1px solid rgba(255,255,255,.22);
+  background:rgba(31,59,65,.9); color:#FAD069;
+  padding:.6rem 1.1rem; border-radius:12px; cursor:pointer; font-size:1rem; line-height:1;
   box-shadow:0 8px 20px rgba(0,0,0,.2);
   transition:transform .12s ease, background .15s ease, border-color .2s ease;
 }
 .chip:hover{ transform:translateY(-2px); background:rgba(46,87,96,1); border-color:rgba(255,255,255,.35); }
 
-/* =========== TOPBAR (sticky after hero) =========== */
+/* Topbar */
 #topbar{
-  position:sticky; top:-84px; opacity:0;
-  height:84px;
-  display:grid; grid-template-columns: 1fr minmax(560px, 1100px) 1fr;
-  align-items:center; gap:1rem;
-
-  border-bottom: none;
-  z-index:20;
-  transition: top .35s ease, opacity .35s ease;
-  transform: translateY(-10px);
-  padding: 0 1rem;
+  position:sticky; top:-84px; opacity:0; height:84px;
+  display:grid; grid-template-columns:1fr minmax(560px,1100px) 1fr; align-items:center; gap:1rem; padding:0 1rem;
+  z-index:20; transition: top .35s ease, opacity .35s ease; transform: translateY(-10px);
 }
-
 #topbar.sticky{ top:0; opacity:1; }
-
 .topbar-left{ display:flex; align-items:center; }
-.topbar-logo{ height:140px; width:auto; cursor: pointer; }
+.topbar-logo{ height:140px; width:auto; cursor:pointer; }
 .topbar-center{ display:flex; justify-content:center; }
 .topbar-right{ display:flex; justify-content:flex-end; gap:.6rem; }
+#topbar .search-wrap{ width:clamp(560px,48vw,1100px); padding:.45rem .9rem; }
 
-#topbar .search-wrap{ width:clamp(560px, 48vw, 1100px); padding:.45rem .9rem; }
+/* Search polish */
+.search-wrap:hover{
+  box-shadow:0 10px 36px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.7);
+  transform: translateY(1px);
+}
+.search-wrap:has(input:focus), .search-wrap:focus-within{
+  background:rgba(255,255,255,0.781);
+  box-shadow:0 0 0 3px #fad1692d, 0 10px 36px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+  transform: translateY(1px); border-color:#fff;
+}
+.search-wrap input:focus{ font-weight:600; color:#1F3B41; transform:scale(1.01); }
+input[type="search"]{-webkit-appearance:none; appearance:none; font:inherit; line-height:1.25; font-size:max(16px,1.1rem);}
+input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; appearance:none; display:none; }
+.search-clear{
+  position:absolute; right:.7rem; width:2.2rem; height:2.2rem; background:currentColor;
+  -webkit-mask: url("images/iconography/svg/exit.svg") no-repeat center / 60%;
+          mask: url("images/iconography/svg/exit.svg") no-repeat center / 60%;
+  cursor:pointer; opacity:0; pointer-events:none; color:#1F3B41;
+  transition:opacity .2s ease, transform .15s ease;
+}
+.search-wrap:has(input:focus) .search-clear,
+.search-wrap:has(input:not(:placeholder-shown)) .search-clear{ opacity:.6; pointer-events:auto; }
+.search-clear:hover{ opacity:.9; transform:scale(1.1); }
+.search-clear:active{ transform:scale(.95); }
 
-/* =========== CARD AREA (scrolling) =========== */
+/* =========== CARD AREA / GRID =========== */
+.snap-container{ height:100vh; overflow-y:auto; overscroll-behavior:contain; scroll-behavior:auto; }
 #cardArea{
-  margin-top: 2rem;
-  height: calc(100vh - 84px);
-  overflow-y:auto;
-  position:relative;
-  overscroll-behavior: contain;
-
-   
-  --top-fade: 10px; 
-
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    rgba(255,255,255,0) 0,                  
-    rgba(255,255,255,0.6) calc(var(--top-fade) * 0.5),
-    rgba(255,255,255,1) var(--top-fade)      
-  );
-          mask-image: linear-gradient(
-    to bottom,
-    rgba(255,255,255,0) 0,
-    rgba(255,255,255,0.6) calc(var(--top-fade) * 0.5),
-    rgba(255,255,255,1) var(--top-fade)
-  );
-  -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
+  margin-top:2rem; height: calc(100vh - 84px);
+  overflow-y:auto; position:relative; overscroll-behavior:contain;
+  --top-fade:10px;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(255,255,255,0) 0,
+    rgba(255,255,255,0.6) calc(var(--top-fade)*0.5), rgba(255,255,255,1) var(--top-fade));
+          mask-image: linear-gradient(to bottom, rgba(255,255,255,0) 0,
+    rgba(255,255,255,0.6) calc(var(--top-fade)*0.5), rgba(255,255,255,1) var(--top-fade));
+  -webkit-mask-size:100% 100%; mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
 }
-
-
-#cardArea {
-  flex: 1;
-  overflow-y: auto;     
-  scroll-snap-align: none;
-}
-
 #cardGrid{
-  width:min(1300px, 92%);
-  margin:1.2rem auto 4rem;
-  display:grid; gap:1.1rem;
-  grid-template-columns: repeat(4, 1fr);
+  width:min(1300px,92%); margin:1.2rem auto 4rem;
+  display:grid; gap:1.1rem; grid-template-columns:repeat(4,1fr);
+  transition:opacity .35s cubic-bezier(.4,0,.2,1);
 }
-
 @media(max-width:1100px){ #cardGrid{ grid-template-columns:repeat(3,1fr); } }
 @media(max-width:800px){  #cardGrid{ grid-template-columns:repeat(2,1fr); } }
 @media(max-width:520px){  #cardGrid{ grid-template-columns:1fr; } }
+body.typing #cardGrid{ opacity:.65; }
 
 .card{
-  position: relative;
-  background: rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:18px;
-  cursor:pointer;
-  backdrop-filter: blur(6px);
-  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  position:relative; aspect-ratio:var(--card-ratio);
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  border-radius:var(--card-radius-grid); cursor:pointer; backdrop-filter:blur(6px);
+  transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  opacity:0; transform:translateY(-10px); will-change:transform,opacity;
+}
+.card::after{
+  content:""; position:absolute; inset:0; border-radius:var(--card-radius-grid);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); pointer-events:none;
+}
+/* 1) Non-HQ hover: just nudge down 1px (no scale) */
+.card:not(.is-hq):hover{
+  transform: translateY(1px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.24);
+  filter: saturate(1.03);
 }
 
-.card::after{
-  content:"";
-  position:absolute; inset:0; pointer-events:none;
-  border-radius: var(--card-radius-grid);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
-  pointer-events: none;
+/* Remove/replace any global .card:hover rules that add scale or large translate
+   so they don't affect HQ cards. */
+
+
+/* 2) HQ in GRID: rotate the whole frame on hover (no keyframes) */
+.card.is-hq{
+  overflow: hidden;
+  transform-origin: center;
+  transform: none; /* sideways by default (your files are CCW) */
+  transition: transform .26s cubic-bezier(.33,1.02,.44,1);
 }
-.card:hover{
-  transform: translateY(-6px) scale(1.04);
+
+/* Rotate to upright on hover; rim & img follow automatically */
+.card.is-hq:hover{
+  transform: rotate(90deg);
+}
+
+/* Make sure children don’t apply their own transforms */
+.card.is-hq img,
+.card.is-hq::after{
+  transform: none !important;
+}
+
+/* Keep image sizing sane when the frame rotates */
+.card.is-hq img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--card-radius-grid);
+}
+
+/* Optional: lighter polish on HQ hover without altering transform here */
+.card.is-hq:hover{
   box-shadow: 0 12px 36px rgba(0,0,0,.28);
   filter: saturate(1.05);
 }
 
-.card img{
-  display:block;
-  width:100%;
-  aspect-ratio: var(--card-ratio); 
-  object-fit: cover;               
-  border-radius: var(--card-radius-grid);
+
+/* 3) HQ in MODAL: always upright, no animations */
+.modal-artwrap{
+  /* keep whatever sizing you already have here */
+  /* ensure it can rotate without affecting inner sizing */
+  transform-origin: center;
 }
 
-
-/* ===== CARD APPEAR ANIMATION ===== */
-.card {
-  opacity: 0;
-  transform: translateY(-10px);
-  will-change: transform, opacity;
+.modal-artwrap img{
+  /* modal images should not animate */
+  transition: none !important;
 }
 
-.card.card-enter {
-  animation: cardStaggerIn 480ms ease forwards;
+.modal-artwrap::after{
+  transition: none !important;
 }
 
-@keyframes cardStaggerIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Apply permanent 90° in modal for HQ */
+.modal-artwrap.is-hq{
+  transform: rotate(90deg);
 }
 
-
-/* ===== CARD LEAVE ANIMATION (reverse) ===== */
-.card-leave {
-  animation: cardStaggerOut 320ms ease forwards;
+/* Neutralize any transforms on inner bits so only the wrapper rotates */
+.modal-artwrap.is-hq img,
+.modal-artwrap.is-hq::after{
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
 }
 
-@keyframes cardStaggerOut {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(8px); }
+/* ===== NO RESULTS ===== */
+#noResults{
+  text-align:center; font-size:2rem; color:rgba(255,255,255,0.8);
+  margin-top:20rem; transition:opacity .3s ease; opacity:0; pointer-events:none;
+}
+#noResults:not(.hidden){ opacity:1; animation:fadeIn .4s ease; pointer-events:auto; }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(-5px);} to{opacity:1; transform:translateY(0);} }
+
+/* =========== MODAL (CARD OVERLAP) =========== */
+#modal{
+  position:fixed; inset:0; z-index:100;
+  display:none; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.75); backdrop-filter:blur(6px);
+  cursor:pointer;
+}
+#modal .modal-inner,#closeModal{ cursor:default; }
+#modalContent{
+  background:transparent; border:none; padding:1rem;
+  width:min(94%,1100px); max-height:92vh; overflow:visible; position:relative;
+  pointer-events:none;
+}
+#modalContent .modal-inner,#modalContent .modal-inner *,#closeModal{ pointer-events:auto; }
+
+.modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:center; position:relative; z-index:1; }
+
+/* Art wrapper controls size & aspect */
+.modal-artwrap{
+  position:relative; display:inline-block; z-index:3;
+  width:min(38vw,420px); aspect-ratio:var(--card-ratio);
+  margin-right:calc(-1 * var(--modal-overlap)); box-sizing:border-box;
+}
+.modal-artwrap::after{
+  content:""; position:absolute; inset:0; border-radius:var(--card-radius-modal);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); box-sizing:border-box;
 }
 
-
-/* ===== NO RESULTS MESSAGE ===== */
-#noResults {
-  text-align: center;
-  font-size: 2rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin-top: 20rem;
-  transition: opacity 0.3s ease;
+/* Modal image fills the box without stretching */
+.modal-artwrap img{
+  display:block; width:100%; height:100%; object-fit:contain;
+  border-radius:var(--card-radius-modal);
+  box-shadow:0 18px 60px rgba(0,0,0,0.55);
 }
 
-#noResults.hidden {
-  opacity: 0;
-  pointer-events: none;
+/* HQ in MODAL — rotate IMG + rim; sizing stays from wrapper */
+.modal-artwrap.is-hq img{ transform:rotate(0deg); transform-origin:center; }
+.modal-artwrap.is-hq::after{ transform:rotate(0deg); transform-origin:center; }
+
+/* Overshoot hover in modal */
+.modal-artwrap.is-hq:hover img, .modal-artwrap.is-hq:hover::after{ animation:hqTiltModal 220ms ease-out; }
+@keyframes hqTiltModal{ 0%{transform:rotate(-90deg);} 70%{transform:rotate(-94deg);} 100%{transform:rotate(-90deg);} }
+
+/* Modal info panel */
+.modal-panel{
+  background:rgba(20,42,46,0.94); border:1px solid rgba(255,255,255,0.12);
+  border-radius:16px; padding:1.4rem 1.8rem; padding-left:calc(1.8rem + var(--modal-overlap));
+  box-shadow:0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+  min-height:380px; max-width:640px; z-index:1; text-align:left;
+}
+.modal-header-row{
+  display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;
+  margin-bottom:.4rem; gap:.5rem;
+}
+#modalName{
+  font-weight:500; text-transform:uppercase; letter-spacing:.06em; color:#FAD069;
+  font-size:1.4rem; margin:0; flex:1 1 auto; text-align:left;
+}
+#modalTypeFaction{
+  font: 400 1rem "Source Serif Pro",serif; color:#FAD069; opacity:.8;
+  text-align:right; white-space:nowrap; flex-shrink:0;
+}
+#modalMeta{ font:400 1rem/1.4 "Source Serif 4",serif; margin:.6rem 0 1rem; }
+#modalCmd{ font:600 1.05rem "Source Serif Pro",serif; line-height:3; color:#eaf0f5; margin:.5rem 0; white-space:pre-line; }
+#modalRules{ font:400 1.02rem/1.2 "Source Serif 4",serif; }
+#modalFlavour{ font:italic 400 1.02rem/1.5 "Source Serif 4",serif; opacity:.8; color:#eaf0f5; margin-top:.8rem; }
+
+/* Responsive modal tweaks */
+@media (max-width:900px){
+  .modal-artwrap{ width:min(60vw,380px); }
+  :root{ --modal-overlap:80px; }
+}
+@media (max-width:720px){
+  .modal-inner{ grid-template-columns:1fr; }
+  .modal-artwrap{ margin-right:0; }
+  :root{ --modal-overlap:0px; }
+  .modal-panel{ margin-top:1rem; }
 }
 
-#noResults:not(.hidden) {
-  opacity: 1;
-  animation: fadeIn 0.4s ease;
+/* ===== META ROWS ===== */
+.meta-row{
+  display:flex; justify-content:left; align-items:baseline; gap:.6rem; margin-top:.5rem;
+  font:600 1rem "Source Serif Pro",serif; color:#eaf0f5;
 }
+#metaVotes{ order:0; } #metaLore{ order:2; }
+.meta-row .icon{ top:0; vertical-align:-0.1em; }
+#metaRelease{ font:400 .95rem "Source Serif 4",serif; opacity:.5; margin-top:.8rem; }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.load-more-wrapper {
-  display: none;
-  justify-content: center;
-  margin: 2rem 0 4rem;
-}
-
-.load-more {
-  background: rgba(31,59,65,.9);
-  border: 1px solid rgba(255,255,255,.25);
-  color: #FAD069;
-  font-family: inherit;
-  padding: .7rem 1.6rem;
-  border-radius: 999px;
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: all .2s ease;
-}
-
-.load-more:hover {
-  transform: translateY(-2px);
-  background: rgba(46,87,96,1);
-  border-color: rgba(255,255,255,.4);
-}
-
-/* =========== MODAL (CARD OVERLAP STYLE) =========== */
-#modal {
-  position: fixed; inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  display: none;
-  align-items: center; justify-content: center;
-  backdrop-filter: blur(6px);
-  z-index: 100;
-}
-
-#modalContent {
-  background: transparent;
-  border: none;
-  padding: 1rem;
-  width: min(94%, 1100px);
-  max-height: 92vh;
-  overflow: visible;
-  position: relative;
-}
-
-/* Two-column overlap layout */
-.modal-inner {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  position: relative;
-  z-index: 1; 
-}
-
-/* === Card popup image === */
-.modal-artwrap {
-  position: relative;
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;  
-  margin-right: calc(-1 * var(--modal-overlap));  
-  z-index: 3; 
-}
-
-.modal-artwrap img {
-  display: block;
-  width: min(38vw, 420px);
-  aspect-ratio: var(--card-ratio);
-  border-radius: 18px;  
-  object-fit: cover;
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
-  box-sizing: border-box; 
-}
-
-
-.modal-artwrap::after {
-  content: "";
-  position: absolute;
-  inset: 0; 
-  border-radius: 18px; 
-  box-sizing: border-box;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
-}
-
-
-/* Framed info panel on the right */
-.modal-panel {
-  background: rgba(20, 42, 46, 0.94);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  padding: 1.4rem 1.8rem;
-  padding-left: calc(1.8rem + var(--modal-overlap));
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  min-height: 380px;
-  z-index: 1;
-  text-align: left;
-  max-width: 640px;
-}
-
-/* Let empty parts of the container be click-through */
-#modalContent { pointer-events: none; }
-
-/* Re-enable interaction for the real content */
-#modalContent .modal-inner,
-#modalContent .modal-inner *,
-#closeModal {
-  pointer-events: auto;
-}
-
-/* Nice affordance: show it's clickable to dismiss */
-#modal { cursor: pointer; }
-#modal .modal-inner, #closeModal { cursor: default; }
-
-/* ===== Modal Header Row: name left, type/faction right ===== */
-.modal-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  margin-bottom: 0.4rem;
-  gap: 0.5rem;
-}
-
-/* Card Name — left-aligned */
-#modalName {
-  font-family: "Spectral SC", serif;
-  font-weight: 500;
-  font-style: normal;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #FAD069;
-  font-size: 1.4rem;
-  margin: 0;
-  flex: 1 1 auto;
-  text-align: left;
-}
-
-/* Type + Faction info — right-aligned on same line */
-#modalTypeFaction {
-  font-family: "Source Serif Pro", serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 1rem;
-  color: #FAD069;
-  opacity: 0.8;
-  text-align: right;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-#modalMeta {
-  font-family: "Source Serif 4", serif; 
-  font-optical-sizing: auto;
-  font-weight: 400;                      
-  font-style: normal;
-  font-size: 1rem;
-  line-height: 1.4;
-  opacity: 1;
-  margin: 0.6rem 0 1rem;                 
-  white-space: normal;
-}
-
-/* ===== Commands section ===== */
-#modalCmd {
-  font-family: "Source Serif Pro", serif;
-  font-optical-sizing: auto;
-  font-weight: 600;            
-  font-style: normal;
-  white-space: pre-line;
-  line-height: 3;            
-  font-size: 1.05rem;
-  color: #eaf0f5;
-  margin: 0.5rem 0;
-}
-
-
-#modalRules {
-  font-family: "Source Serif 4", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 1.02rem;
-  line-height: 1.2;
-  color: #eaf0f5;
-}
-
-#modalFlavour {
-  font-family: "Source Serif 4", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: italic;
-  opacity: 0.8;
-  font-size: 1.02rem;
-  line-height: 1.5;
-  color: #eaf0f5;
-  margin-top: 0.8rem;
-}
-
-/* Responsive fallback */
-@media (max-width: 900px) {
-  .modal-artwrap { margin-right: -80px; }
-  :root { --modal-overlap: 80px; }
-  .modal-artwrap img { width: min(60vw, 380px); }
-}
-
-@media (max-width: 720px) {
-  .modal-inner {
-    grid-template-columns: 1fr;
-  }
-  .modal-artwrap {
-    margin-right: 0;
-  }
-  :root { --modal-overlap: 0px; }
-  .modal-panel {
-    margin-top: 1rem;
-  }
-}
-
-/* ===== Meta rows ===== */
-.meta-row {
-  display: flex;
-  justify-content: left;
-  align-items: baseline;
-  gap: 0.6rem;                
-  margin-top: 0.5rem;
-  font-weight: 600;
-  font-family: "Source Serif Pro", serif;
-  font-size: 1rem;
-  color: #eaf0f5;
-}
-
-#metaVotes { order: 0; }
-#metaLore  { order: 2; }
-
-.meta-row .icon {
-  top: 0;
-  vertical-align: -0.1em;
-}
-
-#metaRelease {
-  font-family: "Source Serif 4", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-size: 0.95rem;
-  opacity: 0.5;
-  margin-top: 0.8rem;
-}
-
-/* Inline icon + label for meta bits (faction, cost, archetype, traits, votes, lore) */
-.meta-iconlabel {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
-}
-
-.meta-iconlabel .icon {
-  width: 1.1em;
-  height: 1.1em;
-  vertical-align: -0.15em;
-}
-
-.meta-labeltext { line-height: 1; }
-
-/* ========== Rules: leading tag pulled left at 2x ========== */
-.rule-with-tag {
-  display: flex;
-  align-items: center;          /* center vertically */
-  gap: 0.75rem;                 /* slightly wider spacing */
-  margin: 0.6rem 0;
-}
-
-/* optional fine-tuning if the icon looks low/high */
-.rule-with-tag .rule-tag {
-  display: flex;
-  align-items: center;          /* center the icon inside its container */
-}
-
-/* scale and offset adjustments if needed */
+/* ===== RULES: leading tag pulled left ===== */
+.rule-with-tag{ display:flex; align-items:center; gap:.75rem; margin:.6rem 0; }
+.rule-with-tag .rule-tag{ display:flex; align-items:center; }
 .rule-with-tag .rule-tag .icon--mask,
-.rule-with-tag .rule-tag .icon--img {
-  width: 2.2em;
-  height: 2.2em;
-  vertical-align: middle;
-  position: relative;
-  top: 0;                       /* ensure no manual offset */
+.rule-with-tag .rule-tag .icon--img{ width:2.2em; height:2.2em; position:relative; top:0; }
+.rule-tag{ line-height:1; flex:0 0 auto; }
+.rule-tag .icon--mask,.rule-tag .icon--img{ width:2.2em; height:2.2em; }
+.rule-text{ white-space:pre-wrap; flex:1 1 auto; }
+.rule-text .icon{ vertical-align:-0.15em; }
+
+/* Commands OR line */
+#modalCmd .or-line{
+  display:block; font-size:.9em; font-style:italic; opacity:.85; text-align:left;
+  margin:-.5rem 0 -.8rem 1em; line-height:1.2;
 }
-
-
-.rule-tag {
-  line-height: 1;
-  flex: 0 0 auto;         
-}
-
-/* double-size the icon, both masked spans and full-color <img> */
-.rule-tag .icon--mask,
-.rule-tag .icon--img {
-  width: 2.2em;           
-  height: 2.2em;
-  vertical-align: middle;
-}
-
-/* the text block to the right — preserves line breaks like the original */
-.rule-text {
-  white-space: pre-wrap;
-  flex: 1 1 auto;
-}
-
-.rule-text .icon {
-  vertical-align: -0.15em;
-}
-
-
-/* ===== SYNTAX GUIDE MODAL ===== */
-.syntax-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 150;
-}
-
-.syntax-modal.hidden { display: none; }
-
-.syntax-content {
-  background: rgba(31,59,65,0.95);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 18px;
-  width: min(90%, 900px);
-  max-height: 90vh;
-  overflow-y: auto;
-  color: #eaf0f5;
-  font-family: "Bookman Old Style", serif;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-}
-
-.syntax-content h2 {
-  text-align: center;
-  color: #FAD069;
-  margin-bottom: 1rem;
-  font-size: 1.6rem;
-}
-
-.syntax-body {
-  white-space: pre-wrap;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.syntax-close {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  color: #FAD069;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: transform .15s ease;
-}
-.syntax-close:hover { transform: scale(1.15); }
-
-.snap-container{
-  height: 100vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scroll-behavior: auto; 
-}
-html, body { height: 100%; overflow: hidden; } 
-
-
-/* ===== SMOOTH ROTATING FADE (bottom ↔ top crossfade) ===== */
-/* bottom fade */
-body::before{
-  content:"";
-  position:fixed; inset:0;
-  pointer-events:none;
-  z-index:-1;
-  background:linear-gradient(to top,
-    rgba(31,59,65,1) 0%,      /* solid bottom */
-    rgba(31,59,65,0.85) 30%,  /* strong tint */
-    rgba(31,59,65,0.6) 55%,   /* mid fade higher up */
-    rgba(31,59,65,0.2) 85%,   /* almost transparent */
-    rgba(31,59,65,0) 100%);   /* fully transparent top */
-  opacity: var(--bottom-fade-opacity, 1);  /* default visible at top */
-  transition: opacity .8s ease;
-}
-
-/* top fade */
-body::after{
-  content:"";
-  position:fixed; inset:0;
-  pointer-events:none;
-  z-index:-1;
-  background:linear-gradient(to bottom,
-    rgba(31,59,65,1) 0%,
-    rgba(31,59,65,0.7) 40%,
-    rgba(31,59,65,0) 100%);
-  opacity: var(--top-fade-opacity, 0);     
-  transition: opacity .8s ease;
-}
+#modalCmd .or-line + *{ margin-top:.4rem; }
 
 /* ===== Inline icon system ===== */
-.icon {
-  display: inline-block;
-  width: 1.1em;
-  height: 1.1em;
-  vertical-align: -0.15em;
-  margin: 0 0.15em;
+.icon{ display:inline-block; width:1.1em; height:1.1em; vertical-align:-0.15em; margin:0 .15em; position:relative; top:2px; }
+.icon--img{ width:1.1em; height:1.1em; filter: drop-shadow(0 0 2px rgba(0,0,0,.25)); }
+.icon--mask{
+  background:currentColor; width:1.1em; height:1.1em;
+  -webkit-mask-image:var(--icon); mask-image:var(--icon);
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-size:contain; mask-size:contain;
+  -webkit-mask-position:center; mask-position:center;
+}
+.icon--phase{ top:0; transform:translateY(1px); }
+.icon--arch{ opacity:.95; }
+
+/* ===== Global fades ===== */
+body::before,body::after{ content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; transition:opacity .8s ease; }
+body::before{
+  background:linear-gradient(to top, rgba(31,59,65,1) 0%, rgba(31,59,65,0.85) 30%, rgba(31,59,65,0.6) 55%, rgba(31,59,65,0.2) 85%, rgba(31,59,65,0) 100%);
+  opacity:var(--bottom-fade-opacity,1);
+}
+body::after{
+  background:linear-gradient(to bottom, rgba(31,59,65,1) 0%, rgba(31,59,65,0.7) 40%, rgba(31,59,65,0) 100%);
+  opacity:var(--top-fade-opacity,0);
 }
 
-/* full-color SVGs (keep their own palette) */
-.icon--img {
-  width: 1.1em;
-  height: 1.1em;
-  filter: drop-shadow(0 0 2px rgba(0,0,0,.25));
-}
-
-/* text-colored via CSS mask (inherits currentColor) */
-.icon--mask {
-  background: currentColor;
-  width: 1.1em;
-  height: 1.1em;
-  -webkit-mask-image: var(--icon);
-          mask-image: var(--icon);
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-          mask-size: contain;
-  -webkit-mask-position: center;
-          mask-position: center;
-}
-
-/* tiny per-family tweaks */
-.icon--phase { transform: translateY(1px); }
-.icon--arch  { opacity: .95; }
-
-/* larger seasonal icons (only inside commands) */
-#modalCmd .icon--phase {
-  width: 2.3em;
-  height: 2.3em;
-  margin-left: 0.35em;
-  margin-right: 0.1em;
-  vertical-align: middle;
-  position: relative;
-  top: -0.25em;            
-  filter: drop-shadow(0 0 4px rgba(0,0,0,0.35));
-}
-
-/* General icon vertical alignment tweak */
-.icon {
-  display: inline-block;
-  width: 1.1em;
-  height: 1.1em;
-  vertical-align: -0.15em;
-  margin: 0 0.15em;
-  position: relative;
-  top: 2px; 
-}
-
-/* Phase icons (seasonal) stay where they are or slightly higher */
-.icon--phase {
-  top: 0; /* reset to baseline */
-  transform: translateY(1px);
-}
-
-/* Tighten spacing only around OR connector */
-#modalCmd .or-line {
-  display: block;
-  font-size: 0.9em;
-  font-style: italic;
-  opacity: 0.85;
-  text-align: left;
-  margin: -0.5rem 0 -0.8rem 1em; /* pulls both sides in */
-  line-height: 1.2;
-}
-
-#modalCmd .or-line + * {
-  margin-top: 0.4rem; /* cancels extra top gap on the following line */
-}
-
-/* ===== SEARCH BAR NICE TWEAKS ===== */
-/* Normalize search input defaults */
-input[type="search"] {
-  -webkit-appearance: none;
-  appearance: none;
-  font: inherit;
-  line-height: 1.25;
-  font-size: max(16px, 1.1rem);
-}
-
-/* Autofill lock (Chrome/Edge/Safari) */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-text-fill-color: var(--ink) !important;
-  font-family: inherit !important;
-  font-size: inherit !important;
-  font-weight: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-  transition: background-color 5000s ease-in-out 0s;
-  box-shadow: 0 0 0 1000px transparent inset !important;
-  caret-color: var(--ink);
-}
-
-/* Base feel */
-.search-wrap {
-  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
-  will-change: box-shadow, transform;
-}
-
-.search-wrap:hover {
-  box-shadow: 0 10px 36px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.7);
-  transform: translateY(1px);
-}
-
-/* Focus highlight (with fallback) */
-.search-wrap:has(input:focus),
-.search-wrap:focus-within {
-  background: rgba(255, 255, 255, 0.781);
-  box-shadow:
-    0 0 0 3px #fad1692d,
-    0 10px 36px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-  transform: translateY(1px);
-  border-color: #fff;
-}
-
-
-/* Typing feel */
-.search-wrap input {
-  padding-left: 2.2rem;
-  padding-right: 2rem;
-  caret-color: #1F3B41;
-  transition: color 0.2s ease, font-weight 0.2s ease, transform 0.15s ease;
-  transform-origin: left center;
-  will-change: transform;
-}
-
-.search-wrap input:focus {
-  font-weight: 600;
-  color: #1F3B41;
-  transform: scale(1.01);
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .search-wrap,
-  .search-wrap input {
-    transition: none;
-    transform: none;
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce){
+  .search-wrap,.search-wrap input,#cardGrid,.card,.load-more,
+  .card.is-hq:hover img,.card.is-hq:hover::after,
+  .modal-artwrap.is-hq:hover img,.modal-artwrap.is-hq:hover::after{
+    transition:none !important; animation:none !important; transform:none !important;
   }
 }
 
-/* hide browser's default clear (small X) */
-input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-  display: none;
+/* ============================================
+   Disable HQ animations inside MODAL
+   ============================================ */
+.modal-artwrap img,
+.modal-artwrap::after {
+  transition: none !important;
+  animation: none !important;
 }
 
-/* custom clear (X) icon */
-.search-clear {
-  position: absolute;
-  right: 0.7rem;
-  width: 2.2rem;          /* hitbox width */
-  height: 2.2rem;         /* hitbox height */
-  background: currentColor;
-  -webkit-mask: url("images/iconography/svg/exit.svg") no-repeat center / 60%;
-          mask: url("images/iconography/svg/exit.svg") no-repeat center / 60%;
-  cursor: pointer;
-  opacity: 0.55;
-  transition: opacity 0.2s ease, transform 0.15s ease;
+/* Explicitly for HQ state too */
+.modal-artwrap.is-hq img,
+.modal-artwrap.is-hq::after {
+  transition: none !important;
+  animation: none !important;
 }
 
-.search-clear:hover {
-  opacity: 0.9;
-  transform: scale(1.1);
-}
 
-.search-clear:active {
-  transform: scale(0.95);
-}
 
-/* hidden by default */
-.search-clear {
-  opacity: 0;
-  pointer-events: none;
-  color: #1F3B41; /* muted accent, not white */
-}
-
-/* show when parent has focus OR input has text */
-.search-wrap:has(input:focus) .search-clear,
-.search-wrap:has(input:not(:placeholder-shown)) .search-clear {
-  opacity: 0.6;
-  pointer-events: auto;
-}
-
-.search-wrap:has(input:focus) .search-clear:hover {
-  opacity: 0.9;
-  transform: scale(1.1);
-}
-
-/* --- Smooth global fade while typing --- */
-#cardGrid {
-  transition: opacity .35s cubic-bezier(.4,0,.2,1);
-}
-
-body.typing #cardGrid {
-  opacity: 0.65; /* how much to dim; tweak between 0.5–0.8 */
-}
-
-#modalRules .rule-par {
-  white-space: pre-wrap;
-  margin: 0.6rem 0;
-}
 
 

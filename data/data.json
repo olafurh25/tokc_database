@@ -18,7 +18,7 @@
       "Retreat <day>"
     ],
     "rules": "",
-    "u": "In mist & waves we leave no trace.",
+    "flavour": "In mist & waves we leave no trace.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -39,7 +39,7 @@
     "lore": 2,
     "commands": "Rally (any two) <autumn>",
     "rules": "",
-    "u": "“Well, look what the sea dragged in!”",
+    "flavour": "“Well, look what the sea dragged in!”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -62,7 +62,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Gathered on the shore, eyes fixed on the future.",
+    "flavour": "Gathered on the shore, eyes fixed on the future.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -75,7 +75,9 @@
     "title": "Creel Haulers",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 2,
@@ -83,7 +85,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "To catch the bright, scattering scales.",
+    "flavour": "To catch the bright, scattering scales.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -96,7 +98,9 @@
     "title": "Priestesses of the Peaks",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 3,
@@ -104,7 +108,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Little separates mountains from the sky, or the divine.",
+    "flavour": "Little separates mountains from the sky, or the divine.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -117,7 +121,9 @@
     "title": "Sea Breakers",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 4,
@@ -125,7 +131,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Mother to daughter, the shields pass on.",
+    "flavour": "Mother to daughter, the shields pass on.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -145,8 +151,8 @@
     "votes": 2,
     "lore": 1,
     "commands": "Deadly <night>",
-    "rules": "5 - If there are any Active opponent [f] in the Clash, Eliminate this card.",
-    "u": "Dread work done, they slipped into the sea.",
+    "rules": "<night> If there are any Active opponent <follower> in the Clash, Eliminate this card.",
+    "flavour": "Dread work done, they slipped into the sea.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -159,7 +165,9 @@
     "title": "Shore Runner Sleds",
     "type": "basic",
     "archetype": "cavalry",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 5,
@@ -167,7 +175,7 @@
     "lore": 1,
     "commands": "Flank <day>",
     "rules": "",
-    "u": "Bright sleighs that neither snow nor arrow seem to slow.",
+    "flavour": "Bright sleighs that neither snow nor arrow seem to slow.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -179,8 +187,10 @@
     "id": "C-009",
     "title": "Hall Upon the Waves",
     "type": "basic",
-    "archetype": "war machine",
-    "traits": [],
+    "archetype": "machine",
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 5,
@@ -188,7 +198,7 @@
     "lore": null,
     "commands": "Deploy (1) <autumn>",
     "rules": "",
-    "u": "A people marching on the shoulders of the sea.",
+    "flavour": "A people marching on the shoulders of the sea.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -201,7 +211,9 @@
     "title": "Shrike of the Steppes",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 6,
@@ -209,7 +221,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Found in an eyrie, gowned in wings.",
+    "flavour": "Found in an eyrie, gowned in wings.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -222,7 +234,9 @@
     "title": "The Branded Seer",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 7,
@@ -230,7 +244,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "“I see all futures in that stone. My burden is I know their ends.”",
+    "flavour": "“I see all futures in that stone. My burden is I know their ends.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -243,7 +257,9 @@
     "title": "Lethe",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 8,
@@ -251,7 +267,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "“Oh to forget & rest, like time under the waves.”",
+    "flavour": "“Oh to forget & rest, like time under the waves.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -264,7 +280,9 @@
     "title": "Gall",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "clans",
     "cost": null,
     "strength": 9,
@@ -272,7 +290,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "A loud knocking at the door. Then the door was no more.",
+    "flavour": "A loud knocking at the door. Then the door was no more.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -296,7 +314,7 @@
     "lore": 1,
     "commands": "Rally (self) <autumn>",
     "rules": "",
-    "u": "A wild eye, all sea, all sky. Prow, ring, kith, and kin. The brightest unbowed thing.",
+    "flavour": "A wild eye, all sea, all sky. Prow, ring, kith, and kin. The brightest unbowed thing.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -309,15 +327,18 @@
     "title": "The Storyteller",
     "type": "advanced",
     "archetype": "champion",
-    "traits": [],
+    "traits": [
+      "pathfinder",
+      "resilient"
+    ],
     "faction": "clans",
     "cost": 2,
     "strength": 11,
     "votes": null,
     "lore": 2,
     "commands": "",
-    "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
-    "u": "The hero long ago, of tale & song, was actually him all along.",
+    "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is b:0.",
+    "flavour": "The hero long ago, of tale & song, was actually him all along.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -340,8 +361,8 @@
       "Flank <day>",
       "Deadly <night>"
     ],
-    "rules": "When this card Flanks, you may move any number of your Supporters from this card's current Region to the new Region.",
-    "u": "The sight of a flame, snatched by the wind.",
+    "rules": "When this card b:Flanks, you may move any number of your Supporters from this card's current Region to the new Region.",
+    "flavour": "The sight of a flame, snatched by the wind.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -354,7 +375,10 @@
     "title": "Riders of the North Sky",
     "type": "advanced",
     "archetype": "cavalry",
-    "traits": [],
+    "traits": [
+      "invulnerable",
+      "pathfinder"
+    ],
     "faction": "clans",
     "cost": 5,
     "strength": 11,
@@ -362,7 +386,7 @@
     "lore": 2,
     "commands": "Flank <day>",
     "rules": "When you win a Clash in a Region where this card is Active, before claiming any rewards, gain 1<influence>.",
-    "u": "They turn the world as they ride.",
+    "flavour": "They turn the world as they ride.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -381,12 +405,12 @@
     "strength": null,
     "votes": null,
     "lore": null,
-    "commands": "-",
+    "commands": "",
     "rules": [
-      "Your <trader> gain <day> Flank.\nWhenever any of your cards are removed from a Council, \nyou may move them to your Hand.",
-      "<day> Move any number of your Active cards with Flank into a Council."
+      "Your <trader> gain <day> b:Flank. Whenever any of your cards are removed from a Council, \nyou may move them to your Hand.",
+      "<day> Move any number of your Active cards with b:Flank into a Council."
     ],
-    "u": "All gold & light, like the sun over winter waves.",
+    "flavour": "All gold & light, like the sun over winter waves.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -407,10 +431,10 @@
     "lore": null,
     "commands": "",
     "rules": [
-      "All your cards without <ruse> gain <ruse>.",
+      "All your cards without <resilient> gain <resilient>.",
       "<spring> Move up to t of your Supporters from the Lost Pile to a Region."
     ],
-    "u": "A place for all those who dream of the sea.",
+    "flavour": "A place for all those who dream of the sea.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -429,9 +453,13 @@
     "strength": 0,
     "votes": null,
     "lore": null,
-    "commands": "Retreat or  <day> Ambush <day>",
+    "commands": [
+      "Ambush <day>",
+      "or",
+      "Retreat <day>"
+    ],
     "rules": "",
-    "u": "“A good runaround should slow them down.”",
+    "flavour": "“A good runaround should slow them down.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -452,7 +480,7 @@
     "lore": 2,
     "commands": "Rally (any two) <autumn>",
     "rules": "",
-    "u": "“It’s all for a good cause.”",
+    "flavour": "“It’s all for a good cause.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -465,7 +493,9 @@
     "title": "Secret Postal Service",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 1,
@@ -473,7 +503,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "The pigeon is reliable & true. Ubiquitous too.",
+    "flavour": "The pigeon is reliable & true. Ubiquitous too.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -486,7 +516,9 @@
     "title": "The Irregulars",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 2,
@@ -494,7 +526,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "“You’ll never want for stories.”",
+    "flavour": "“You’ll never want for stories.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -507,7 +539,9 @@
     "title": "Hawkers",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 3,
@@ -515,7 +549,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Spread the message, spread the cause.",
+    "flavour": "Spread the message, spread the cause.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -528,7 +562,9 @@
     "title": "The Pickets",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 4,
@@ -536,7 +572,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "“Let’s demonstrate where we stand.”",
+    "flavour": "“Let’s demonstrate where we stand.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -556,8 +592,8 @@
     "votes": 2,
     "lore": 1,
     "commands": "Deadly <night>",
-    "rules": "5 - If there are any Active opponent [f] in the Clash, Eliminate this card.",
-    "u": "“They’ve grown accustomed to not wearing chains.”",
+    "rules": "<night> If there are any Active opponent <follower> in the Clash, Eliminate this card.",
+    "flavour": "“They’ve grown accustomed to not wearing chains.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -578,7 +614,7 @@
     "lore": 1,
     "commands": "Flank <day>",
     "rules": "",
-    "u": "“That’s the strangest bird I’ve ever seen.”",
+    "flavour": "“That’s the strangest bird I’ve ever seen.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -590,8 +626,10 @@
     "id": "U-009",
     "title": "Experimental Academies",
     "type": "basic",
-    "archetype": "war machine",
-    "traits": [],
+    "archetype": "machine",
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 5,
@@ -599,7 +637,7 @@
     "lore": null,
     "commands": "Deploy (1) <autumn>",
     "rules": "",
-    "u": "“May they never have to be deployed.”",
+    "flavour": "“May they never have to be deployed.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -612,7 +650,9 @@
     "title": "The Librarian",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 6,
@@ -620,7 +660,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "“If all battles required swords, who’d be left to reap rewards?”",
+    "flavour": "“If all battles required swords, who’d be left to reap rewards?”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -633,7 +673,9 @@
     "title": "The Deadlifter",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 7,
@@ -641,7 +683,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "A strong supporter of the cause.",
+    "flavour": "A strong supporter of the cause.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -654,7 +696,9 @@
     "title": "Baron Cuttlefish",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 8,
@@ -662,7 +706,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "He revels in unpicking those old strings of power.",
+    "flavour": "He revels in unpicking those old strings of power.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -675,7 +719,9 @@
     "title": "Captain Mooncurser",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "uprising",
     "cost": null,
     "strength": 9,
@@ -683,7 +729,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Secreted away over fugitive creeks & wild leagues.",
+    "flavour": "Secreted away over fugitive creeks & wild leagues.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -704,7 +750,7 @@
     "lore": 1,
     "commands": "Rally (self) <autumn>",
     "rules": "",
-    "u": "For every one uncovered, another takes their place.",
+    "flavour": "For every one uncovered, another takes their place.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -725,7 +771,7 @@
     "lore": 2,
     "commands": "",
     "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
-    "u": "Such a fine display of defiance.",
+    "flavour": "Such a fine display of defiance.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -746,7 +792,7 @@
     "lore": null,
     "commands": "",
     "rules": "<night> Eliminate all opponent [h]/<clans> in the current Clash. If at least one card was Eliminated this way, choose one: Gain 1<influence> or Gain 1<lore>.",
-    "u": "The hour to act has arrived.",
+    "flavour": "The hour to act has arrived.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -770,7 +816,7 @@
       "If this card is Active in a Clash, treat all printed information, except for Strength, on opponents’ non-[h] Faction Cards in the Region as blank.",
       "<night> If there are any Active opponent [h] in the Clash, Eliminate this card."
     ],
-    "u": "Size means nothing with an arrow in your eye.",
+    "flavour": "Size means nothing with an arrow in your eye.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -794,7 +840,7 @@
       "This card acts as an additional space on which to Occupy a Kingdom Card.",
       "<autumn> - Choose a face-up Kingdom Card on the Great Road. Acquire it with a <clans>/<champion> from your Hand. Any card acquired this way may only be Occupied on this space."
     ],
-    "u": "Even the sun can’t find the place.",
+    "flavour": "Even the sun can’t find the place.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -818,7 +864,7 @@
       "Whenever you acquire a Kingdom Card, place a Faction Marker on a Council that matches that card's Suit (max of 2 per Council). Each marker gives you +1 <votes> in its Council.",
       "Abilities that remove cards from a Council can also remove your markers from Councils."
     ],
-    "u": "Like roots, we make the underground home. Like roots, we sunder stone.",
+    "flavour": "Like roots, we make the underground home. Like roots, we sunder stone.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -838,11 +884,12 @@
     "votes": null,
     "lore": null,
     "commands": [
-      "Retreat or <day>",
-      "Ambush <day>"
+      "Ambush <day>",
+      "or",
+      "Retreat <day>"
     ],
     "rules": "",
-    "u": "The slow passage of time is one great sleight of hand.",
+    "flavour": "The slow passage of time is one great sleight of hand.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -863,7 +910,7 @@
     "lore": 2,
     "commands": "Rally (any two) <autumn>",
     "rules": "",
-    "u": "Gold & silver never sleep.",
+    "flavour": "Gold & silver never sleep.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -876,7 +923,9 @@
     "title": "Watchers at the Walls",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 1,
@@ -884,7 +933,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Those sentries remain still.",
+    "flavour": "Those sentries remain still.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -897,7 +946,9 @@
     "title": "Hunting Parties",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 2,
@@ -905,7 +956,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "A horn that harries the hunted.",
+    "flavour": "A horn that harries the hunted.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -918,7 +969,9 @@
     "title": "The Tithe",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 3,
@@ -926,7 +979,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Dust settles silently over all that wealth.",
+    "flavour": "Dust settles silently over all that wealth.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -939,7 +992,9 @@
     "title": "Keepers of the Gates",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 4,
@@ -947,7 +1002,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "We all end as ruins claimed by the country.",
+    "flavour": "We all end as ruins claimed by the country.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -968,7 +1023,7 @@
     "lore": 1,
     "commands": "Deadly <night>",
     "rules": "5 - If there are any Active opponent f in the Clash, Eliminate this card.",
-    "u": "“Something to soothe the nerves?”",
+    "flavour": "“Something to soothe the nerves?”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -989,7 +1044,7 @@
     "lore": 1,
     "commands": "Flank <day>",
     "rules": "",
-    "u": "“Let us ride out together, one last time.”",
+    "flavour": "“Let us ride out together, one last time.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1001,8 +1056,10 @@
     "id": "N-009",
     "title": "Woe",
     "type": "basic",
-    "archetype": "war machine",
-    "traits": [],
+    "archetype": "machine",
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 5,
@@ -1010,7 +1067,7 @@
     "lore": null,
     "commands": "Deploy (1) <autumn>",
     "rules": "",
-    "u": "“Whoever named it, named it well.”",
+    "flavour": "“Whoever named it, named it well.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1023,7 +1080,9 @@
     "title": "Master of Records",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 6,
@@ -1031,7 +1090,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "The binding of history. The fastening of ancient obligations.",
+    "flavour": "The binding of history. The fastening of ancient obligations.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1044,7 +1103,9 @@
     "title": "The Count",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 7,
@@ -1052,7 +1113,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "No one now lives who knows his true age.",
+    "flavour": "No one now lives who knows his true age.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1065,7 +1126,9 @@
     "title": "The Magistrate",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 8,
@@ -1073,7 +1136,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "She stalks those serpentine corridors of power.",
+    "flavour": "She stalks those serpentine corridors of power.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1086,7 +1149,9 @@
     "title": "Master of Arms",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "nobility",
     "cost": null,
     "strength": 9,
@@ -1094,7 +1159,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "“Death & I have met before. We no longer dance but stroll as old friends.”",
+    "flavour": "“Death & I have met before. We no longer dance but stroll as old friends.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1115,7 +1180,7 @@
     "lore": 1,
     "commands": "Rally (self) <autumn>",
     "rules": "",
-    "u": "Reared to inherit & to ensure that the Oldest of Orders endures.",
+    "flavour": "Reared to inherit & to ensure that the Oldest of Orders endures.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1136,7 +1201,7 @@
     "lore": null,
     "commands": "",
     "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
-    "u": "He watches the throne, waiting.",
+    "flavour": "He watches the throne, waiting.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1157,7 +1222,7 @@
     "lore": null,
     "commands": "",
     "rules": "<autumn> If this card is in a Council, move it to another Council.",
-    "u": "Wrought in stone & weighted scales.",
+    "flavour": "Wrought in stone & weighted scales.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1178,7 +1243,7 @@
     "lore": 1,
     "commands": "",
     "rules": "When you acquire this card, Govern with up to three of your cards from the Lost Pile and/or Discard Pile.\nEach card must be Governed into a different Council.",
-    "u": "A queen from stone, a pact wreathed in reeds.",
+    "flavour": "A queen from stone, a pact wreathed in reeds.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1190,16 +1255,18 @@
     "id": "N-018",
     "title": "Gilded Wall",
     "type": "advanced",
-    "archetype": "war machine",
-    "traits": [],
+    "archetype": "machine",
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "nobility",
     "cost": 2,
     "strength": 3,
     "votes": null,
     "lore": null,
-    "commands": "",
-    "rules": "<autumn> - If you have t or more Supporters in this card’s Region, place 1<influence> on this card",
-    "u": "Ranging solemn & stone-slow westward with the sun.",
+    "commands": "Deploy (1) <autumn>",
+    "rules": "<autumn> If you have two or more Supporters in this card’s Region, place 1<influence> on this card.",
+    "flavour": "Ranging solemn & stone-slow westward with the sun.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1224,7 +1291,7 @@
       "<autumn> Choose one:\nMove one <clans> from your Discard Pile to your Hand or Gain 1 <influence>.",
       "If you are not first on the Order Track, you may do both."
     ],
-    "u": "That domain of gold, so imperious and cold.",
+    "flavour": "That domain of gold, so imperious and cold.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1244,11 +1311,12 @@
     "votes": null,
     "lore": null,
     "commands": [
-      "Retreat or <day>",
-      "Ambush <day>"
+      "Ambush <day>",
+      "or",
+      "Retreat <day>"
     ],
     "rules": "",
-    "u": "As it burnt it cracked & the moon shone through.",
+    "flavour": "As it burnt it cracked & the moon shone through.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1269,7 +1337,7 @@
     "lore": 2,
     "commands": "Rally (any two) <autumn>",
     "rules": "",
-    "u": "“We sell everything under the moon.”",
+    "flavour": "“We sell everything under the moon.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1282,7 +1350,9 @@
     "title": "Effigies",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 1,
@@ -1290,7 +1360,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Each morning there are more shapes, burning on the hills.",
+    "flavour": "Each morning there are more shapes, burning on the hills.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1303,7 +1373,9 @@
     "title": "Speakers of the Wood",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 2,
@@ -1311,7 +1383,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "They converse with the drifting motes & inching moss.",
+    "flavour": "They converse with the drifting motes & inching moss.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1324,7 +1396,9 @@
     "title": "The Wandering Lost",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 3,
@@ -1332,7 +1406,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "“We found the ones that went missing…they have no wish to return.”",
+    "flavour": "“We found the ones that went missing…they have no wish to return.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1345,7 +1419,9 @@
     "title": "The Moon-Stung",
     "type": "basic",
     "archetype": "follower",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 4,
@@ -1353,7 +1429,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "See them stand, deep in the dusk.",
+    "flavour": "See them stand, deep in the dusk.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1374,7 +1450,7 @@
     "lore": 1,
     "commands": "Deadly <night>",
     "rules": "5 - If there are any Active opponent [f] in the Clash, Eliminate this card.",
-    "u": "“Three…t…one. \nSleep.”",
+    "flavour": "“Three…t…one. \nSleep.”",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1395,7 +1471,7 @@
     "lore": 1,
     "commands": "Flank <day>",
     "rules": "",
-    "u": "When all are sleeping, they bound the walls & wander the lanes.",
+    "flavour": "When all are sleeping, they bound the walls & wander the lanes.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1407,8 +1483,10 @@
     "id": "G-009",
     "title": "The Burning Wood",
     "type": "basic",
-    "archetype": "war machine",
-    "traits": [],
+    "archetype": "machine",
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 5,
@@ -1416,7 +1494,7 @@
     "lore": null,
     "commands": "Deploy (1) <autumn>",
     "rules": "",
-    "u": "The wood walks. It has come to our very walls, alight & alive.",
+    "flavour": "The wood walks. It has come to our very walls, alight & alive.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1429,7 +1507,9 @@
     "title": "The Owl",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 6,
@@ -1437,7 +1517,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "It made its home high in a tower of flint.",
+    "flavour": "It made its home high in a tower of flint.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1450,7 +1530,9 @@
     "title": "The Goat",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 7,
@@ -1458,7 +1540,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "See her out beyond the lights, talking with something just out of sight.",
+    "flavour": "See her out beyond the lights, talking with something just out of sight.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1471,7 +1553,9 @@
     "title": "The Fox",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 8,
@@ -1479,7 +1563,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "Only their rings & shiny things remain.",
+    "flavour": "Only their rings & shiny things remain.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1492,7 +1576,9 @@
     "title": "The Stag",
     "type": "basic",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "pathfinder"
+    ],
     "faction": "gathering",
     "cost": null,
     "strength": 9,
@@ -1500,7 +1586,7 @@
     "lore": 1,
     "commands": "",
     "rules": "",
-    "u": "A cloven hoof, bent against airs & arts. A glaive gone blood-searching.",
+    "flavour": "A cloven hoof, bent against airs & arts. A glaive gone blood-searching.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1521,7 +1607,7 @@
     "lore": 1,
     "commands": "Rally (self) <autumn>",
     "rules": "",
-    "u": "She speaks in the music of the spheres, sounding the true names of the stars.",
+    "flavour": "She speaks in the music of the spheres, sounding the true names of the stars.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1542,7 +1628,7 @@
     "lore": 2,
     "commands": "",
     "rules": "When this card is used to steal a Kingdom Card, treat the Occupying card as if its Strength is 0.",
-    "u": "Another face finished, rigid & unflinching.",
+    "flavour": "Another face finished, rigid & unflinching.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1555,7 +1641,9 @@
     "title": "Bringer of the Word",
     "type": "advanced",
     "archetype": "captain",
-    "traits": [],
+    "traits": [
+      "invulnerable"
+    ],
     "faction": "gathering",
     "cost": 2,
     "strength": 5,
@@ -1566,7 +1654,7 @@
       "<autumn> If this card is in a Council, place a Faction Marker on any Council. When this card is in a Council, each marker on a Council contributes 1<votes> to you.",
       "When this card is removed from a Council, \nyou may move it to the Lost Pile."
     ],
-    "u": "Come closer, and I shall whisper their true name.",
+    "flavour": "Come closer, and I shall whisper their true name.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1587,7 +1675,7 @@
     "lore": null,
     "commands": "",
     "rules": "<day> Burn one of your cards in the Lost Pile.\nThis card adds the Burned card's printed Strength, Traits, Commands, and rules text to its own until the end of the Round.",
-    "u": "A fanged rite, performed in the dead of night.",
+    "flavour": "A fanged rite, performed in the dead of night.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1608,7 +1696,7 @@
     "lore": null,
     "commands": "",
     "rules": "If this card is Active in the current Clash, the player with the lowest total Strength above 0 wins the current Clash instead of the player with the highest total Strength.",
-    "u": "All the kingdom’s sleepers will see what must be seen.",
+    "flavour": "All the kingdom’s sleepers will see what must be seen.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1632,7 +1720,7 @@
       "When you acquire this card, place three Faction Markers here.",
       "<day> Remove a marker from here to give one of your Active cards in the current Clash <day> Ambush until the end of the Round. Then you may remove an additional marker to allow that card to Ambush with a card from your Discard Pile instead of your Hand."
     ],
-    "u": "It has no lock, it rejects all keys, it opens on impossible geometries.",
+    "flavour": "It has no lock, it rejects all keys, it opens on impossible geometries.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1653,7 +1741,7 @@
     "lore": null,
     "commands": "",
     "rules": "While this card is in a Council or is Active, whenever one or more of your cards would be Eliminated, you may discard this card instead.",
-    "u": "He has seen them true, through every tempest & time.",
+    "flavour": "He has seen them true, through every tempest & time.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1677,7 +1765,7 @@
       "<day> If this card is Active in the current Clash, choose one:\n- This card gains <night> Deadly until the end of the Round.\n- Move one Active card in another Region to its owner’s Discard Pile.",
       "If you do either, you may not Retreat this card for the rest of the Round."
     ],
-    "u": "He missed only once & it cost him all he loved.",
+    "flavour": "He missed only once & it cost him all he loved.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1698,7 +1786,7 @@
     "lore": null,
     "commands": "Rally (any two) <autumn>",
     "rules": "<autumn> - Move up to three cards from your Discard Pile to the bottom of your Deck. If you do this you may not Rally this card back to your Hand, this Round.",
-    "u": "There is little in life she has not tended to.",
+    "flavour": "There is little in life she has not tended to.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1746,7 +1834,7 @@
       "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
       "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
     ],
-    "u": "It arrived like an avalanche.",
+    "flavour": "It arrived like an avalanche.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1770,7 +1858,7 @@
       "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
       "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
     ],
-    "u": "It heralds a new age of change.",
+    "flavour": "It heralds a new age of change.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1794,7 +1882,7 @@
       "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
       "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
     ],
-    "u": "Wings like the black sails on ships.",
+    "flavour": "Wings like the black sails on ships.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
@@ -1818,7 +1906,7 @@
       "When you win a Clash in a Region where this card and its matching piece are, before claiming any rewards, gain 1<influence> and 1<lore>.",
       "<winter> If this card is not in your Hand, Supply or Burned, move it to your Supply."
     ],
-    "u": "It dreams of burning upon the stars.",
+    "flavour": "It dreams of burning upon the stars.",
     "release": {
       "expansion": "Base Game",
       "basegame": true
