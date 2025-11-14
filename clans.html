@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Clans — Old King's Crown</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="faction-pages.css">
+</head>
+<body class="faction-page clans-page">
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <img src="images/okc_logo_black.svg" alt="Old King's Crown" class="loading-logo">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="faction-header">
+    <a href="index.html" class="back-link">← Back to Database</a>
+    <h1 class="faction-title">The Clans</h1>
+    <p class="faction-tagline">Masters of the Northern Waves</p>
+  </header>
+
+  <!-- Strategy Guide -->
+  <section class="strategy-section">
+    <div class="strategy-content">
+      <h2>Strategy Guide</h2>
+      <div class="strategy-text">
+        <p><strong>The Clans</strong> excel at mobility and tactical flexibility. Their seafaring heritage grants them unmatched movement capabilities through <strong>Flank</strong> actions and <strong>Pathfinder</strong> traits, allowing them to strike where enemies least expect.</p>
+        
+        <h3>Key Strengths:</h3>
+        <ul>
+          <li><strong>Mobility:</strong> Cavalry units and Pathfinder traits enable rapid repositioning</li>
+          <li><strong>Resilience:</strong> Invulnerable followers provide reliable board presence</li>
+          <li><strong>Tactical Surprise:</strong> Ruse cards and Deadly agents punish aggressive opponents</li>
+          <li><strong>Recovery:</strong> New Havens Harbour brings supporters back from the Lost Pile</li>
+        </ul>
+
+        <h3>Core Tactics:</h3>
+        <ul>
+          <li>Use <strong>Shore Runner Sleds</strong> and <strong>Raid & Raze</strong> to flank into key regions</li>
+          <li>Leverage <strong>Wandering Embassy</strong> to move flanking units into councils for votes</li>
+          <li>Deploy <strong>Saga the Unifier</strong> with Rally for sustainable pressure</li>
+          <li>Time <strong>Nixing Knife's</strong> Deadly ability to eliminate high-value followers</li>
+        </ul>
+
+        <h3>Advanced Tips:</h3>
+        <ul>
+          <li>The Clans thrive on tempo—maintain constant movement to keep opponents reactive</li>
+          <li>Invulnerable followers can safely contest regions without fear of elimination</li>
+          <li><strong>Riders of the North Sky</strong> generate influence when winning clashes, accelerating your economy</li>
+          <li><strong>The Storyteller</strong> can steal Kingdom Cards by treating occupiers as strength 0—a devastating late-game play</li>
+        </ul>
+      </div>
+
+      <!-- Video Section -->
+      <div class="video-section">
+        <h3>Video Guides</h3>
+        <div class="video-grid">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="The Clans Strategy Guide" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">The Clans Overview</p>
+          </div>
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="Advanced Clans Tactics" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">Advanced Tactics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="cards-section">
+    <h2>Faction Cards</h2>
+    <div id="cardGrid" class="faction-card-grid"></div>
+  </section>
+
+  <!-- Modal (reuse from main page) -->
+  <div id="modal" class="modal">
+    <div id="modalContent" class="modal-content">
+      <div class="modal-inner">
+        <div class="modal-artwrap">
+          <img id="modalImage" src="" alt="">
+        </div>
+        <div class="modal-panel">
+          <div class="modal-header-row">
+            <h2 id="modalName"></h2>
+            <button id="closeModal" class="close-btn">✕</button>
+          </div>
+          <div id="modalTypeFaction"></div>
+          <div id="modalMeta"></div>
+          <div id="modalCmd"></div>
+          <div id="modalRules"></div>
+          <div id="modalFlavour"></div>
+          <div id="metaRelease"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="faction-page.js" data-faction="clans"></script>
+</body>
+</html>

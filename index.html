@@ -12,6 +12,13 @@
   <link rel="icon" type="image/svg+xml" href="images/iconography/svg/logo.svg" color="white">
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <img src="images/okc_logo_black.svg" alt="Old King's Crown" class="loading-logo">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
   <main class="snap-container">
     <!-- HERO  -->
     <section id="hero">
@@ -239,7 +246,7 @@ Unfielded words search: title + rules + commands
     </div>
   </div>
 
-  <!--JS -->
-  <script src="app.js"></script>
+  <!--JS (modular) -->
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

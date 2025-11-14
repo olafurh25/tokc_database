@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Gathering — Old King's Crown</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="faction-pages.css">
+</head>
+<body class="faction-page gathering-page">
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <img src="images/okc_logo_black.svg" alt="Old King's Crown" class="loading-logo">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="faction-header">
+    <a href="index.html" class="back-link">← Back to Database</a>
+    <h1 class="faction-title">The Gathering</h1>
+    <p class="faction-tagline">Unity in the Wildwood</p>
+  </header>
+
+  <!-- Strategy Guide -->
+  <section class="strategy-section">
+    <div class="strategy-content">
+      <h2>Strategy Guide</h2>
+      <div class="strategy-text">
+        <p><strong>The Gathering</strong> harnesses the power of nature and community. This faction excels at sustained growth, overwhelming opponents with sheer numbers and the raw power of the wilderness.</p>
+        
+        <h3>Key Strengths:</h3>
+        <ul>
+          <li><strong>Growth:</strong> Deploy and rally effects build board presence over time</li>
+          <li><strong>Resilience:</strong> Invulnerable and resilient traits provide staying power</li>
+          <li><strong>Raw Power:</strong> High-strength followers dominate clashes</li>
+          <li><strong>Synergy:</strong> Cards that support each other create compound advantages</li>
+        </ul>
+
+        <h3>Core Tactics:</h3>
+        <ul>
+          <li>Build early board presence with invulnerable followers</li>
+          <li>Use trader cards to maintain hand quality and flexibility</li>
+          <li>Leverage deploy effects to create overwhelming numbers</li>
+          <li>Protect high-value captains and heirs with supporting followers</li>
+        </ul>
+
+        <h3>Advanced Tips:</h3>
+        <ul>
+          <li>The Gathering rewards patience—build your engine before striking</li>
+          <li>Invulnerable followers create safe foundations for expansion</li>
+          <li>Time your captain deployments to maximize their impact</li>
+          <li>HQ cards multiply your advantages—prioritize their protection</li>
+        </ul>
+      </div>
+
+      <!-- Video Section -->
+      <div class="video-section">
+        <h3>Video Guides</h3>
+        <div class="video-grid">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="The Gathering Strategy Guide" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">The Gathering Overview</p>
+          </div>
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="Advanced Gathering Tactics" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">Advanced Tactics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="cards-section">
+    <h2>Faction Cards</h2>
+    <div id="cardGrid" class="faction-card-grid"></div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div id="modalContent" class="modal-content">
+      <div class="modal-inner">
+        <div class="modal-artwrap">
+          <img id="modalImage" src="" alt="">
+        </div>
+        <div class="modal-panel">
+          <div class="modal-header-row">
+            <h2 id="modalName"></h2>
+            <button id="closeModal" class="close-btn">
+✕</button>
+          </div>
+          <div id="modalTypeFaction"></div>
+          <div id="modalMeta"></div>
+          <div id="modalCmd"></div>
+          <div id="modalRules"></div>
+          <div id="modalFlavour"></div>
+          <div id="metaRelease"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="faction-page.js" data-faction="gathering"></script>
+</body>
+</html>

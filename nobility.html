@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Nobility — Old King's Crown</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="faction-pages.css">
+</head>
+<body class="faction-page nobility-page">
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <img src="images/okc_logo_black.svg" alt="Old King's Crown" class="loading-logo">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="faction-header">
+    <a href="index.html" class="back-link">← Back to Database</a>
+    <h1 class="faction-title">The Nobility</h1>
+    <p class="faction-tagline">Heirs to the Ancient Throne</p>
+  </header>
+
+  <!-- Strategy Guide -->
+  <section class="strategy-section">
+    <div class="strategy-content">
+      <h2>Strategy Guide</h2>
+      <div class="strategy-text">
+        <p><strong>The Nobility</strong> commands through authority and legacy. This faction excels at political maneuvering, using votes, lore, and powerful champions to claim rightful dominion over the kingdom.</p>
+        
+        <h3>Key Strengths:</h3>
+        <ul>
+          <li><strong>Political Power:</strong> High vote values dominate councils</li>
+          <li><strong>Lore Acquisition:</strong> Efficient lore generation accelerates victory</li>
+          <li><strong>Elite Units:</strong> High-strength captains and champions</li>
+          <li><strong>Authority:</strong> Powerful command abilities control the battlefield</li>
+        </ul>
+
+        <h3>Core Tactics:</h3>
+        <ul>
+          <li>Prioritize council presence with high-vote cards</li>
+          <li>Balance lore acquisition with board control</li>
+          <li>Deploy champions strategically for maximum impact</li>
+          <li>Use trader cards to maintain card advantage</li>
+        </ul>
+
+        <h3>Advanced Tips:</h3>
+        <ul>
+          <li>The Nobility excels at the long game—establish dominance gradually</li>
+          <li>Vote efficiency matters more than raw strength in many situations</li>
+          <li>Protect your heirs and champions—they're your path to victory</li>
+          <li>HQ cards amplify your political and military advantages</li>
+        </ul>
+      </div>
+
+      <!-- Video Section -->
+      <div class="video-section">
+        <h3>Video Guides</h3>
+        <div class="video-grid">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="The Nobility Strategy Guide" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">The Nobility Overview</p>
+          </div>
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="Advanced Nobility Tactics" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">Advanced Tactics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="cards-section">
+    <h2>Faction Cards</h2>
+    <div id="cardGrid" class="faction-card-grid"></div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div id="modalContent" class="modal-content">
+      <div class="modal-inner">
+        <div class="modal-artwrap">
+          <img id="modalImage" src="" alt="">
+        </div>
+        <div class="modal-panel">
+          <div class="modal-header-row">
+            <h2 id="modalName"></h2>
+            <button id="closeModal" class="close-btn">✕</button>
+          </div>
+          <div id="modalTypeFaction"></div>
+          <div id="modalMeta"></div>
+          <div id="modalCmd"></div>
+          <div id="modalRules"></div>
+          <div id="modalFlavour"></div>
+          <div id="metaRelease"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="faction-page.js" data-faction="nobility"></script>
+</body>
+</html>

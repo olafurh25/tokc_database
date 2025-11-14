@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Uprising — Old King's Crown</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="faction-pages.css">
+</head>
+<body class="faction-page uprising-page">
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <img src="images/okc_logo_black.svg" alt="Old King's Crown" class="loading-logo">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="faction-header">
+    <a href="index.html" class="back-link">← Back to Database</a>
+    <h1 class="faction-title">The Uprising</h1>
+    <p class="faction-tagline">Revolution from the Shadows</p>
+  </header>
+
+  <!-- Strategy Guide -->
+  <section class="strategy-section">
+    <div class="strategy-content">
+      <h2>Strategy Guide</h2>
+      <div class="strategy-text">
+        <p><strong>The Uprising</strong> fights through cunning, sabotage, and overwhelming numbers. This faction excels at disruption and asymmetric warfare, using clever tricks and coordinated strikes to topple even the mightiest opponents.</p>
+        
+        <h3>Key Strengths:</h3>
+        <ul>
+          <li><strong>Disruption:</strong> Agent abilities and ruses disrupt opponent strategies</li>
+          <li><strong>Numbers:</strong> Deploy abilities and recruitment create board presence</li>
+          <li><strong>Flexibility:</strong> Trader cards and rally effects maintain hand advantage</li>
+          <li><strong>Surprise:</strong> Night timing and deadly strikes catch opponents off-guard</li>
+        </ul>
+
+        <h3>Core Tactics:</h3>
+        <ul>
+          <li>Use <strong>The Irregulars</strong> and deploy cards to flood the board early</li>
+          <li>Leverage <strong>The Fence</strong> to maintain card economy with Rally</li>
+          <li>Time agent abilities during opponent's vulnerable moments</li>
+          <li>Coordinate cavalry flanks with deadly strikes for maximum impact</li>
+        </ul>
+
+        <h3>Advanced Tips:</h3>
+        <ul>
+          <li>The Uprising rewards careful timing—strike when enemies are overextended</li>
+          <li>Deploy effects create pressure that forces opponents to react</li>
+          <li>Use invulnerable followers to safely contest multiple regions</li>
+          <li>HQ cards amplify your board state—protect and leverage them wisely</li>
+        </ul>
+      </div>
+
+      <!-- Video Section -->
+      <div class="video-section">
+        <h3>Video Guides</h3>
+        <div class="video-grid">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="The Uprising Strategy Guide" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">The Uprising Overview</p>
+          </div>
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="Advanced Uprising Tactics" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+            <p class="video-caption">Advanced Tactics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="cards-section">
+    <h2>Faction Cards</h2>
+    <div id="cardGrid" class="faction-card-grid"></div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div id="modalContent" class="modal-content">
+      <div class="modal-inner">
+        <div class="modal-artwrap">
+          <img id="modalImage" src="" alt="">
+        </div>
+        <div class="modal-panel">
+          <div class="modal-header-row">
+            <h2 id="modalName"></h2>
+            <button id="closeModal" class="close-btn">✕</button>
+          </div>
+          <div id="modalTypeFaction"></div>
+          <div id="modalMeta"></div>
+          <div id="modalCmd"></div>
+          <div id="modalRules"></div>
+          <div id="modalFlavour"></div>
+          <div id="metaRelease"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="faction-page.js" data-faction="uprising"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+/* =========================================================
+   Faction Pages — Dedicated faction guide styling
+   ========================================================= */
+
+.faction-page {
+  background: var(--accent);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== HEADER ===== */
+.faction-header {
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
+  position: relative;
+}
+
+.back-link {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  color: #FAD069;
+  text-decoration: none;
+  font: 500 1.1rem "Source Serif Pro", serif;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.back-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-4px);
+}
+
+.faction-title {
+  font: 700 3.5rem "Source Serif Pro", serif;
+  color: #FAD069;
+  margin: 0;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.faction-tagline {
+  font: italic 400 1.4rem "Source Serif 4", serif;
+  color: #eaf0f5;
+  margin: 0.5rem 0 0;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .faction-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .back-link {
+    position: static;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .faction-title {
+    font-size: 2.5rem;
+  }
+
+  .faction-tagline {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===== STRATEGY SECTION ===== */
+.strategy-section {
+  max-width: 1400px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.strategy-content {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.strategy-content h2 {
+  font: 700 2.2rem "Source Serif Pro", serif;
+  color: var(--ink);
+  margin: 0 0 1.5rem 0;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+
+.strategy-content h3 {
+  font: 600 1.5rem "Source Serif Pro", serif;
+  color: var(--accent);
+  margin: 1.5rem 0 0.8rem 0;
+}
+
+.strategy-text {
+  color: var(--ink);
+  font: 400 1.05rem/1.6 "Source Serif 4", serif;
+}
+
+.strategy-text p {
+  margin: 0 0 1rem 0;
+}
+
+.strategy-text strong {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.strategy-text ul {
+  margin: 0.5rem 0 1rem 1.5rem;
+  padding: 0;
+}
+
+.strategy-text li {
+  margin: 0.4rem 0;
+}
+
+/* ===== VIDEO SECTION ===== */
+.video-section {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(31, 59, 65, 0.2);
+}
+
+.video-section h3 {
+  font: 600 1.8rem "Source Serif Pro", serif;
+  color: var(--accent);
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+}
+
+.video-caption {
+  margin-top: 0.8rem;
+  text-align: center;
+  font: 500 1rem "Source Serif Pro", serif;
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .strategy-content {
+    padding: 1.5rem;
+  }
+
+  .strategy-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .strategy-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .video-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ===== CARDS SECTION ===== */
+.cards-section {
+  max-width: 1600px;
+  margin: 3rem auto 5rem;
+  padding: 0 2rem;
+}
+
+.cards-section h2 {
+  font: 700 2.2rem "Source Serif Pro", serif;
+  color: #eaf0f5;
+  text-align: center;
+  margin: 0 0 2rem 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.faction-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+@media (max-width: 1100px) {
+  .faction-card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .faction-card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .faction-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== FACTION-SPECIFIC COLORS ===== */
+.clans-page .faction-title,
+.clans-page .back-link {
+  color: #6BB6D6;
+}
+
+.uprising-page .faction-title,
+.uprising-page .back-link {
+  color: #E74C3C;
+}
+
+.gathering-page .faction-title,
+.gathering-page .back-link {
+  color: #52C77D;
+}
+
+.nobility-page .faction-title,
+.nobility-page .back-link {
+  color: #9B59B6;
+}
