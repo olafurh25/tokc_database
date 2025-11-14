@@ -11,6 +11,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Spectral+SC:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+@font-face {
+  font-family: 'Madelin';
+  src: url('fonts/Madelin-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Madelin';
+  src: url('fonts/Madelin-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Madelin';
+  src: url('fonts/Madelin-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Qanelas';
+  src: url('fonts/Qanelas-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Qanelas';
+  src: url('fonts/Qanelas-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ======= ROOT / THEME ======= */
 :root{
   --accent: #1F3B41;
@@ -87,12 +127,26 @@ body{
   background: var(--accent) url("images/box_art.jpg") center 0 / cover no-repeat;
   overflow-x:hidden;
   min-height:100vh;
+  transition: background-position-y 0.15s ease-out;
 }
-h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Source Serif Pro",serif; }
-#modalName,.card h3{ font-family:"Spectral SC",serif; letter-spacing:.02em; }
+h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin","Source Serif Pro",serif; }
+#modalName,.card h3{ font-family:"Madelin","Spectral SC",serif; letter-spacing:.02em; }
+
+/* Strength and numeric values use Qanelas */
+.strength-value,
+.meta-row .icon + span,
+[data-strength] { font-family: "Qanelas", sans-serif; font-weight: 700; }
 
 /* ================= HERO ================= */
-#hero{ position:relative; height:100vh; display:grid; place-items:center; overflow:hidden; }
+#hero{ 
+  position:relative; 
+  height:100vh; 
+  display:grid; 
+  place-items:center; 
+  overflow:hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
 .hero-inner{ text-align:center; }
 .hero-logo{ width:min(34vw,380px); height:auto; display:block; margin-inline:auto; }
 .hero-tagline{
@@ -185,6 +239,15 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Source Se
 .topbar-btn-mobile { display: none; }
 .topbar-btn-desktop { display: inline-flex; }
 
+/* Inline command OR separator (tight spacing) */
+.or-line {
+  margin: 0.25rem 0;
+  text-align: center;
+  opacity: 0.8;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 /* Hamburger menu */
 .hamburger-menu {
   position: absolute;
@@ -274,10 +337,18 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
 .search-clear:active{ transform:scale(.95); }
 
 /* =========== CARD AREA / GRID =========== */
-.snap-container{ height:100vh; overflow-y:auto; overscroll-behavior:contain; scroll-behavior:auto; }
+.snap-container{ 
+  height:100vh; 
+  overflow-y:auto; 
+  overscroll-behavior:contain; 
+  scroll-behavior:smooth;
+  scroll-snap-type: y mandatory;
+}
 #cardArea{
   margin-top:2rem; height: calc(100vh - 84px);
   overflow-y:auto; position:relative; overscroll-behavior:contain;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   --top-fade:15px;
   -webkit-mask-image: linear-gradient(to bottom, rgba(255,255,255,0) 0,
     rgba(255,255,255,0.6) calc(var(--top-fade)*0.5), rgba(255,255,255,1) var(--top-fade));
@@ -292,7 +363,14 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
     scroll-snap-type: none;
   }
   
+  #hero {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+  
   #cardArea {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
     --top-fade: 60px;
   }
 }
@@ -444,13 +522,18 @@ body.typing #cardGrid{ opacity:.65; }
 
 
 /* HQ cards in the grid — rotate inner wrapper only */
-.card.is-hq { overflow: visible; }
+.card.is-hq { 
+  overflow: visible; 
+  cursor: pointer;
+}
 
 /* Invisible inner container that handles rotation */
 .card-rotator{
   position:absolute; inset:0; border-radius:var(--card-radius-grid);
   transform-origin:center; transform: rotate(0deg);
   transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
+  pointer-events: auto; /* Ensure clicks pass through to parent card */
+  cursor: pointer;
 }
 
 /* Image fills the rotator box */
@@ -637,10 +720,15 @@ body.typing #cardGrid{ opacity:.65; }
 
 /* ===== Inline icon system ===== */
 .icon{ display:inline-block; width:1.1em; height:1.1em; vertical-align:-0.15em; margin:0 .15em; position:relative; top:0px; }
-.icon--img{ width:1.1em; height:1.1em; filter: drop-shadow(0 0 2px rgba(0,0,0,.25)); }
+.icon--img{ width:1.1em; height:1.1em; filter: drop-shadow(0 0 2px rgba(0,0,0,.25));
+  background-image: var(--icon-path);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
 .icon--mask{
   background:currentColor; width:1.1em; height:1.1em;
-  -webkit-mask-image:var(--icon); mask-image:var(--icon);
+  -webkit-mask-image:var(--icon-path); mask-image:var(--icon-path);
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   -webkit-mask-size:contain; mask-size:contain;
   -webkit-mask-position:center; mask-position:center;

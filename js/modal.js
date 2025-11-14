@@ -12,10 +12,10 @@ const modal = document.getElementById("modal");
 const cardGrid = document.getElementById("cardGrid");
 
 export function openModal(id) {
-  const card = cards.find(c => c.id === id);
+  const card = cards.find(c => String(c.id) === String(id));
   if (!card || !modal) return;
 
-  const modalImage = document.getElementById("modalImage");
+  const modalImage = document.getElementById("modalArt");
   const modalName = document.getElementById("modalName");
   const modalTypeFaction = document.getElementById("modalTypeFaction");
   const modalMeta = document.getElementById("modalMeta");
@@ -42,10 +42,13 @@ export function openModal(id) {
   const archetypeLine = card.archetype ? prettyScalar('archetype', card.archetype) : null;
 
   let fullLine = typeLine;
-  if (factionLine) fullLine += ` — ${factionLine}`;
-  if (archetypeLine) fullLine += ` — ${archetypeLine}`;
+  if (factionLine) {
+    const factionIcon = iconLabel(`<${card.faction}>`, factionLine);
+    fullLine += ` ⬩ ${factionIcon}`;
+  }
+  if (archetypeLine) fullLine += ` ⬩ ${archetypeLine}`;
 
-  if (modalTypeFaction) modalTypeFaction.textContent = fullLine;
+  if (modalTypeFaction) modalTypeFaction.innerHTML = fullLine;
 
   const metaParts = [];
   if (card.traits && card.traits.length > 0) {
@@ -57,15 +60,16 @@ export function openModal(id) {
   if (powerLine) {
     const icons = [];
     if (card.cost != null) icons.push(iconLabel('<cost>', String(card.cost)));
-    if (card.strength != null) icons.push(`Strength: ${card.strength}`);
+    if (card.strength != null) icons.push(`Strength: <span class="strength-value">${card.strength}</span>`);
     if (card.votes != null) icons.push(iconLabel('<votes>', String(card.votes)));
     if (card.lore != null) icons.push(iconLabel('<lore>', String(card.lore)));
-    metaParts.push(`<div class="meta-row">${icons.join(' • ')}</div>`);
+    metaParts.push(`<div class="meta-row">${icons.join(' ⬩ ')}</div>`);
   }
 
   if (card.suit) {
     const suitStr = prettyScalar('suit', card.suit);
-    metaParts.push(`<div class="meta-row">Suit: ${suitStr}</div>`);
+    const suitIcon = iconLabel(`<${card.suit}>`, suitStr);
+    metaParts.push(`<div class="meta-row">${suitIcon}</div>`);
   }
 
   if (modalMeta) modalMeta.innerHTML = metaParts.join('');

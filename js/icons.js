@@ -123,8 +123,31 @@ export function normalizeParagraphs(val) {
 export function renderCommandsBlock(lines) {
   if (!lines || (Array.isArray(lines) && lines.length === 0)) return '';
   const arr = Array.isArray(lines) ? lines : [lines];
-  const items = arr.map(line => `<div>${injectIconsToHTML(line)}</div>`);
-  return items.join('<div class="or-line">OR</div>');
+  const out = [];
+  let firstRendered = false;
+  let pendingOr = false;
+
+  for (const raw of arr) {
+    const text = String(raw ?? '').trim();
+    const isOr = /^or$/i.test(text);
+
+    if (isOr) {
+      // Mark that the next command (if any) should be preceded by an OR divider
+      pendingOr = true;
+      continue;
+    }
+
+    // Only insert the OR divider if we've already rendered at least one command
+    if (pendingOr && firstRendered) {
+      out.push('<div class="or-line">OR</div>');
+    }
+
+    out.push(`<div>${injectIconsToHTML(raw)}</div>`);
+    firstRendered = true;
+    pendingOr = false;
+  }
+
+  return out.join('');
 }
 
 export function renderRulesBlock(text) {

@@ -12,8 +12,11 @@ const heroInput = document.getElementById("searchInputHero");
 const barInput = document.getElementById("searchInputBar");
 
 function syncInputs(from, to) {
-  to.value = from.value;
-  to.dispatchEvent(new Event('input', { bubbles: true }));
+  // Avoid ping-pong by only syncing when value actually changed
+  if (to.value !== from.value) {
+    to.value = from.value;
+    to.dispatchEvent(new Event('input', { bubbles: true }));
+  }
 }
 
 function debounce(fn, delay = 300) {

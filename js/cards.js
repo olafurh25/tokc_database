@@ -28,6 +28,9 @@ const sortSelect = document.getElementById('sortSelect');
 const sortOrderBtn = document.getElementById('sortOrderBtn');
 const resultsMessage = document.getElementById('resultsMessage');
 
+// Track whether we've rendered at least once to allow skipping duplicate renders
+let hasRenderedOnce = false;
+
 export async function loadCards() {
   try {
     const response = await fetch('data/data.json');
@@ -184,9 +187,17 @@ function preloadNextPage() {
 export function applyQuery(reset = true) {
   const input = document.getElementById('searchInputBar') || document.getElementById('searchInputHero');
   const query = input ? input.value : '';
+  // If the query hasn't changed and we've already rendered once, skip redundant work
+  if (hasRenderedOnce && query === currentQuery) {
+    return;
+  }
   currentQuery = query;
-
-  filteredList = cards.filter(card => matchCard(card, query));
+  // Fast path: empty query shows all cards
+  if (!query || !query.trim()) {
+    filteredList = cards.slice();
+  } else {
+    filteredList = cards.filter(card => matchCard(card, query));
+  }
 
   if (reset) {
     page = 1;
@@ -200,6 +211,8 @@ export function applyQuery(reset = true) {
     setNoResults(false);
     applySortAndRender();
   }
+
+  hasRenderedOnce = true;
 }
 
 export function updateLoadUi() {
@@ -274,11 +287,20 @@ export function initCards() {
   const heroInput = document.getElementById("searchInputHero");
   const barInput = document.getElementById("searchInputBar");
 
+  // Debounce applyQuery to avoid flicker while typing
+  const debouncedApply = (() => {
+    let timer;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => applyQuery(), 250);
+    };
+  })();
+
   if (heroInput) {
-    heroInput.addEventListener('input', () => applyQuery());
+    heroInput.addEventListener('input', debouncedApply);
   }
   if (barInput) {
-    barInput.addEventListener('input', () => applyQuery());
+    barInput.addEventListener('input', debouncedApply);
   }
 
   // Pagination controls
