@@ -46,6 +46,10 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Source Se
   margin:1.4rem 0 1rem; font-size:1.4rem; font-style:italic; text-align:center;
   opacity:.95; text-shadow:0 3px 6px rgba(0,0,0,.65);
 }
+@media(max-width:640px){
+  .hero-logo{ width:min(60vw,280px); }
+  .hero-tagline{ font-size:1.1rem; margin:1rem 0 0.8rem; }
+}
 
 /* =========== SEARCH (hero + topbar) =========== */
 .search-wrap{
@@ -53,7 +57,7 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Source Se
   background:var(--glass); border:1px solid rgba(255,255,255,.55);
   border-radius:999px; box-shadow:0 8px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.6);
   backdrop-filter: blur(10px);
-  padding:.9rem .9rem; width:clamp(560px,52vw,760px);
+  padding:.9rem .9rem; width:clamp(280px,90vw,760px);
   transition: background .25s ease, box-shadow .25s ease, transform .15s ease;
   will-change: box-shadow, transform;
 }
@@ -71,28 +75,49 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Source Se
           mask: url("images/iconography/svg/search.svg") no-repeat center / contain;
   opacity:.6;
 }
-.filters{ display:flex; gap:.75rem; justify-content:center; margin-top:1rem; }
+.filters{ display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; margin-top:1rem; }
 .chip{
   appearance:none; border:1px solid rgba(255,255,255,.22);
   background:rgba(31,59,65,.9); color:#FAD069;
   padding:.6rem 1.1rem; border-radius:12px; cursor:pointer; font-size:1rem; line-height:1;
   box-shadow:0 8px 20px rgba(0,0,0,.2);
   transition:transform .12s ease, background .15s ease, border-color .2s ease;
+  min-height:44px; min-width:44px; display:flex; align-items:center; justify-content:center;
+}
+@media(max-width:640px){
+  .filters{ gap:.5rem; }
+  .chip{ padding:.5rem 0.9rem; font-size:0.95rem; }
 }
 .chip:hover{ transform:translateY(-2px); background:rgba(46,87,96,1); border-color:rgba(255,255,255,.35); }
 
 /* Topbar */
 #topbar{
   position:sticky; top:-84px; opacity:0; height:84px;
-  display:grid; grid-template-columns:1fr minmax(560px,1100px) 1fr; align-items:center; gap:1rem; padding:0 1rem;
+  display:grid; grid-template-columns:1fr minmax(280px,1fr) 1fr; align-items:center; gap:0.5rem; padding:0 0.5rem;
   z-index:20; transition: top .35s ease, opacity .35s ease; transform: translateY(-10px);
 }
 #topbar.sticky{ top:0; opacity:1; }
+@media(max-width:768px){
+  #topbar{ gap:0.25rem; padding:0 0.25rem; height:auto; }
+  .topbar-left{ min-width:50px; }
+  .topbar-right{ flex-wrap:wrap; justify-content:flex-end; gap:0.25rem; }
+}
+@media(max-width:640px){
+  #topbar{ grid-template-columns:1fr; }
+  .topbar-left{ display:none; }
+  .topbar-right{ grid-column:1; justify-content:center; }
+}
 .topbar-left{ display:flex; align-items:center; }
-.topbar-logo{ height:140px; width:auto; cursor:pointer; }
+.topbar-logo{ height:50px; width:auto; cursor:pointer; }
+@media(max-width:768px){
+  .topbar-logo{ height:40px; }
+}
 .topbar-center{ display:flex; justify-content:center; }
 .topbar-right{ display:flex; justify-content:flex-end; gap:.6rem; }
-#topbar .search-wrap{ width:clamp(560px,48vw,1100px); padding:.45rem .9rem; }
+#topbar .search-wrap{ width:clamp(400px,95vw,900px); padding:.45rem .6rem; }
+@media(max-width:640px){
+  #topbar .search-wrap{ width:100%; }
+}
 
 /* Search polish */
 .search-wrap:hover{
@@ -243,8 +268,9 @@ body.typing #cardGrid{ opacity:.65; }
 #modal .modal-inner,#closeModal{ cursor:default; }
 #modalContent{
   background:transparent; border:none; padding:1rem;
-  width:min(94%,1100px); max-height:92vh; overflow:visible; position:relative;
+  width:min(94%,1100px); max-height:92vh; overflow:auto; position:relative;
   pointer-events:none;
+  -webkit-overflow-scrolling:touch;
 }
 #modalContent .modal-inner,#modalContent .modal-inner *,#closeModal{ pointer-events:auto; }
 
@@ -307,9 +333,17 @@ body.typing #cardGrid{ opacity:.65; }
 }
 @media (max-width:720px){
   .modal-inner{ grid-template-columns:1fr; }
-  .modal-artwrap{ margin-right:0; }
+  .modal-artwrap{ margin-right:0; width:min(70vw,300px); }
   :root{ --modal-overlap:0px; }
-  .modal-panel{ margin-top:1rem; }
+  .modal-panel{ margin-top:1rem; padding:1rem 1rem; }
+}
+@media (max-width:480px){
+  .modal-artwrap{ width:min(85vw,280px); }
+  .modal-panel{ padding:0.8rem; min-height:auto; }
+  #modalName{ font-size:1.1rem; }
+  #modalMeta{ font-size:0.95rem; }
+  #modalCmd{ font-size:0.95rem; line-height:2; }
+  #modalRules{ font-size:0.9rem; }
 }
 
 /* ===== META ROWS ===== */
