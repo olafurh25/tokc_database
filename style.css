@@ -572,6 +572,7 @@ body.typing #cardGrid{ opacity:.65; }
 .card.is-hq .card-rotator img{
   width:100%; height:100%; object-fit:cover; border-radius:var(--card-radius-grid);
   pointer-events: auto;
+  cursor: pointer;
 }
 
 /* Move the rim to the rotator for HQ so it rotates with the art */

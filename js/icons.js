@@ -151,6 +151,10 @@ export function renderCommandsBlock(lines) {
 }
 
 export function renderRulesBlock(text) {
+  // Handle arrays by joining them
+  if (Array.isArray(text)) {
+    text = text.join('\n');
+  }
   if (!text) return '';
   const lines = text.split('\n').filter(l => l.trim());
   const result = [];
