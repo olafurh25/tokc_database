@@ -267,6 +267,10 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin",
 @media(max-width:768px){
   .topbar-logo{ height:40px; }
 }
+@media(max-width:640px){
+  .topbar-logo{ display:none; }
+  .topbar-left{ display:none; }
+}
 .topbar-center{ display:flex; justify-content:center; position: relative; gap: 0.5rem; align-items: center; }
 .topbar-right{ display:flex; justify-content:flex-end; gap:.6rem; }
 #topbar .search-wrap{ width:clamp(400px,95vw,900px); padding:.45rem .6rem; }
@@ -588,12 +592,14 @@ body.typing #cardGrid{ opacity:.65; }
 }
 
 /* Hover rotates only the inner rotator; the card stays unrotated */
-.card.is-hq:hover .card-rotator{
-  transform: rotate(90deg);
-}
-.card.is-hq:hover{
-  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-  filter: saturate(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .card.is-hq:hover .card-rotator{
+    transform: rotate(90deg);
+  }
+  .card.is-hq:hover{
+    box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+    filter: saturate(1.05);
+  }
 }
 
 /* Keep HQ cards rotated while modal is open */
