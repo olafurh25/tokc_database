@@ -564,7 +564,9 @@ function renderNextPage() {
     const isHQ = String(c.archetype || "").toLowerCase() === "hq";
     return `
       <div class="card ${isHQ ? "is-hq" : ""}" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.title||''}">
-        <img src="${c.image}" alt="${c.name || ''}" loading="lazy">
+        <div class="card-rotator">
+          <img src="${c.image}" alt="${c.name || ''}" loading="lazy">
+        </div>
       </div>
     `;
   }).join("");

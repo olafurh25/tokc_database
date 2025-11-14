@@ -165,7 +165,7 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
 @media(max-width:1100px){ #cardGrid{ grid-template-columns:repeat(3,1fr); } }
 @media(max-width:800px){  #cardGrid{ grid-template-columns:repeat(2,1fr); } }
 @media(max-width:640px){  #cardGrid{ grid-template-columns:repeat(2,1fr); } }
-@media(max-width:520px){  #cardGrid{ grid-template-columns:1fr; } }
+@media(max-width:360px){  #cardGrid{ grid-template-columns:1fr; } }
 body.typing #cardGrid{ opacity:.65; }
 
 .card {
@@ -191,34 +191,35 @@ body.typing #cardGrid{ opacity:.65; }
    so they don't affect HQ cards. */
 
 
-/* HQ cards in the grid — rotated on hover */
-.card.is-hq {
-  overflow: hidden;
-  transform-origin: center;
-  transition: transform 0.35s cubic-bezier(.33,1.02,.44,1), box-shadow .2s ease;
+/* HQ cards in the grid — rotate inner wrapper only */
+.card.is-hq { overflow: visible; }
+
+/* Invisible inner container that handles rotation */
+.card-rotator{
+  position:absolute; inset:0; border-radius:var(--card-radius-grid);
+  transform-origin:center; transform: rotate(0deg);
+  transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
 }
 
-/* Hover effect: rotate both the container and the image */
-.card.is-hq:hover {
+/* Image fills the rotator box */
+.card.is-hq .card-rotator img{
+  width:100%; height:100%; object-fit:cover; border-radius:var(--card-radius-grid);
+}
+
+/* Move the rim to the rotator for HQ so it rotates with the art */
+.card.is-hq::after{ display:none; }
+.card.is-hq .card-rotator::after{
+  content:""; position:absolute; inset:0; border-radius:var(--card-radius-grid);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); pointer-events:none;
+}
+
+/* Hover rotates only the inner rotator; the card stays unrotated */
+.card.is-hq:hover .card-rotator{
   transform: rotate(90deg);
+}
+.card.is-hq:hover{
   box-shadow: 0 14px 40px rgba(0,0,0,0.35);
   filter: saturate(1.05);
-}
-
-/* Rotate image and rim together with container */
-.card.is-hq img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: var(--card-radius-grid);
-  transform: rotate(0deg);
-  transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
-}
-
-/* Keep the rim synced too */
-.card.is-hq::after {
-  transform: rotate(0deg);
-  transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
 }
 
 
@@ -227,6 +228,8 @@ body.typing #cardGrid{ opacity:.65; }
   /* keep whatever sizing you already have here */
   /* ensure it can rotate without affecting inner sizing */
   transform-origin: center;
+  position: relative;
+  overflow: visible;
 }
 
 .modal-artwrap img{
@@ -241,6 +244,7 @@ body.typing #cardGrid{ opacity:.65; }
 /* Apply permanent 90° in modal for HQ */
 .modal-artwrap.is-hq{
   transform: rotate(90deg);
+  z-index: 2; /* sit above info panel */
 }
 
 /* Neutralize any transforms on inner bits so only the wrapper rotates */
@@ -275,11 +279,11 @@ body.typing #cardGrid{ opacity:.65; }
 }
 #modalContent .modal-inner,#modalContent .modal-inner *,#closeModal{ pointer-events:auto; }
 
-.modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:center; position:relative; z-index:1; }
+.modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:center; position:relative; z-index:1; overflow:visible; gap:1rem; }
 
 /* Art wrapper controls size & aspect */
 .modal-artwrap{
-  position:relative; display:inline-block; z-index:3;
+  position:relative; display:inline-block; z-index:20;
   width:min(38vw,420px); aspect-ratio:var(--card-ratio);
   margin-right:calc(-1 * var(--modal-overlap)); box-sizing:border-box;
 }
@@ -296,6 +300,10 @@ body.typing #cardGrid{ opacity:.65; }
 }
 
 /* HQ in MODAL — rotate IMG + rim; sizing stays from wrapper */
+.modal-artwrap.is-hq,
+.modal-artwrap.is-hq .art-rotor,
+.modal-artwrap.is-hq img,
+.modal-artwrap.is-hq::after{ position:relative; z-index:20; }
 .modal-artwrap.is-hq img{ transform:rotate(0deg); transform-origin:center; }
 .modal-artwrap.is-hq::after{ transform:rotate(0deg); transform-origin:center; }
 
@@ -309,6 +317,8 @@ body.typing #cardGrid{ opacity:.65; }
   border-radius:16px; padding:1.4rem 1.8rem; padding-left:calc(1.8rem + var(--modal-overlap));
   box-shadow:0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
   min-height:380px; max-width:640px; z-index:1; text-align:left;
+  position: relative; 
+  z-index: 1; 
 }
 .modal-header-row{
   display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;
@@ -478,6 +488,44 @@ body::after{
 /* If you want HQ hovers to be on top of everything else */
 .card.is-hq:hover,
 .card.is-hq:focus-within { z-index: 120; }
+
+/* ============================================
+   HQ Modal Layout: art above, panel centered
+   ============================================ */
+/* When the modal shows an HQ card, stack vertically and center */
+.modal-inner:has(.modal-artwrap.is-hq){
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-items: start;
+}
+
+/* Center the art wrapper */
+.modal-inner:has(.modal-artwrap.is-hq) .modal-artwrap{
+  justify-self: center;
+  margin-inline: auto; /* ensure perfect horizontal centering */
+}
+
+/* Center the info panel under the art and remove any side overlap */
+.modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
+  margin-left: 0;
+  margin-top: 0.5rem; /* closer to the card */
+  max-width: min(900px, 92vw);
+  justify-self: center;
+  transform: none;
+  position: relative;
+  z-index: 1;
+  padding-left: 0; /* no content offset */
+}
+
+/* ============================================
+   Modal: disable any art/panel overlap globally
+   ============================================ */
+.modal-panel{
+  margin-left: 0;
+  transform: none;
+  padding-left: 0;
+}
 
 
 
