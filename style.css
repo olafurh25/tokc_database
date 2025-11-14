@@ -184,7 +184,7 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin",
   overflow:hidden;
 }
 .hero-inner{ text-align:center; }
-.hero-logo{ width:min(34vw,380px); height:auto; display:block; margin-inline:auto; margin-left: calc(50% + 8px); transform: translateX(-50%); }
+.hero-logo{ width:min(34vw,380px); height:auto; display:block; margin-left: calc(50% + 8px); transform: translateX(-50%); }
 .hero-tagline{
   margin:1.4rem 0 1rem; font-size:1.4rem; text-align:center;
   opacity:.95; text-shadow:0 3px 6px rgba(0,0,0,.65);
@@ -414,6 +414,8 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
   align-items: center;
   width: min(1300px, 92%);
   margin: 0 auto 1rem;
+  margin-left: calc(50% - min(1300px, 92%) / 2 + (100vw - 100%) / 2);
+  margin-right: auto;
   padding: 0.8rem 1rem;
   background: rgba(31, 59, 65, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -521,7 +523,10 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
 }
 
 #cardGrid{
-  width:min(1300px,92%); margin:1.2rem auto 4rem;
+  width:min(1300px,92%); 
+  margin:1.2rem auto 4rem;
+  margin-left: calc(50% - min(1300px, 92%) / 2 + (100vw - 100%) / 2); /* Account for scrollbar */
+  margin-right: auto;
   display:grid; gap:1.1rem; grid-template-columns:repeat(4, 1fr);
   transition:opacity .35s cubic-bezier(.4,0,.2,1);
 }
@@ -702,6 +707,10 @@ body.typing #cardGrid{ opacity:.65; }
   position: relative;
   height: fit-content;
   align-self: start;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  box-sizing: border-box;
 }
 .modal-header-row{
   display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;
@@ -726,18 +735,36 @@ body.typing #cardGrid{ opacity:.65; }
   :root{ --modal-overlap:80px; }
 }
 @media (max-width:720px){
-  .modal-inner{ grid-template-columns:1fr; }
+  .modal-inner{ grid-template-columns:1fr; justify-items:center; }
   .modal-artwrap{ margin-right:0; width:min(70vw,300px); }
   :root{ --modal-overlap:0px; }
-  .modal-panel{ margin-top:1rem; padding:1rem 1rem; }
+  .modal-panel{ margin-top:1rem; padding:1rem 1rem; min-width:0; max-width:min(70vw,300px); text-align:left; }
+  
+  /* Enable vertical scrolling on mobile */
+  #modalContent{ overflow-y:auto; overflow-x:hidden; max-height:92vh; display:flex; align-items:center; justify-content:center; }
+  
+  /* HQ cards on tablet */
+  .modal-artwrap.is-hq{ width:min(70vw,300px); }
+  .modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
+    margin-top:-4rem; /* Less overlap on smaller screens */
+    max-width:min(300px,92vw);
+  }
 }
 @media (max-width:480px){
   .modal-artwrap{ width:min(85vw,280px); }
-  .modal-panel{ padding:0.8rem; min-height:auto; }
+  .modal-panel{ padding:0.8rem; min-height:auto; min-width:0; max-width:min(85vw,280px); text-align:left; }
   #modalName{ font-size:1.1rem; }
   #modalMeta{ font-size:0.95rem; }
   #modalCmd{ font-size:0.95rem; line-height:2; }
   #modalRules{ font-size:0.9rem; }
+  
+  /* HQ cards on mobile */
+  .modal-artwrap.is-hq{ width:min(85vw,280px); }
+  .modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
+    margin-top:-2rem; /* Minimal overlap on mobile */
+    max-width:min(280px,92vw);
+    padding:0.8rem;
+  }
 }
 
 /* ===== META ROWS ===== */
@@ -931,6 +958,7 @@ body::after{
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
+  margin-left: calc(-1 * (100vw - 100%) / 2);
   z-index: 50;
   opacity: 0;
   pointer-events: none;
@@ -1003,16 +1031,16 @@ body::after{
    ============================================ */
 .jump-to-top {
   position: fixed;
-  top: 1rem;
+  top: 100px;
   left: 50%;
   transform: translateX(-50%);
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: rgba(31, 59, 65, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #FAD069;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
   display: flex;
@@ -1023,6 +1051,7 @@ body::after{
   opacity: 1;
   z-index: 999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-left: calc(-1 * (100vw - 100%) / 2); /* Compensate for scrollbar */
 }
 
 .jump-to-top.hidden {
@@ -1043,10 +1072,10 @@ body::after{
 
 @media (max-width: 640px) {
   .jump-to-top {
-    top: 0.75rem;
-    width: 44px;
-    height: 44px;
-    font-size: 1.3rem;
+    top: 90px;
+    width: 56px;
+    height: 56px;
+    font-size: 1.6rem;
   }
 }
 
