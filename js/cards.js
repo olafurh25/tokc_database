@@ -318,35 +318,4 @@ export function initCards() {
       goToPage(totalPages);
     });
   }
-
-  // Jump to top button
-  const jumpToTopBtn = document.getElementById("jumpToTop");
-  if (jumpToTopBtn && cardArea) {
-    function updateJumpToTopVisibility() {
-      const snapContainer = document.querySelector('.snap-container');
-      const scrolled = snapContainer ? snapContainer.scrollTop : cardArea.scrollTop;
-      const threshold = 300;
-      if (scrolled > threshold) {
-        jumpToTopBtn.classList.remove('hidden');
-      } else {
-        jumpToTopBtn.classList.add('hidden');
-      }
-    }
-
-    // Listen to both container and cardArea scrolling
-    const snapContainer = document.querySelector('.snap-container');
-    if (snapContainer) {
-      snapContainer.addEventListener('scroll', updateJumpToTopVisibility, { passive: true });
-    }
-    cardArea.addEventListener('scroll', updateJumpToTopVisibility, { passive: true });
-
-    jumpToTopBtn.addEventListener('click', () => {
-      const snapContainer = document.querySelector('.snap-container');
-      if (snapContainer) {
-        snapContainer.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-      // Also scroll card area to top
-      cardArea.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
 }

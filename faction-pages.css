@@ -6,6 +6,7 @@
   background: var(--accent);
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* ===== HEADER ===== */
@@ -37,14 +38,14 @@
 }
 
 .faction-title {
-  font: 700 3.5rem "Source Serif Pro", serif;
+  font: 700 3.5rem "Madelin", serif;
   color: #FAD069;
   margin: 0;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .faction-tagline {
-  font: italic 400 1.4rem "Source Serif 4", serif;
+  font: italic 400 1.4rem "Madelin", serif;
   color: #eaf0f5;
   margin: 0.5rem 0 0;
   opacity: 0.9;
@@ -87,7 +88,7 @@
 }
 
 .strategy-content h2 {
-  font: 700 2.2rem "Source Serif Pro", serif;
+  font: 700 2.2rem "Madelin", serif;
   color: var(--ink);
   margin: 0 0 1.5rem 0;
   border-bottom: 2px solid var(--accent);
@@ -95,7 +96,7 @@
 }
 
 .strategy-content h3 {
-  font: 600 1.5rem "Source Serif Pro", serif;
+  font: 600 1.5rem "Madelin", serif;
   color: var(--accent);
   margin: 1.5rem 0 0.8rem 0;
 }
@@ -131,7 +132,7 @@
 }
 
 .video-section h3 {
-  font: 600 1.8rem "Source Serif Pro", serif;
+  font: 600 1.8rem "Madelin", serif;
   color: var(--accent);
   margin: 0 0 1.5rem 0;
   text-align: center;
@@ -197,11 +198,23 @@
 }
 
 .cards-section h2 {
-  font: 700 2.2rem "Source Serif Pro", serif;
+  font: 700 2.2rem "Madelin", serif;
   color: #eaf0f5;
   text-align: center;
   margin: 0 0 2rem 0;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-type-section {
+  margin-bottom: 3rem;
+}
+
+.card-type-title {
+  font: 600 1.6rem "Madelin", serif;
+  color: #FAD069;
+  margin: 0 0 1.2rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(250, 208, 105, 0.3);
 }
 
 .faction-card-grid {

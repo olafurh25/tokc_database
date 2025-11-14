@@ -6,29 +6,49 @@
 
 import { loadCards } from './js/cards.js';
 import { initModal } from './js/modal.js';
-import { initUI, hideLoadingScreen } from './js/ui.js';
 
-// Get faction from script tag data attribute
-const currentScript = document.currentScript;
-const faction = currentScript.getAttribute('data-faction');
+// Get faction from body class (e.g., "clans-page" -> "clans")
+const bodyClasses = document.body.className;
+// Match specific faction names, not "faction-page"
+const factionMatch = bodyClasses.match(/(clans|uprising|gathering|nobility)-page/);
+const faction = factionMatch ? factionMatch[1] : null;
 
-// Initialize modules
-initUI();
+console.log('Detected faction:', faction);
+
+// Hide loading screen helper
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById('loadingScreen');
+  if (loadingScreen) {
+    loadingScreen.classList.add('fade-out');
+    setTimeout(() => {
+      loadingScreen.remove();
+    }, 600);
+  }
+}
+
+// Initialize modal
 initModal();
 
-// Wait for DOM and cards to be loaded
-document.addEventListener('DOMContentLoaded', async () => {
+async function initFactionPage() {
+  console.log('Initializing faction page for:', faction);
+  
+  if (!faction) {
+    console.error('No faction detected! Body classes:', document.body.className);
+    return;
+  }
+  
   // Load cards
   const cards = await loadCards();
+  console.log('Cards loaded:', cards.length);
 
-  // Filter cards for this faction (including basic, advanced, kingdom cards)
+  // Filter cards for this faction
   const factionCards = cards.filter(card => {
     // Include basic and advanced faction cards
     if ((card.type === 'basic' || card.type === 'advanced') && card.faction === faction) {
       return true;
     }
-    // Include kingdom cards that belong to this faction
-    if (card.type === 'kingdom' && card.faction === faction) {
+    // Include tactic cards for this faction
+    if (card.type === 'tactic' && card.faction === faction) {
       return true;
     }
     // Include favour cards for this faction
@@ -57,57 +77,134 @@ document.addEventListener('DOMContentLoaded', async () => {
     return strA - strB;
   });
 
+  console.log('Filtered faction cards:', factionCards.length);
+
   // Render all faction cards
   renderFactionCards(factionCards);
 
   // Hide loading screen
   setTimeout(hideLoadingScreen, 200);
-});
+}
+
+// Start when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFactionPage);
+} else {
+  initFactionPage();
+}
 
 // Render faction cards to the grid
 function renderFactionCards(factionCards) {
-  const grid = document.getElementById('cardGrid');
-  if (!grid) return;
+  console.log('Rendering', factionCards.length, 'cards');
 
-  grid.innerHTML = '';
+  // Group cards by type (only the types we want to display)
+  const cardsByType = {
+    favour: [],
+    tactic: [],
+    advanced: [],
+    basic: []
+  };
 
   factionCards.forEach(card => {
-    const cardDiv = document.createElement('div');
-    cardDiv.className = 'card';
-    cardDiv.setAttribute('data-id', card.id);
-    cardDiv.setAttribute('tabindex', '0');
-    
-    // Add HQ class if applicable
-    if (card.archetype === 'hq') {
-      cardDiv.classList.add('is-hq');
-    }
-
-    // Create card HTML
-    let innerHTML = '';
-    
-    if (card.archetype === 'hq') {
-      // HQ cards use rotator
-      innerHTML = `
-        <div class="card-rotator">
-          <img src="${card.image}" alt="${card.title}" loading="eager" decoding="async">
-        </div>
-      `;
+    if (cardsByType[card.type]) {
+      cardsByType[card.type].push(card);
     } else {
-      // Regular cards
-      innerHTML = `<img src="${card.image}" alt="${card.title}" loading="eager" decoding="async">`;
+      console.log('Skipping card with type:', card.type, card.title);
     }
-
-    cardDiv.innerHTML = innerHTML;
-    grid.appendChild(cardDiv);
   });
 
-  // Add entrance animation
-  const cards = grid.querySelectorAll('.card');
-  cards.forEach((card, i) => {
-    card.style.animationDelay = `${i * 0.03}s`;
-    card.classList.add('card-enter');
+  console.log('Cards by type:', Object.keys(cardsByType).map(k => `${k}: ${cardsByType[k].length}`));
+
+  // Render each type into its own grid
+  Object.entries(cardsByType).forEach(([type, cards]) => {
+    console.log(`Processing type: ${type}, cards: ${cards.length}`);
+    if (cards.length === 0) return;
+
+    const grid = document.getElementById(`${type}Grid`);
+    const section = document.getElementById(`${type}Section`);
+    
+    if (!grid || !section) {
+      console.error(`Grid or section not found for type: ${type}`);
+      return;
+    }
+
+    // Show the section
+    section.style.display = 'block';
+    grid.innerHTML = '';
+
+    cards.forEach(card => {
+      const cardDiv = document.createElement('div');
+      cardDiv.className = 'card';
+      cardDiv.setAttribute('data-id', card.id);
+      cardDiv.setAttribute('tabindex', '0');
+      
+      // Add HQ class if applicable
+      if (card.archetype === 'hq') {
+        cardDiv.classList.add('is-hq');
+      }
+
+      // Create card HTML
+      let innerHTML = '';
+      
+      if (card.archetype === 'hq') {
+        // HQ cards use rotator
+        innerHTML = `
+          <div class="card-rotator">
+            <img src="${card.image}" alt="${card.title}" loading="eager" decoding="async">
+          </div>
+        `;
+      } else {
+        // Regular cards
+        innerHTML = `<img src="${card.image}" alt="${card.title}" loading="eager" decoding="async">`;
+      }
+
+      cardDiv.innerHTML = innerHTML;
+      grid.appendChild(cardDiv);
+    });
+
+    // Add entrance animation
+    const cardElements = grid.querySelectorAll('.card');
+    cardElements.forEach((card, i) => {
+      card.style.animationDelay = `${i * 0.03}s`;
+      card.classList.add('card-enter');
+    });
+
+    // Add click handlers for modal
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      if (card) {
+        const id = card.getAttribute('data-id');
+        if (id && window.openModal) window.openModal(id);
+      }
+    });
+
+    grid.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const card = e.target.closest('.card');
+        if (card) {
+          const id = card.getAttribute('data-id');
+          if (id && window.openModal) window.openModal(id);
+        }
+      }
+    });
+
+    // Mobile touch handlers for HQ cards
+    let pressedCard = null;
+    grid.addEventListener('touchstart', (e) => {
+      const card = e.target.closest('.card.is-hq');
+      if (card) {
+        pressedCard = card;
+        card.classList.add('pressed');
+      }
+    }, { passive: true });
+
+    ['touchend', 'touchcancel'].forEach(evt => {
+      grid.addEventListener(evt, () => {
+        if (pressedCard) {
+          pressedCard.classList.remove('pressed');
+          pressedCard = null;
+        }
+      }, { passive: true });
+    });
   });
 }
-
-// Modal is handled by app.js openModal function which is already loaded
-// Card click events are also handled by the app.js event delegation on cardGrid

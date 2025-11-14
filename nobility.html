@@ -61,7 +61,7 @@
         <h3>Video Guides</h3>
         <div class="video-grid">
           <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+            <iframe src="https://www.youtube.com/embed/hcN5WWYatXI?start=86" 
                     title="The Nobility Strategy Guide" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -70,7 +70,7 @@
             <p class="video-caption">The Nobility Overview</p>
           </div>
           <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+            <iframe src="https://www.youtube.com/embed/hcN5WWYatXI?start=86" 
                     title="Advanced Nobility Tactics" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -86,7 +86,30 @@
   <!-- Cards Section -->
   <section class="cards-section">
     <h2>Faction Cards</h2>
-    <div id="cardGrid" class="faction-card-grid"></div>
+    
+    <!-- Favour Card -->
+    <div class="card-type-section" id="favourSection" style="display: none;">
+      <h3 class="card-type-title">Kingdom's Favour</h3>
+      <div id="favourGrid" class="faction-card-grid"></div>
+    </div>
+
+    <!-- Tactic Cards -->
+    <div class="card-type-section" id="tacticSection" style="display: none;">
+      <h3 class="card-type-title">Tactics</h3>
+      <div id="tacticGrid" class="faction-card-grid"></div>
+    </div>
+
+    <!-- Advanced Cards -->
+    <div class="card-type-section" id="advancedSection" style="display: none;">
+      <h3 class="card-type-title">Advanced Cards</h3>
+      <div id="advancedGrid" class="faction-card-grid"></div>
+    </div>
+
+    <!-- Basic Cards -->
+    <div class="card-type-section" id="basicSection" style="display: none;">
+      <h3 class="card-type-title">Basic Cards</h3>
+      <div id="basicGrid" class="faction-card-grid"></div>
+    </div>
   </section>
 
   <!-- Modal -->
@@ -99,9 +122,8 @@
         <div class="modal-panel">
           <div class="modal-header-row">
             <h2 id="modalName"></h2>
-            <button id="closeModal" class="close-btn">✕</button>
+            <div id="modalTypeFaction"></div>
           </div>
-          <div id="modalTypeFaction"></div>
           <div id="modalMeta"></div>
           <div id="modalCmd"></div>
           <div id="modalRules"></div>

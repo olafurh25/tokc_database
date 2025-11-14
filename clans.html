@@ -29,8 +29,12 @@
     <div class="strategy-content">
       <h2>Strategy Guide</h2>
       <div class="strategy-text">
-        <p><strong>The Clans</strong> excel at mobility and tactical flexibility. Their seafaring heritage grants them unmatched movement capabilities through <strong>Flank</strong> actions and <strong>Pathfinder</strong> traits, allowing them to strike where enemies least expect.</p>
-        
+        <p><strong>The Clans</strong>, assembled on the margins of the kingdom, sail for its heart. Undertaking this great migration, a people of the steppes and sea.
+At their head is an heir of exiles carrying a great accord, inked by the many that sail in her wake, each pledged to her cause. Their banners of many colours snap in the wind as they aim their prows, arrow-true, towards the lands they lost long ago.
+ 
+
+Bright boats, full of songs and spears, bring means
+enough to start anew.
         <h3>Key Strengths:</h3>
         <ul>
           <li><strong>Mobility:</strong> Cavalry units and Pathfinder traits enable rapid repositioning</li>
@@ -61,7 +65,7 @@
         <h3>Video Guides</h3>
         <div class="video-grid">
           <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+            <iframe src="https://www.youtube.com/embed/hcN5WWYatXI?start=290" 
                     title="The Clans Strategy Guide" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -70,7 +74,7 @@
             <p class="video-caption">The Clans Overview</p>
           </div>
           <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+            <iframe src="https://www.youtube.com/embed/hcN5WWYatXI?start=290" 
                     title="Advanced Clans Tactics" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -86,7 +90,30 @@
   <!-- Cards Section -->
   <section class="cards-section">
     <h2>Faction Cards</h2>
-    <div id="cardGrid" class="faction-card-grid"></div>
+    
+    <!-- Favour Card -->
+    <div class="card-type-section" id="favourSection" style="display: none;">
+      <h3 class="card-type-title">Kingdom's Favour</h3>
+      <div id="favourGrid" class="faction-card-grid"></div>
+    </div>
+
+    <!-- Tactic Cards -->
+    <div class="card-type-section" id="tacticSection" style="display: none;">
+      <h3 class="card-type-title">Tactics</h3>
+      <div id="tacticGrid" class="faction-card-grid"></div>
+    </div>
+
+    <!-- Advanced Cards -->
+    <div class="card-type-section" id="advancedSection" style="display: none;">
+      <h3 class="card-type-title">Advanced Cards</h3>
+      <div id="advancedGrid" class="faction-card-grid"></div>
+    </div>
+
+    <!-- Basic Cards -->
+    <div class="card-type-section" id="basicSection" style="display: none;">
+      <h3 class="card-type-title">Basic Cards</h3>
+      <div id="basicGrid" class="faction-card-grid"></div>
+    </div>
   </section>
 
   <!-- Modal (reuse from main page) -->
@@ -99,9 +126,8 @@
         <div class="modal-panel">
           <div class="modal-header-row">
             <h2 id="modalName"></h2>
-            <button id="closeModal" class="close-btn">✕</button>
+            <div id="modalTypeFaction"></div>
           </div>
-          <div id="modalTypeFaction"></div>
           <div id="modalMeta"></div>
           <div id="modalCmd"></div>
           <div id="modalRules"></div>
