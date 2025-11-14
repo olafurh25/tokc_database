@@ -519,6 +519,32 @@ body::after{
 }
 
 /* ============================================
+   Mobile: HQ press-to-rotate and keep on screen
+   ============================================ */
+@media (max-width:640px), (hover: none) and (pointer: coarse) {
+  /* Ensure smooth transform on the inner rotator */
+  .card.is-hq .card-rotator { transition: transform 220ms ease; transform-origin:center; }
+
+  /* Press and hold: rotate the HQ art */
+  .card.is-hq:active .card-rotator,
+  .card.is-hq.is-press .card-rotator { transform: rotate(-90deg); }
+
+  /* Raise stacking when pressed on mobile */
+  .card.is-hq:active,
+  .card.is-hq.is-press { z-index: 120; }
+
+  /* Keep within viewport on 2-col mobile: shift depending on column */
+  #cardGrid .card.is-hq:nth-child(2n+1):active .card-rotator,
+  #cardGrid .card.is-hq:nth-child(2n+1).is-press .card-rotator {
+    transform: rotate(-90deg) translateX(10%);
+  }
+  #cardGrid .card.is-hq:nth-child(2n):active .card-rotator,
+  #cardGrid .card.is-hq:nth-child(2n).is-press .card-rotator {
+    transform: rotate(-90deg) translateX(-10%);
+  }
+}
+
+/* ============================================
    Modal: disable any art/panel overlap globally
    ============================================ */
 .modal-panel{

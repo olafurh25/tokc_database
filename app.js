@@ -757,6 +757,25 @@ cardGrid.addEventListener('keydown', (e) => {
   openModal(el.dataset.id);
 });
 
+/* ===== MOBILE PRESS → ROTATE (HQ only) ===== */
+// Add a temporary class while finger is down to trigger CSS rotation
+let __pressCard = null;
+cardGrid.addEventListener('touchstart', (e) => {
+  const card = e.target.closest('.card');
+  if (!card || !card.classList.contains('is-hq')) return;
+  __pressCard = card;
+  card.classList.add('is-press');
+}, { passive: true });
+
+['touchend','touchcancel'].forEach(evt => {
+  cardGrid.addEventListener(evt, () => {
+    if (__pressCard) {
+      __pressCard.classList.remove('is-press');
+      __pressCard = null;
+    }
+  }, { passive: true });
+});
+
 /* ===== PRETTY LABELS (hardcoded for every field) ===== */
 
 // Maps for exact, human-pretty labels.
