@@ -255,10 +255,37 @@ function openRandom() {
   ["advancedBtnTop", openAdvanced],
   ["syntaxBtnTop", openSyntaxGuide],
   ["randomBtnTop", openRandom],
+  ["advancedBtnMobile", openAdvanced],
+  ["syntaxBtnMobile", openSyntaxGuide],
+  ["randomBtnMobile", openRandom],
 ].forEach(([id, fn]) => {
   const el = document.getElementById(id);
   if (el) el.addEventListener("click", fn);
 });
+
+/* ===== HAMBURGER MENU ===== */
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const hamburgerMenu = document.getElementById("hamburgerMenu");
+
+if (hamburgerBtn && hamburgerMenu) {
+  // Toggle menu
+  hamburgerBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    hamburgerMenu.classList.toggle("hidden");
+  });
+  
+  // Close menu when clicking menu items
+  hamburgerMenu.addEventListener("click", () => {
+    hamburgerMenu.classList.add("hidden");
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!hamburgerBtn.contains(e.target) && !hamburgerMenu.contains(e.target)) {
+      hamburgerMenu.classList.add("hidden");
+    }
+  });
+}
 
 /* ===== TOPBAR LOGO → SNAP TO HERO ===== */
 const logoEl = document.querySelector('.topbar-logo');
@@ -534,10 +561,134 @@ let page = 1;
 const PAGE_SIZE = 28;
 let currentQuery = "";
 let filteredList = [];
+let sortField = "none";
+let sortOrder = "asc"; // "asc" or "desc"
 
 // references for UI bits
 const loadWrap = document.querySelector('.load-more-wrapper');
 const noResultsEl = document.getElementById('noResults');
+const sortSelect = document.getElementById('sortSelect');
+const sortOrderBtn = document.getElementById('sortOrderBtn');
+const resultsMessage = document.getElementById('resultsMessage');
+
+// Sort event listeners
+if (sortSelect) {
+  sortSelect.addEventListener('change', (e) => {
+    sortField = e.target.value;
+    applySortAndRender();
+  });
+}
+
+if (sortOrderBtn) {
+  sortOrderBtn.addEventListener('click', () => {
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    sortOrderBtn.classList.toggle('desc', sortOrder === 'desc');
+    sortOrderBtn.textContent = sortOrder === 'asc' ? '▲' : '▼';
+    if (sortField !== 'none') {
+      applySortAndRender();
+    }
+  });
+}
+
+function applySortAndRender() {
+  if (sortField === 'none') {
+    // No sorting, use original filtered order
+    page = 1;
+    cardGrid.innerHTML = "";
+    renderNextPage(false);
+    updateLoadUi();
+    updateResultsMessage();
+    return;
+  }
+  
+  // Sort the filtered list
+  filteredList.sort((a, b) => {
+    let valA = a[sortField];
+    let valB = b[sortField];
+    
+    // Handle numeric fields
+    if (NUMERIC_KEYS.has(sortField)) {
+      valA = valA == null ? -Infinity : Number(valA);
+      valB = valB == null ? -Infinity : Number(valB);
+      return sortOrder === 'asc' ? valA - valB : valB - valA;
+    }
+    
+    // Handle text fields
+    valA = String(valA || '').toLowerCase();
+    valB = String(valB || '').toLowerCase();
+    
+    if (sortOrder === 'asc') {
+      return valA < valB ? -1 : valA > valB ? 1 : 0;
+    } else {
+      return valA > valB ? -1 : valA < valB ? 1 : 0;
+    }
+  });
+  
+  // Reset to page 1 and re-render
+  page = 1;
+  cardGrid.innerHTML = "";
+  renderNextPage(false);
+  updateLoadUi();
+  updateResultsMessage();
+}
+
+function updateResultsMessage() {
+  if (!resultsMessage) return;
+  
+  const total = filteredList.length;
+  const shown = Math.min(page * PAGE_SIZE, total);
+  
+  if (total === 0) {
+    resultsMessage.textContent = '';
+    return;
+  }
+  
+  // Build query description using pretty labels
+  let queryDesc = '';
+  const q = (barInput.value || heroInput.value || '').trim();
+  
+  if (q) {
+    // Try to parse the query to show pretty labels
+    queryDesc = buildQueryDescription(q);
+  }
+  
+  const showingText = `Showing ${shown} of ${total} result${total !== 1 ? 's' : ''}`;
+  resultsMessage.textContent = queryDesc ? `${showingText} for ${queryDesc}` : showingText;
+}
+
+function buildQueryDescription(query) {
+  // Simple parsing for common patterns
+  const parts = [];
+  
+  // Check for fielded queries
+  const fieldMatches = query.matchAll(/(\w+):["']?([^"'\s]+)["']?/g);
+  for (const match of fieldMatches) {
+    const [, field, value] = match;
+    const normalizedField = ALIAS[field.toLowerCase()] || field.toLowerCase();
+    
+    // Get pretty label for the value
+    let prettyValue = value;
+    if (normalizedField === 'type') {
+      prettyValue = TYPE_LABELS[value.toLowerCase()] || titleCase(value);
+    } else if (normalizedField === 'faction') {
+      prettyValue = FACTION_LABELS[value.toLowerCase()] || titleCase(value);
+    } else if (normalizedField === 'archetype') {
+      prettyValue = ARCHETYPE_LABELS[value.toLowerCase()] || titleCase(value);
+    } else if (normalizedField === 'suit') {
+      prettyValue = SUIT_LABELS[value.toLowerCase()] || titleCase(value);
+    }
+    
+    const fieldLabel = normalizedField.charAt(0).toUpperCase() + normalizedField.slice(1);
+    parts.push(`${fieldLabel}: ${prettyValue}`);
+  }
+  
+  // If no fielded queries, just show the search term
+  if (parts.length === 0 && query) {
+    parts.push(`"${query}"`);
+  }
+  
+  return parts.join(', ');
+}
 
 // ---- No-results popup control ----
 function setNoResults(show) {
@@ -554,7 +705,7 @@ function setNoResults(show) {
 }
 
 /* Renders the visible batch of cards */
-function renderNextPage() {
+function renderNextPage(replace = false) {
   const total = filteredList.length;
   const start = (page - 1) * PAGE_SIZE;
   const end   = Math.min(page * PAGE_SIZE, total);
@@ -571,8 +722,13 @@ function renderNextPage() {
     `;
   }).join("");
 
-  cardGrid.insertAdjacentHTML("beforeend", html);
-  if (typeof animateCardsInRange === "function") animateCardsInRange(start);
+  if (replace) {
+    cardGrid.innerHTML = html;
+    if (typeof animateCardsInRange === "function") animateCardsInRange(0);
+  } else {
+    cardGrid.insertAdjacentHTML("beforeend", html);
+    if (typeof animateCardsInRange === "function") animateCardsInRange(start);
+  }
 }
 
 /* Filter cards for current query and reset pagination */
@@ -594,30 +750,47 @@ function applyQuery(reset = true) {
   if (filteredList.length === 0) {
     setNoResults(true);
     updateLoadUi();
+    updateResultsMessage();
     return;
   }
 
   setNoResults(false);
-  renderNextPage();
-  updateLoadUi();
+  
+  // Apply sorting if active
+  if (sortField !== 'none') {
+    applySortAndRender();
+  } else {
+    renderNextPage();
+    updateLoadUi();
+    updateResultsMessage();
+  }
 }
 
-/* Manage the button visibility */
+/* Manage the pagination UI */
 function updateLoadUi() {
   const total = filteredList.length;
-  const shown = Math.min(page * PAGE_SIZE, total);
-  const remaining = Math.max(0, total - shown);
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  if (!loadWrap || !loadBtn) return;
+  if (!loadWrap) return;
 
-  if (remaining > 0) {
-    loadWrap.style.display = "flex";
-    loadBtn.disabled = false;
-    loadBtn.textContent = `Next ${Math.min(PAGE_SIZE, remaining)}`;
+  // Show/hide pagination controls
+  if (total > PAGE_SIZE) {
+    loadWrap.classList.add('visible');
   } else {
-    loadWrap.style.display = "none";
-    loadBtn.disabled = true;
+    loadWrap.classList.remove('visible');
+    return;
   }
+
+  // Update page info
+  if (pageInfo) {
+    pageInfo.textContent = `Page ${page} of ${totalPages}`;
+  }
+
+  // Enable/disable buttons based on current page
+  if (firstPageBtn) firstPageBtn.disabled = page === 1;
+  if (prevPageBtn) prevPageBtn.disabled = page === 1;
+  if (nextPageBtn) nextPageBtn.disabled = page >= totalPages;
+  if (lastPageBtn) lastPageBtn.disabled = page >= totalPages;
 }
 
 /* ===== CARD ANIMATION HELPERS ===== */
@@ -659,68 +832,74 @@ function animateCardsInRange(startIndex = 0) {
   });
 }
 
-/* Smooth replace with stable order + correct targeting of new cards only */
-function renderWithLeave(nextSlice) {
-  const nextIds = new Set(nextSlice.map(c => String(c.id)));
+/* ===== PAGINATION CONTROLS ===== */
+const firstPageBtn = document.getElementById("firstPageBtn");
+const prevPageBtn = document.getElementById("prevPageBtn");
+const nextPageBtn = document.getElementById("nextPageBtn");
+const lastPageBtn = document.getElementById("lastPageBtn");
+const pageInfo = document.getElementById("pageInfo");
 
-  const currentNodes = Array.from(cardGrid.querySelectorAll(".card"));
-  currentNodes.forEach((el) => {
-    if (!nextIds.has(el.dataset.id)) {
-      el.classList.remove("card-enter");
-      el.classList.add("card-leave");
-      el.addEventListener("animationend", () => el.remove(), { once: true });
-    }
-  });
-
-  const byId = new Map(
-    Array.from(cardGrid.querySelectorAll(".card")).map(el => [el.dataset.id, el])
-  );
-
-  const frag = document.createDocumentFragment();
-  const newNodes = [];
-
-  nextSlice.forEach((c) => {
-    const id = String(c.id);
-    const existing = byId.get(id);
-    if (existing) {
-      existing.classList.remove("card-enter", "card-leave", "card-exit");
-      existing.style.animation = "";
-      frag.appendChild(existing);
-    } else {
-      const node = document.createElement("div");
-      node.className = "card";
-      node.dataset.id = id;
-      node.innerHTML = `
-        <img src="${c.image}" alt="">
-        <h3>${c.name}</h3>
-        <p>${c.text || c.rules || ""}</p>
-      `;
-      node.dataset.new = "1";
-      frag.appendChild(node);
-      newNodes.push(node);
-    }
-  });
-
-  cardGrid.appendChild(frag);
-
-  const STAGGER = 60;
-  newNodes.forEach((el, i) => {
-    el.classList.remove("card-enter", "card-leave", "card-exit");
-    el.style.animation = "none";
-    el.offsetHeight;
-    el.style.animation = "";
-    el.style.animationDelay = `${i * STAGGER}ms`;
-    el.classList.add("card-enter");
-    delete el.dataset.new;
-  });
+function scrollToCardGrid() {
+  const cardAreaTop = cardArea.offsetTop;
+  if (snapContainer) {
+    smoothScrollTo(cardAreaTop, 600);
+  } else {
+    window.scrollTo({ top: cardAreaTop, behavior: 'smooth' });
+  }
 }
 
-/* ===== LOAD MORE BUTTON ===== */
-const loadBtn = document.getElementById("loadMoreBtn");
-loadBtn.addEventListener("click", () => {
-  page++;
-  renderNextPage();
+function goToPage(newPage) {
+  const totalPages = Math.ceil(filteredList.length / PAGE_SIZE);
+  if (newPage < 1 || newPage > totalPages) return;
+  
+  scrollToCardGrid();
+  
+  setTimeout(() => {
+    page = newPage;
+    renderNextPage(true);
+    updateLoadUi();
+    updateResultsMessage();
+  }, 100);
+}
+
+firstPageBtn.addEventListener("click", () => goToPage(1));
+prevPageBtn.addEventListener("click", () => goToPage(page - 1));
+nextPageBtn.addEventListener("click", () => goToPage(page + 1));
+lastPageBtn.addEventListener("click", () => {
+  const totalPages = Math.ceil(filteredList.length / PAGE_SIZE);
+  goToPage(totalPages);
 });
+
+/* ===== JUMP TO TOP BUTTON ===== */
+const jumpToTopBtn = document.getElementById("jumpToTop");
+
+// Show/hide button based on scroll position
+function updateJumpToTopVisibility() {
+  const scrollTop = cardArea.scrollTop || 0;
+  const threshold = 400; // Show after scrolling 400px
+  
+  if (scrollTop > threshold) {
+    jumpToTopBtn.classList.remove('hidden');
+  } else {
+    jumpToTopBtn.classList.add('hidden');
+  }
+}
+
+if (cardArea) {
+  cardArea.addEventListener('scroll', updateJumpToTopVisibility, { passive: true });
+}
+
+if (jumpToTopBtn) {
+  jumpToTopBtn.addEventListener('click', () => {
+    // Scroll to hero section
+    if (snapContainer) {
+      snapContainer.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  });
+}
 
 /* ===== CARD STAGGER ANIMATION ===== */
 function animateCardsIn() {

@@ -53,26 +53,62 @@
             <input id="searchInputBar" type="search" placeholder="Search..." aria-label="Search cards" />
             <span class="search-clear" title="Clear"></span>
           </div>
+          
+          <!-- Mobile hamburger menu -->
+          <button id="hamburgerBtn" class="chip topbar-btn-mobile" aria-label="Menu" title="Menu">
+            <span class="hamburger-icon">☰</span>
+          </button>
+          <div id="hamburgerMenu" class="hamburger-menu hidden">
+            <button id="advancedBtnMobile" class="hamburger-item">⚙️ Advanced Search</button>
+            <button id="syntaxBtnMobile" class="hamburger-item">📖 Syntax Guide</button>
+            <button id="randomBtnMobile" class="hamburger-item">🎲 Random Card</button>
+          </div>
         </div>
 
         <div class="topbar-right">
-          <button class="chip" id="advancedBtnTop">Advanced</button>
-          <button class="chip" id="syntaxBtnTop">Syntax</button>
-          <button class="chip" id="randomBtnTop">Random</button>
+          <button class="chip topbar-btn-desktop" id="advancedBtnTop">Advanced</button>
+          <button class="chip topbar-btn-desktop" id="syntaxBtnTop">Syntax</button>
+          <button class="chip topbar-btn-desktop" id="randomBtnTop">Random</button>
         </div>
       </header>
 
       <!-- SCROLLABLE CARD AREA -->
       <div id="cardArea">
+        <!-- Results and Sort Bar -->
+        <div class="results-bar">
+          <div id="resultsMessage" class="results-message"></div>
+          <div class="sort-controls">
+            <label for="sortSelect" class="sort-label">Sort by:</label>
+            <select id="sortSelect" class="sort-select">
+              <option value="none">Default</option>
+              <option value="title">Name</option>
+              <option value="type">Type</option>
+              <option value="faction">Faction</option>
+              <option value="archetype">Archetype</option>
+              <option value="strength">Strength</option>
+              <option value="cost">Cost</option>
+              <option value="votes">Votes</option>
+              <option value="lore">Lore</option>
+            </select>
+            <button id="sortOrderBtn" class="sort-order-btn" aria-label="Sort order" title="Toggle sort order">▲</button>
+          </div>
+        </div>
+        
         <div id="cardGrid"></div>
         <p id="noResults" class="hidden">No results.</p>
 
-        <!-- Load more button -->
+        <!-- Pagination controls -->
         <div class="load-more-wrapper">
-          <button id="loadMoreBtn" class="load-more">Next 28</button>
+          <button id="firstPageBtn" class="load-more" aria-label="First page">⟪</button>
+          <button id="prevPageBtn" class="load-more" aria-label="Previous page">‹</button>
+          <span id="pageInfo" class="page-info">Page 1 of 1</span>
+          <button id="nextPageBtn" class="load-more" aria-label="Next page">›</button>
+          <button id="lastPageBtn" class="load-more" aria-label="Last page">⟫</button>
         </div>
+        
+        <button id="jumpToTop" class="jump-to-top hidden" aria-label="Jump to top" title="Back to top">↑</button>
       </div>
-    </section>
+    </main>
   </main>
 
   <!-- CARD MODAL -->
