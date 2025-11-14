@@ -10,6 +10,7 @@ import { renderCommandsBlock, renderRulesBlock, injectIconsToHTML, iconLabel } f
 
 const modal = document.getElementById("modal");
 const cardGrid = document.getElementById("cardGrid");
+let currentOpenCard = null; // Track the card element that opened the modal
 
 export function openModal(id) {
   const card = cards.find(c => String(c.id) === String(id));
@@ -98,6 +99,14 @@ export function openModal(id) {
     metaRelease.style.display = releaseStr ? 'block' : 'none';
   }
 
+  // Mark the grid card as having modal open
+  if (currentOpenCard) currentOpenCard.classList.remove('modal-open');
+  const gridCard = document.querySelector(`.card[data-id="${id}"]`);
+  if (gridCard) {
+    gridCard.classList.add('modal-open');
+    currentOpenCard = gridCard;
+  }
+
   modal.classList.add('visible');
   modal.style.display = 'grid';
 }
@@ -106,6 +115,11 @@ function dismissModal() {
   if (modal) {
     modal.classList.remove('visible');
     modal.style.display = 'none';
+  }
+  // Remove rotation state from grid card
+  if (currentOpenCard) {
+    currentOpenCard.classList.remove('modal-open');
+    currentOpenCard = null;
   }
 }
 
@@ -117,13 +131,12 @@ export function initModal() {
     closeBtn.addEventListener('click', dismissModal);
   }
 
+  // Dismiss on any click inside modal
   modal.addEventListener('click', dismissModal);
-
+  
   const modalContent = document.getElementById('modalContent');
   if (modalContent) {
-    modalContent.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
+    modalContent.addEventListener('click', dismissModal);
   }
 
   document.addEventListener('keydown', (e) => {

@@ -591,6 +591,16 @@ body.typing #cardGrid{ opacity:.65; }
   filter: saturate(1.05);
 }
 
+/* Keep HQ cards rotated while modal is open */
+.card.is-hq.modal-open .card-rotator{
+  transform: rotate(90deg);
+}
+.card.is-hq.modal-open{
+  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  filter: saturate(1.05);
+  z-index: 120;
+}
+
 
 /* 3) HQ in MODAL: always upright, no animations */
 .modal-artwrap{
@@ -610,10 +620,11 @@ body.typing #cardGrid{ opacity:.65; }
   transition: none !important;
 }
 
-/* Apply permanent 90° in modal for HQ */
+/* Apply permanent -90° in modal for HQ */
 .modal-artwrap.is-hq{
   transform: rotate(90deg);
   z-index: 2; /* sit above info panel */
+  width: min(38vw, 420px); /* Match basic card width */
 }
 
 /* Neutralize any transforms on inner bits so only the wrapper rotates */
@@ -639,14 +650,16 @@ body.typing #cardGrid{ opacity:.65; }
   background:rgba(0,0,0,0.75); backdrop-filter:blur(6px);
   cursor:pointer;
 }
-#modal .modal-inner,#closeModal{ cursor:default; }
 #modalContent{
   background:transparent; border:none; padding:1rem;
-  width:min(96%, 1800px); max-height:92vh; overflow-x:hidden; overflow-y:auto; position:relative;
-  pointer-events:none;
+  width:min(96%, 1800px); max-height:92vh; overflow:visible; position:relative;
   -webkit-overflow-scrolling:touch;
+  pointer-events:none;
 }
-#modalContent .modal-inner,#modalContent .modal-inner *,#closeModal{ pointer-events:auto; }
+
+#modalContent *{
+  pointer-events:auto;
+}
 
 .modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:start; position:relative; z-index:1; overflow:visible; gap:2rem; }
 
@@ -678,7 +691,7 @@ body.typing #cardGrid{ opacity:.65; }
 
 /* Overshoot hover in modal */
 .modal-artwrap.is-hq:hover img, .modal-artwrap.is-hq:hover::after{ animation:hqTiltModal 220ms ease-out; }
-@keyframes hqTiltModal{ 0%{transform:rotate(-90deg);} 70%{transform:rotate(-94deg);} 100%{transform:rotate(-90deg);} }
+@keyframes hqTiltModal{ 0%{transform:rotate(0deg);} 70%{transform:rotate(-4deg);} 100%{transform:rotate(0deg);} }
 
 /* Modal info panel */
 .modal-panel{
@@ -870,7 +883,7 @@ body::after{
 /* Center the info panel under the art and remove any side overlap */
 .modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
   margin-left: 0;
-  margin-top: 0.5rem; /* closer to the card */
+  margin-top: -9rem; /* Very tight gap to card */
   max-width: min(900px, 92vw);
   justify-self: center;
   transform: none;
