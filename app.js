@@ -711,12 +711,15 @@ function renderNextPage(replace = false) {
   const end   = Math.min(page * PAGE_SIZE, total);
   const slice = filteredList.slice(start, end);
 
+  // Use eager loading for first page, lazy for subsequent pages
+  const loadingStrategy = page === 1 ? 'eager' : 'lazy';
+
   const html = slice.map(c => {
     const isHQ = String(c.archetype || "").toLowerCase() === "hq";
     return `
       <div class="card ${isHQ ? "is-hq" : ""}" data-id="${c.id}" role="button" tabindex="0" aria-label="${c.title||''}">
         <div class="card-rotator">
-          <img src="${c.image}" alt="${c.name || ''}" loading="lazy">
+          <img src="${c.image}" alt="${c.name || ''}" loading="${loadingStrategy}" decoding="async">
         </div>
       </div>
     `;
@@ -729,6 +732,31 @@ function renderNextPage(replace = false) {
     cardGrid.insertAdjacentHTML("beforeend", html);
     if (typeof animateCardsInRange === "function") animateCardsInRange(start);
   }
+  
+  // Preload next page images
+  preloadNextPage();
+}
+
+// Preload images for the next page to speed up navigation
+function preloadNextPage() {
+  const totalPages = Math.ceil(filteredList.length / PAGE_SIZE);
+  if (page >= totalPages) return; // No next page
+  
+  const nextPageStart = page * PAGE_SIZE;
+  const nextPageEnd = Math.min((page + 1) * PAGE_SIZE, filteredList.length);
+  const nextPageSlice = filteredList.slice(nextPageStart, nextPageEnd);
+  
+  // Remove old prefetch links to avoid memory buildup
+  document.querySelectorAll('link[rel="prefetch"][data-card-prefetch]').forEach(link => link.remove());
+  
+  nextPageSlice.forEach(c => {
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.as = 'image';
+    link.href = c.image;
+    link.setAttribute('data-card-prefetch', 'true');
+    document.head.appendChild(link);
+  });
 }
 
 /* Filter cards for current query and reset pagination */
