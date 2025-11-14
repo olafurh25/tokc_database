@@ -15,7 +15,7 @@ export const ALIAS = {
   v: "votes", votes: "votes",
   l: "lore", lore: "lore",
   c: "cost", cost: "cost",
-  s: "suit", suit: "suit", st: "suit",
+  s: "suit", suit: "suit",
   cmd: "commands", commands: "commands",
   r: "rules", rules: "rules", oracle: "rules",
   fl: "flavour", flavour: "flavour",

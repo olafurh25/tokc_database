@@ -103,11 +103,12 @@
 .loading-screen {
   position: fixed;
   inset: 0;
-  background: var(--accent);
   display: grid;
   place-items: center;
   z-index: 9999;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .loading-screen.fade-out {
@@ -116,17 +117,21 @@
 }
 
 .loading-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  justify-content: center;
 }
 
 .loading-logo {
-  width: min(40vw, 320px);
-  height: auto;
-  opacity: 0.9;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
 }
 
 .loading-spinner {
@@ -136,6 +141,8 @@
   border-top-color: #FAD069;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes spin {
@@ -143,9 +150,6 @@
 }
 
 @media (max-width: 640px) {
-  .loading-logo {
-    width: min(60vw, 240px);
-  }
   .loading-spinner {
     width: 40px;
     height: 40px;
@@ -180,7 +184,7 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin",
   overflow:hidden;
 }
 .hero-inner{ text-align:center; }
-.hero-logo{ width:min(34vw,380px); height:auto; display:block; margin-inline:auto; margin-left: calc(50% + 6px); transform: translateX(-50%); }
+.hero-logo{ width:min(34vw,380px); height:auto; display:block; margin-inline:auto; margin-left: calc(50% + 8px); transform: translateX(-50%); }
 .hero-tagline{
   margin:1.4rem 0 1rem; font-size:1.4rem; text-align:center;
   opacity:.95; text-shadow:0 3px 6px rgba(0,0,0,.65);
@@ -560,13 +564,14 @@ body.typing #cardGrid{ opacity:.65; }
   position:absolute; inset:0; border-radius:var(--card-radius-grid);
   transform-origin:center; transform: rotate(0deg);
   transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
-  pointer-events: auto; /* Ensure clicks pass through to parent card */
+  pointer-events: none; /* Let clicks pass through to parent card */
   cursor: pointer;
 }
 
-/* Image fills the rotator box */
+/* But enable pointer events on the image so clicks work */
 .card.is-hq .card-rotator img{
   width:100%; height:100%; object-fit:cover; border-radius:var(--card-radius-grid);
+  pointer-events: auto;
 }
 
 /* Move the rim to the rotator for HQ so it rotates with the art */
@@ -636,19 +641,19 @@ body.typing #cardGrid{ opacity:.65; }
 #modal .modal-inner,#closeModal{ cursor:default; }
 #modalContent{
   background:transparent; border:none; padding:1rem;
-  width:min(94%,1100px); max-height:92vh; overflow:auto; position:relative;
+  width:min(96%, 1800px); max-height:92vh; overflow-x:hidden; overflow-y:auto; position:relative;
   pointer-events:none;
   -webkit-overflow-scrolling:touch;
 }
 #modalContent .modal-inner,#modalContent .modal-inner *,#closeModal{ pointer-events:auto; }
 
-.modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:center; position:relative; z-index:1; overflow:visible; gap:1rem; }
+.modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:start; position:relative; z-index:1; overflow:visible; gap:2rem; }
 
 /* Art wrapper controls size & aspect */
 .modal-artwrap{
   position:relative; display:inline-block; z-index:20;
   width:min(38vw,420px); aspect-ratio:var(--card-ratio);
-  margin-right:calc(-1 * var(--modal-overlap)); box-sizing:border-box;
+  box-sizing:border-box;
 }
 .modal-artwrap::after{
   content:""; position:absolute; inset:0; border-radius:var(--card-radius-modal);
@@ -677,11 +682,12 @@ body.typing #cardGrid{ opacity:.65; }
 /* Modal info panel */
 .modal-panel{
   background:rgba(20,42,46,0.94); border:1px solid rgba(255,255,255,0.12);
-  border-radius:16px; padding:1.4rem 1.8rem; padding-left:calc(1.8rem + var(--modal-overlap));
+  border-radius:16px; padding:1.4rem 1.8rem;
   box-shadow:0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
-  min-height:380px; max-width:640px; z-index:1; text-align:left;
-  position: relative; 
-  z-index: 1; 
+  min-height:380px; min-width:600px; max-width:600px; width:100%; z-index:1; text-align:left;
+  position: relative;
+  height: fit-content;
+  align-self: start;
 }
 .modal-header-row{
   display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;

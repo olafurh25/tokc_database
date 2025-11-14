@@ -132,6 +132,7 @@ export function initModal() {
 
   if (cardGrid) {
     cardGrid.addEventListener('click', (e) => {
+      // Check if click is on card or within card (including card-rotator)
       const card = e.target.closest('.card');
       if (card) {
         const id = card.getAttribute('data-id');
