@@ -8,35 +8,40 @@ export const HERO = document.getElementById("hero");
 export const cardArea = document.getElementById("cardArea");
 export const snapContainer = document.querySelector('.snap-container');
 
-// Parallax parameters
-const BASE_SPEED = 0.3;   // base parallax strength
-
-// Easing function: starts slow, speeds up, overshoots, then bounces back
-function easeOutBack(x) {
-  const c1 = 1.70158;
-  const c3 = c1 + 1;
-  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
-}
+// Parallax parameters stay as they are…
+const BASE_SPEED = 0.45;
+const SLOW_FACTOR = 0.5;
 
 function getTotalScroll() {
-  const scrollTop = snapContainer ? snapContainer.scrollTop : window.scrollY;
-  return scrollTop;
+  const outer = snapContainer ? snapContainer.scrollTop : window.scrollY || 0;
+  const inner = cardArea ? cardArea.scrollTop : 0;
+  return outer + inner;
 }
 
 function getMaxScroll() {
-  const totalHeight = snapContainer ? snapContainer.scrollHeight : document.documentElement.scrollHeight;
-  const visibleHeight = snapContainer ? snapContainer.clientHeight : window.innerHeight;
-  return totalHeight - visibleHeight;
+  let outerMax, innerMax;
+
+  if (snapContainer) {
+    outerMax = snapContainer.scrollHeight - snapContainer.clientHeight;
+  } else {
+    outerMax = document.documentElement.scrollHeight - window.innerHeight;
+  }
+
+  if (cardArea) {
+    innerMax = cardArea.scrollHeight - cardArea.clientHeight;
+  } else {
+    innerMax = 0;
+  }
+
+  return outerMax + innerMax;
 }
 
 function updateParallax() {
   const scrolled = getTotalScroll();
   const maxScroll = getMaxScroll();
   const progress = maxScroll > 0 ? scrolled / maxScroll : 0;
-  
-  // Apply easing with overshoot
-  const easedProgress = easeOutBack(progress);
-  const offset = scrolled * BASE_SPEED * easedProgress;
+  const slowMultiplier = 1 - progress * SLOW_FACTOR;
+  const offset = scrolled * BASE_SPEED * slowMultiplier;
   
   document.body.style.backgroundPositionY = `${-offset}px`;
 }
@@ -55,15 +60,145 @@ function updateFades() {
   }
 }
 
-function handleCardAreaScroll() {
+let isAtTop = false;
+let hasScrolledUpFromTop = false;
+let isTopbarSticky = false;
+
+// Export function to update topbar state
+export function setTopbarSticky(sticky) {
+  isTopbarSticky = sticky;
+}
+
+function handleCardAreaWheel(e) {
   if (!cardArea) return;
   
-  // If scrolled to top of cardArea, scroll main container to hero
-  if (cardArea.scrollTop <= 10) {
-    if (snapContainer) {
-      snapContainer.scrollTo({ top: 0, behavior: 'smooth' });
+  // Block scrolling in cardArea until topbar is sticky
+  if (!isTopbarSticky) {
+    e.preventDefault();
+    return;
+  }
+  
+  const isScrollingUp = e.deltaY < 0;
+  const currentScrollTop = cardArea.scrollTop;
+  
+  // When at top of card grid
+  if (currentScrollTop <= 0 && isScrollingUp) {
+    if (!isAtTop) {
+      // Just reached the top
+      isAtTop = true;
+      hasScrolledUpFromTop = false;
+    } else if (!hasScrolledUpFromTop) {
+      // First upward scroll after reaching top - mark it but don't transport yet
+      hasScrolledUpFromTop = true;
+      e.preventDefault();
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Second upward scroll - now transport to hero
+      e.preventDefault();
+      if (snapContainer) {
+        snapContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      const heroInput = document.getElementById("searchInputHero");
+      setTimeout(() => {
+        if (heroInput) heroInput.focus();
+      }, 500);
+      // Reset state
+      isAtTop = false;
+      hasScrolledUpFromTop = false;
+    }
+  } else if (currentScrollTop > 0) {
+    // Not at top anymore
+    isAtTop = false;
+    hasScrolledUpFromTop = false;
+  }
+}
+
+let targetScrollTop = 0;
+let currentScrollTop = 0;
+let scrolling = false;
+let velocity = 0;
+let lastWheelTime = 0;
+
+function smoothScroll() {
+  if (!snapContainer) return;
+  
+  // Apply velocity for inertia
+  targetScrollTop += velocity;
+  
+  // Dampen velocity
+  velocity *= 0.92;
+  
+  // Clamp target scroll
+  targetScrollTop = Math.max(0, Math.min(
+    snapContainer.scrollHeight - snapContainer.clientHeight,
+    targetScrollTop
+  ));
+  
+  const diff = targetScrollTop - currentScrollTop;
+  
+  if (Math.abs(diff) > 0.5 || Math.abs(velocity) > 0.1) {
+    currentScrollTop += diff * 0.15; // Easing factor
+    snapContainer.scrollTop = currentScrollTop;
+    requestAnimationFrame(smoothScroll);
+  } else {
+    currentScrollTop = targetScrollTop;
+    snapContainer.scrollTop = currentScrollTop;
+    velocity = 0;
+    scrolling = false;
+  }
+}
+
+function handleOuterWheel(e) {
+  if (!snapContainer) return;
+  
+  // Don't intercept if the event is from within cardArea
+  if (cardArea && cardArea.contains(e.target)) {
+    return;
+  }
+  
+  const isScrollingUp = e.deltaY < 0;
+  const isScrollingDown = e.deltaY > 0;
+  
+  // Amplify scroll speed in outer container
+  const scrollMultiplier = 4.5;
+  
+  if (isScrollingDown || isScrollingUp) {
+    e.preventDefault();
+    
+    const now = Date.now();
+    const timeDelta = now - lastWheelTime;
+    lastWheelTime = now;
+    
+    // Update target scroll position
+    if (!scrolling) {
+      currentScrollTop = snapContainer.scrollTop;
+      targetScrollTop = currentScrollTop;
+    }
+    
+    // Add to velocity for inertia effect
+    const scrollDelta = e.deltaY * scrollMultiplier;
+    velocity += scrollDelta * 0.15;
+    
+    // Also immediately update target
+    targetScrollTop += scrollDelta;
+    
+    // Start smooth scrolling if not already running
+    if (!scrolling) {
+      scrolling = true;
+      requestAnimationFrame(smoothScroll);
+    }
+  }
+  
+  // If outer container is past hero and scrolling up
+  if (targetScrollTop > 0 && targetScrollTop <= window.innerHeight && isScrollingUp) {
+    // Check if this would scroll into hero section
+    if (targetScrollTop - Math.abs(e.deltaY * scrollMultiplier) <= 0) {
+      targetScrollTop = 0;
+      const heroInput = document.getElementById("searchInputHero");
+      setTimeout(() => {
+        if (heroInput) heroInput.focus();
+      }, 500);
     }
   }
 }
@@ -76,6 +211,11 @@ export function initParallax() {
   
   if (cardArea) {
     cardArea.addEventListener("scroll", updateParallax, { passive: true });
-    cardArea.addEventListener("scroll", handleCardAreaScroll);
+    cardArea.addEventListener("scroll", updateFades, { passive: true });
+    cardArea.addEventListener("wheel", handleCardAreaWheel, { passive: false });
+  }
+  
+  if (snapContainer) {
+    snapContainer.addEventListener("wheel", handleOuterWheel, { passive: false });
   }
 }

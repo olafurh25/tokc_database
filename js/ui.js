@@ -7,7 +7,7 @@
    - No results message
    ========================================================= */
 
-import { HERO, snapContainer } from './parallax.js';
+import { HERO, snapContainer, setTopbarSticky } from './parallax.js';
 
 const topbar = document.getElementById("topbar");
 const noResults = document.getElementById("noResults");
@@ -27,7 +27,9 @@ function initStickyTopbar() {
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      topbar.classList.toggle('sticky', !entry.isIntersecting);
+      const isSticky = !entry.isIntersecting;
+      topbar.classList.toggle('sticky', isSticky);
+      setTopbarSticky(isSticky);
     });
   }, { root: snapContainer || null, threshold: 0.01 });
   
