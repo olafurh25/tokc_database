@@ -677,7 +677,6 @@ body.typing #cardGrid{ opacity:.65; }
 .card.is-hq.modal-open{
   box-shadow: 0 14px 40px rgba(0,0,0,0.35);
   filter: saturate(1.05);
-  z-index: 120;
 }
 
 
