@@ -3,7 +3,120 @@
    - Advanced search parsing
    - Card matching logic
    - Field aliases and enums
+   - Fuzzy matching for typos
    ========================================================= */
+
+// Levenshtein distance for fuzzy matching
+function levenshteinDistance(a, b) {
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+// Calculate similarity percentage
+function similarity(a, b) {
+  const maxLen = Math.max(a.length, b.length);
+  if (maxLen === 0) return 1;
+  const distance = levenshteinDistance(a, b);
+  return 1 - (distance / maxLen);
+}
+
+// Find best fuzzy match for a word (70% threshold - very forgiving)
+export function findFuzzyMatch(word, candidates, threshold = 0.7) {
+  const normalized = norm(word);
+  let bestMatch = null;
+  let bestScore = 0;
+  
+  for (const candidate of candidates) {
+    const score = similarity(normalized, norm(candidate));
+    if (score >= threshold && score > bestScore) {
+      bestScore = score;
+      bestMatch = candidate;
+    }
+  }
+  
+  return bestMatch;
+}
+
+// Correct query with fuzzy matching
+export function correctQuery(query, allCards = []) {
+  // Build a list of all known words
+  const knownWords = new Set();
+  
+  // Add all enum values
+  Object.values(ENUMS).forEach(values => {
+    values.forEach(v => knownWords.add(norm(v)));
+  });
+  
+  // Add all field names and aliases
+  Object.keys(ALIAS).forEach(k => knownWords.add(norm(k)));
+  Object.values(ALIAS).forEach(v => knownWords.add(norm(v)));
+  
+  // Add card titles and common words from card data
+  if (allCards && allCards.length > 0) {
+    allCards.forEach(card => {
+      if (card.title) {
+        // Add individual words from titles
+        norm(card.title).split(/\s+/).forEach(word => {
+          if (word.length > 2) knownWords.add(word);
+        });
+      }
+    });
+  }
+  
+  // Parse and correct the query
+  const tokens = query.split(/\s+/);
+  const corrected = tokens.map(token => {
+    // Skip operators and special characters
+    if (['OR', 'AND', '(', ')'].includes(token) || token.startsWith('-') || token.startsWith('"')) {
+      return token;
+    }
+    
+    // Check if it's a field:value pattern
+    if (token.includes(':')) {
+      const [field, ...valueParts] = token.split(':');
+      const value = valueParts.join(':');
+      
+      // Try to correct the field name
+      const fieldMatch = findFuzzyMatch(field, [...Object.keys(ALIAS), ...Object.values(ALIAS)]);
+      const correctedField = fieldMatch || field;
+      
+      // Try to correct the value if it's an enum
+      const canonicalField = ALIAS[norm(correctedField)] || norm(correctedField);
+      if (ENUMS[canonicalField]) {
+        const valueMatch = findFuzzyMatch(value, ENUMS[canonicalField]);
+        const correctedValue = valueMatch || value;
+        return `${correctedField}:${correctedValue}`;
+      }
+      
+      return `${correctedField}:${value}`;
+    }
+    
+    // Try to correct standalone words against all known words
+    const match = findFuzzyMatch(token, Array.from(knownWords));
+    return match || token;
+  });
+  
+  return corrected.join(' ');
+}
 
 export const ALIAS = {
   n: "title", name: "title", title: "title",

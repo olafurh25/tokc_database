@@ -47,26 +47,27 @@ export function openModal(id) {
     const factionIcon = iconLabel(`<${card.faction}>`, factionLine);
     fullLine += ` ⬩ ${factionIcon}`;
   }
+  if (archetypeLine) {
+    const archetypeIcon = iconLabel(`<${card.archetype}>`, archetypeLine);
+    fullLine += ` ⬩ ${archetypeIcon}`;
+  }
 
   if (modalTypeFaction) modalTypeFaction.innerHTML = fullLine;
 
   const metaParts = [];
-
-  const powerLine = prettyPowerBits(card);
-  if (powerLine) {
-    const topRow = [];
-    if (card.strength != null) topRow.push(`Strength: <span class="strength-value">${card.strength}</span>`);
-    if (archetypeLine) {
-      const archetypeIcon = iconLabel(`<${card.archetype}>`, archetypeLine);
-      topRow.push(archetypeIcon);
-    }
-    if (card.cost != null) topRow.push(`Lore Cost: ${iconLabel('<cost>', String(card.cost))}`);
-    if (topRow.length > 0) metaParts.push(`<div class="meta-row">${topRow.join(' ⬩ ')}</div>`);
-  }
-
   if (card.traits && card.traits.length > 0) {
     const traitIcons = card.traits.map(trait => iconLabel(`<${trait}>`, prettyScalar('traits', trait)));
     metaParts.push(`<div class="meta-row">${traitIcons.join(' ⬩ ')}</div>`);
+  }
+
+  const powerLine = prettyPowerBits(card);
+  if (powerLine) {
+    const icons = [];
+    if (card.cost != null) icons.push(`Lore Cost: ${iconLabel('<cost>', String(card.cost))}`);
+    if (card.strength != null) icons.push(`Strength: <span class="strength-value">${card.strength}</span>`);
+    if (card.votes != null) icons.push(`Votes: ${iconLabel('<votes>', String(card.votes))}`);
+    if (card.lore != null) icons.push(`Lore: ${iconLabel('<lore>', String(card.lore))}`);
+    metaParts.push(`<div class="meta-row">${icons.join(' ⬩ ')}</div>`);
   }
 
   if (card.suit) {
@@ -93,30 +94,6 @@ export function openModal(id) {
     const flavourHtml = card.flavour ? injectIconsToHTML(card.flavour) : '';
     modalFlavour.innerHTML = flavourHtml;
     modalFlavour.style.display = flavourHtml ? 'block' : 'none';
-  }
-
-  // Add votes and lore beneath flavour text
-  // Remove any existing bottom stats first
-  const existingBottomStats = document.querySelector('.modal-panel .bottom-stats');
-  if (existingBottomStats) existingBottomStats.remove();
-  
-  const bottomStats = [];
-  if (card.votes != null && card.votes > 0) {
-    const votesIcons = Array(card.votes).fill(iconLabel('<votes>', '')).join('');
-    bottomStats.push(`Votes:&nbsp; ${votesIcons}`);
-  }
-  if (card.lore != null && card.lore > 0) {
-    const loreIcons = Array(card.lore).fill(iconLabel('<lore>', '')).join('');
-    bottomStats.push(`Lore:&nbsp; ${loreIcons}`);
-  }
-  if (bottomStats.length > 0) {
-    const bottomStatsDiv = document.createElement('div');
-    bottomStatsDiv.className = 'meta-row bottom-stats';
-    bottomStatsDiv.style.marginTop = '1rem';
-    bottomStatsDiv.innerHTML = bottomStats.join(' ⬩&nbsp; ');
-    if (modalFlavour && modalFlavour.parentNode) {
-      modalFlavour.parentNode.insertBefore(bottomStatsDiv, modalFlavour.nextSibling);
-    }
   }
 
   if (metaRelease) {

@@ -901,16 +901,13 @@ body.typing #cardGrid{ opacity:.65; }
 .icon--arch{ opacity:.95; top: 2px; }
 .icon--faction{ top: 2px; }
 
-/* Modal header icons positioned higher for regular cards */
-#modalTypeFaction .icon--arch{ top: -2px !important; }
-#modalTypeFaction .icon--faction{ top: -2px !important; }
+/* Modal header icons positioned higher */
+#modalTypeFaction .icon--arch{ top: -2px; }
+#modalTypeFaction .icon--faction{ top: -2px; }
 
 /* HQ modal header icons positioned even higher */
 .modal-inner:has(.modal-artwrap.is-hq) #modalTypeFaction .icon--arch{ top: -6px !important; }
 .modal-inner:has(.modal-artwrap.is-hq) #modalTypeFaction .icon--faction{ top: -6px !important; }
-
-/* Tighter spacing for repeated icons in bottom stats */
-.bottom-stats .icon{ margin: 0 -0.5em; }
 
 /* ===== Global fades ===== */
 body::before,body::after{ content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; transition:opacity .8s ease; }

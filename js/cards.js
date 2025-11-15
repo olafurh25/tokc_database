@@ -6,7 +6,7 @@
    - Sorting
    ========================================================= */
 
-import { matchCard } from './query-engine.js';
+import { matchCard, correctQuery } from './query-engine.js';
 import { prettyScalar, prettyPowerBits } from './labels.js';
 import { ALIAS } from './query-engine.js';
 import { cardArea } from './parallax.js';
@@ -197,6 +197,21 @@ export function applyQuery(reset = true) {
     filteredList = cards.slice();
   } else {
     filteredList = cards.filter(card => matchCard(card, query));
+    
+    // If no results, try fuzzy matching
+    if (filteredList.length === 0) {
+      const correctedQuery = correctQuery(query, cards);
+      if (correctedQuery !== query) {
+        console.log(`No results for "${query}". Trying "${correctedQuery}"...`);
+        filteredList = cards.filter(card => matchCard(card, correctedQuery));
+        
+        // Update the input with the corrected query if we found results
+        if (filteredList.length > 0 && input) {
+          input.value = correctedQuery;
+          currentQuery = correctedQuery;
+        }
+      }
+    }
   }
 
   if (reset) {
