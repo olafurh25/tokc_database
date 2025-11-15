@@ -138,6 +138,8 @@
 
   <!-- CARD MODAL -->
   <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <button id="modalPrev" class="modal-nav modal-nav-prev" aria-label="Previous card">‹</button>
+    <button id="modalNext" class="modal-nav modal-nav-next" aria-label="Next card">›</button>
     <div id="modalContent">
       <div class="modal-inner">
         <div class="modal-artwrap">
@@ -164,6 +166,12 @@
 
         </aside>
       </div>
+    </div>
+
+    <!-- Related cards section (spans full page width) -->
+    <div id="relatedCards" class="related-cards" style="display: none;">
+      <h3 class="related-title">Related Cards</h3>
+      <div id="relatedCardsGrid" class="related-grid"></div>
     </div>
   </div>
 

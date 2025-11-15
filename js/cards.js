@@ -99,17 +99,22 @@ export function updateResultsMessage() {
 
 function buildQueryDescription(query) {
   const terms = [];
-  const fieldPattern = /(\w+):([^\s]+)/g;
+  const fieldPattern = /(-?)(\w+):([^\s]+)/g;
   let match;
 
   while ((match = fieldPattern.exec(query)) !== null) {
-    const [, rawField, rawValue] = match;
+    const [, negation, rawField, rawValue] = match;
     const field = ALIAS[rawField.toLowerCase()] || rawField.toLowerCase();
     const value = rawValue.replace(/^"|"$/g, '');
 
     const prettyValue = prettyScalar(field, value);
     const fieldLabel = field.charAt(0).toUpperCase() + field.slice(1);
-    terms.push(`${fieldLabel}: ${prettyValue}`);
+    
+    if (negation === '-') {
+      terms.push(`NOT ${fieldLabel}: ${prettyValue}`);
+    } else {
+      terms.push(`${fieldLabel}: ${prettyValue}`);
+    }
   }
 
   return terms.join(', ');
@@ -121,9 +126,11 @@ export function setNoResults(show) {
   if (show) {
     noResultsEl.classList.remove('hidden');
     noResultsEl.style.opacity = '1';
+    noResultsEl.style.display = 'block';
   } else {
     noResultsEl.classList.add('hidden');
     noResultsEl.style.opacity = '0';
+    noResultsEl.style.display = 'none';
   }
 }
 

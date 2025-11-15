@@ -246,9 +246,35 @@
 }
 
 /* ===== FACTION-SPECIFIC COLORS ===== */
+.clans-page {
+  background: linear-gradient(135deg, rgba(0, 127, 125, 0.15) 0%, rgba(0, 20, 30, 0.95) 100%);
+}
+
 .clans-page .faction-title,
 .clans-page .back-link {
   color: #6BB6D6;
+}
+
+.clans-page .strategy-content {
+  background: rgba(0, 127, 125, 0.15);
+  border-color: rgba(0, 127, 125, 0.4);
+}
+
+.clans-page .strategy-content h2 {
+  border-bottom-color: rgba(0, 127, 125, 0.6);
+}
+
+.clans-page .strategy-content h3 {
+  color: #6BB6D6;
+}
+
+.clans-page .modal-panel {
+  background: rgba(0, 127, 125, 0.94) !important;
+  border-color: rgba(0, 127, 125, 0.4) !important;
+}
+
+.uprising-page {
+  background: linear-gradient(135deg, rgba(132, 12, 33, 0.15) 0%, rgba(0, 20, 30, 0.95) 100%);
 }
 
 .uprising-page .faction-title,
@@ -256,12 +282,74 @@
   color: #E74C3C;
 }
 
+.uprising-page .strategy-content {
+  background: rgba(132, 12, 33, 0.15);
+  border-color: rgba(132, 12, 33, 0.4);
+}
+
+.uprising-page .strategy-content h2 {
+  border-bottom-color: rgba(132, 12, 33, 0.6);
+}
+
+.uprising-page .strategy-content h3 {
+  color: #E74C3C;
+}
+
+.uprising-page .modal-panel {
+  background: rgba(132, 12, 33, 0.94) !important;
+  border-color: rgba(132, 12, 33, 0.4) !important;
+}
+
+.gathering-page {
+  background: linear-gradient(135deg, rgba(110, 24, 120, 0.15) 0%, rgba(0, 20, 30, 0.95) 100%);
+}
+
 .gathering-page .faction-title,
 .gathering-page .back-link {
   color: #52C77D;
 }
 
+.gathering-page .strategy-content {
+  background: rgba(110, 24, 120, 0.15);
+  border-color: rgba(110, 24, 120, 0.4);
+}
+
+.gathering-page .strategy-content h2 {
+  border-bottom-color: rgba(110, 24, 120, 0.6);
+}
+
+.gathering-page .strategy-content h3 {
+  color: #52C77D;
+}
+
+.gathering-page .modal-panel {
+  background: rgba(110, 24, 120, 0.94) !important;
+  border-color: rgba(110, 24, 120, 0.4) !important;
+}
+
+.nobility-page {
+  background: linear-gradient(135deg, rgba(26, 80, 155, 0.15) 0%, rgba(0, 20, 30, 0.95) 100%);
+}
+
 .nobility-page .faction-title,
 .nobility-page .back-link {
   color: #9B59B6;
+}
+
+.nobility-page .strategy-content {
+  background: rgba(26, 80, 155, 0.15);
+  border-color: rgba(26, 80, 155, 0.4);
+}
+
+.nobility-page .strategy-content h2 {
+  border-bottom-color: rgba(26, 80, 155, 0.6);
+}
+
+.nobility-page .strategy-content h3 {
+  color: #9B59B6;
+}
+
+.nobility-page .modal-panel {
+  background: rgba(26, 80, 155, 0.94) !important;
+  border-color: rgba(26, 80, 155, 0.4) !important;
 }

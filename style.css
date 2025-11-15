@@ -103,7 +103,7 @@
 .loading-screen {
   position: fixed;
   inset: 0;
-  display: none; /* Temporarily hidden */
+  display: grid;
   place-items: center;
   z-index: 9999;
   transition: opacity 1.2s ease, visibility 1.2s ease;
@@ -701,7 +701,9 @@ body.typing #cardGrid{ opacity:.65; }
 .modal-artwrap.is-hq{
   transform: rotate(90deg);
   z-index: 2; /* sit above info panel */
-  width: min(38vw, 420px); /* Match basic card width */
+  width: 520px; /* Same as regular card height */
+  aspect-ratio: calc(1 / var(--card-ratio)); /* Inverted aspect ratio for rotation */
+  margin-right: 200px; /* Extra spacing to prevent overlap with panel */
 }
 
 /* Neutralize any transforms on inner bits so only the wrapper rotates */
@@ -727,9 +729,74 @@ body.typing #cardGrid{ opacity:.65; }
   background:rgba(0,0,0,0.75); backdrop-filter:blur(6px);
   cursor:pointer;
 }
+
+/* Faction-specific modal background tints */
+#modal[data-faction="gathering"]{
+  background:rgba(70, 15, 75, 0.3);
+}
+
+#modal[data-faction="uprising"]{
+  background:rgba(85, 8, 20, 0.3);
+}
+
+#modal[data-faction="clans"]{
+  background:rgba(0, 80, 78, 0.3);
+}
+
+#modal[data-faction="nobility"]{
+  background:rgba(16, 50, 95, 0.3);
+}
+
+#modal.visible #modalContent{
+  animation: slideUpModal 0.3s ease-out forwards;
+}
+
+@keyframes slideUpModal{
+  from{ transform:translateY(30px); opacity:0; }
+  to{ transform:translateY(0); opacity:1; }
+}
+
+.modal-nav{
+  position:fixed; top:50%; transform:translateY(-50%);
+  z-index:101; display:flex; align-items:center; justify-content:center;
+  width:3rem; height:3rem; border-radius:50%;
+  background:rgba(20,20,20,0.85); border:1px solid rgba(255,255,255,0.2);
+  color:#fff; font-size:2rem; font-weight:300;
+  cursor:pointer; transition:all 0.2s ease;
+  pointer-events:auto;
+}
+.modal-nav:hover{
+  background:rgba(40,40,40,0.95); border-color:rgba(255,255,255,0.4);
+  transform:translateY(-50%) scale(1.1);
+}
+.modal-nav-prev{ left:2rem; }
+.modal-nav-next{ right:2rem; }
+
+/* Slide animations */
+@keyframes slideLeft{
+  from{ transform:translateX(0); opacity:1; }
+  to{ transform:translateX(-30px); opacity:0; }
+}
+@keyframes slideRight{
+  from{ transform:translateX(0); opacity:1; }
+  to{ transform:translateX(30px); opacity:0; }
+}
+@keyframes slideInLeft{
+  from{ transform:translateX(-30px); opacity:0; }
+  to{ transform:translateX(0); opacity:1; }
+}
+@keyframes slideInRight{
+  from{ transform:translateX(30px); opacity:0; }
+  to{ transform:translateX(0); opacity:1; }
+}
+
+.modal-inner.slide-left{ animation:slideLeft 0.15s ease-out forwards; }
+.modal-inner.slide-right{ animation:slideRight 0.15s ease-out forwards; }
+.modal-inner.slide-in-left{ animation:slideInLeft 0.3s ease-out forwards; }
+.modal-inner.slide-in-right{ animation:slideInRight 0.3s ease-out forwards; }
 #modalContent{
-  background:transparent; border:none; padding:1rem;
-  width:min(96%, 1800px); max-height:92vh; overflow:visible; position:relative;
+  background:transparent; border:none; padding:2rem;
+  width:min(96%, 2800px); max-height:92vh; overflow:visible; position:relative;
   -webkit-overflow-scrolling:touch;
   pointer-events:none;
 }
@@ -738,12 +805,12 @@ body.typing #cardGrid{ opacity:.65; }
   pointer-events:auto;
 }
 
-.modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:start; position:relative; z-index:1; overflow:visible; gap:2rem; }
+.modal-inner{ display:grid; grid-template-columns:auto 1fr; align-items:center; position:relative; z-index:1; overflow:visible; gap:4rem; }
 
 /* Art wrapper controls size & aspect */
 .modal-artwrap{
   position:relative; display:inline-block; z-index:20;
-  width:min(38vw,420px); aspect-ratio:var(--card-ratio);
+  width:520px; aspect-ratio:var(--card-ratio);
   box-sizing:border-box;
 }
 .modal-artwrap::after{
@@ -758,41 +825,45 @@ body.typing #cardGrid{ opacity:.65; }
   box-shadow:0 18px 60px rgba(0,0,0,0.55);
 }
 
-/* HQ in MODAL — rotate IMG + rim; sizing stays from wrapper */
-.modal-artwrap.is-hq,
-.modal-artwrap.is-hq .art-rotor,
-.modal-artwrap.is-hq img,
-.modal-artwrap.is-hq::after{ position:relative; z-index:20; }
-.modal-artwrap.is-hq img{ transform:rotate(0deg); transform-origin:center; }
-.modal-artwrap.is-hq::after{ transform:rotate(0deg); transform-origin:center; }
-
-/* Overshoot hover in modal */
-.modal-artwrap.is-hq:hover img, .modal-artwrap.is-hq:hover::after{ animation:hqTiltModal 220ms ease-out; }
-@keyframes hqTiltModal{ 0%{transform:rotate(0deg);} 70%{transform:rotate(-4deg);} 100%{transform:rotate(0deg);} }
-
 /* Modal info panel */
 .modal-panel{
   background:rgba(20,42,46,0.94); border:1px solid rgba(255,255,255,0.12);
-  border-radius:16px; padding:1.4rem 1.8rem;
+  border-radius:16px; padding:1.8rem 2.2rem;
   box-shadow:0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
-  min-height:380px; width:min(38vw,420px); z-index:1; text-align:left;
+  min-height:480px; width:520px; z-index:1; text-align:left;
   position: relative;
   height: fit-content;
-  align-self: start;
+  align-self: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
   box-sizing: border-box;
 }
 
-/* Wider panel for HQ cards (matches rotated card height) */
-.modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
-  width:min(calc(38vw * 1.71), 718px) !important;
-  padding-left:2.0rem !important;
+/* Faction-specific modal panel tinting */
+.modal-inner[data-faction="gathering"] .modal-panel{
+  background:rgba(70, 15, 75, 0.96);
+  border-color:rgba(110, 24, 120, 0.5);
 }
+
+.modal-inner[data-faction="uprising"] .modal-panel{
+  background:rgba(85, 8, 20, 0.96);
+  border-color:rgba(132, 12, 33, 0.5);
+}
+
+.modal-inner[data-faction="clans"] .modal-panel{
+  background:rgba(0, 80, 78, 0.96);
+  border-color:rgba(0, 127, 125, 0.5);
+}
+
+.modal-inner[data-faction="nobility"] .modal-panel{
+  background:rgba(16, 50, 95, 0.96);
+  border-color:rgba(26, 80, 155, 0.5);
+}
+
 .modal-header-row{
   display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;
-  margin-bottom:.4rem; gap:.5rem;
+  margin-bottom:.8rem; gap:.8rem;
 }
 #modalName{
   font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:#FAD069;
@@ -802,10 +873,10 @@ body.typing #cardGrid{ opacity:.65; }
   font: 400 1rem "Source Serif Pro",serif; color:#FAD069; opacity:.8;
   text-align:right; white-space:nowrap; flex-shrink:0;
 }
-#modalMeta{ font:400 1rem/1.4 "Source Serif 4",serif; margin:.6rem 0 1rem; }
-#modalCmd{ font:600 1.05rem "Source Serif Pro",serif; line-height:3; color:#eaf0f5; margin:.5rem 0; white-space:pre-line; }
-#modalRules{ font:400 1.02rem/1.2 "Source Serif 4",serif; }
-#modalFlavour{ font:italic 400 1.02rem/1.5 "Source Serif 4",serif; opacity:.8; color:#eaf0f5; margin-top:.8rem; }
+#modalMeta{ font:400 1rem/1.4 "Source Serif 4",serif; margin:.8rem 0 1.2rem; }
+#modalCmd{ font:600 1.05rem "Source Serif Pro",serif; line-height:3; color:#eaf0f5; margin:.8rem 0; white-space:pre-line; }
+#modalRules{ font:400 1.02rem/1.3 "Source Serif 4",serif; margin:.6rem 0; }
+#modalFlavour{ font:italic 400 1.02rem/1.5 "Source Serif 4",serif; opacity:.8; color:#eaf0f5; margin-top:1.2rem; }
 
 /* Responsive modal tweaks */
 @media (max-width:900px){
@@ -821,12 +892,10 @@ body.typing #cardGrid{ opacity:.65; }
   /* Enable vertical scrolling on mobile */
   #modalContent{ overflow-y:auto; overflow-x:hidden; max-height:92vh; display:flex; align-items:center; justify-content:center; }
   
-  /* HQ cards on tablet */
-  .modal-artwrap.is-hq{ width:min(70vw,300px); }
-  .modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
-    margin-top:-4rem; /* Less overlap on smaller screens */
-    max-width:min(300px,92vw);
-  }
+  /* Modal navigation on mobile */
+  .modal-nav{ width:2.5rem; height:2.5rem; font-size:1.5rem; }
+  .modal-nav-prev{ left:1rem; }
+  .modal-nav-next{ right:1rem; }
 }
 @media (max-width:480px){
   .modal-artwrap{ width:min(85vw,280px); }
@@ -835,24 +904,16 @@ body.typing #cardGrid{ opacity:.65; }
   #modalMeta{ font-size:0.95rem; }
   #modalCmd{ font-size:0.95rem; line-height:2; }
   #modalRules{ font-size:0.9rem; }
-  
-  /* HQ cards on mobile */
-  .modal-artwrap.is-hq{ width:min(85vw,280px); }
-  .modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
-    margin-top:-2rem; /* Minimal overlap on mobile */
-    max-width:min(280px,92vw);
-    padding:0.8rem;
-  }
 }
 
 /* ===== META ROWS ===== */
 .meta-row{
-  display:flex; justify-content:left; align-items:baseline; gap:.6rem; margin-top:.5rem;
+  display:flex; justify-content:left; align-items:baseline; gap:.8rem; margin-top:.8rem;
   font:600 1rem "Source Serif Pro",serif; color:#eaf0f5;
 }
 #metaVotes{ order:0; } #metaLore{ order:2; }
 .meta-row .icon{ top:5px; vertical-align:-0.1em; }
-#metaRelease{ font:400 .95rem "Source Serif 4",serif; opacity:.5; margin-top:.8rem; }
+#metaRelease{ font:400 .95rem "Source Serif 4",serif; opacity:.5; margin-top:1.2rem; }
 
 /* ===== RULES: leading tag pulled left ===== */
 .rule-with-tag{ display:flex; align-items:center; gap:.75rem; margin:.6rem 0; }
@@ -905,9 +966,61 @@ body.typing #cardGrid{ opacity:.65; }
 #modalTypeFaction .icon--arch{ top: -2px; }
 #modalTypeFaction .icon--faction{ top: -2px; }
 
-/* HQ modal header icons positioned even higher */
-.modal-inner:has(.modal-artwrap.is-hq) #modalTypeFaction .icon--arch{ top: -6px !important; }
-.modal-inner:has(.modal-artwrap.is-hq) #modalTypeFaction .icon--faction{ top: -6px !important; }
+/* Tighter spacing for repeated icons in bottom stats */
+.bottom-stats .icon{ margin: 0 -0.5em; }
+
+/* ===== Related Cards Section ===== */
+.related-cards{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 2rem;
+  background: rgba(15, 30, 35, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.15);
+  z-index: 102;
+  max-height: 25vh;
+  overflow-y: auto;
+}
+.related-title{
+  font: 600 1.1rem "Source Serif Pro", serif;
+  color: #FAD069;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.related-grid{
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+.related-card{
+  position: relative;
+  width: 120px;
+  flex-shrink: 0;
+  aspect-ratio: var(--card-ratio);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.related-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.related-card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* ===== Global fades ===== */
 body::before,body::after{ content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; transition:opacity .8s ease; }
@@ -989,55 +1102,22 @@ body::after{
 .card.is-hq:focus-within { z-index: 120; }
 
 /* ============================================
-   HQ Modal Layout: art above, panel centered
-   ============================================ */
-/* When the modal shows an HQ card, stack vertically and center */
-.modal-inner:has(.modal-artwrap.is-hq){
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto;
-  justify-items: center;
-  align-items: start;
-}
-
-/* Center the art wrapper */
-.modal-inner:has(.modal-artwrap.is-hq) .modal-artwrap{
-  justify-self: center;
-  margin-inline: auto; /* ensure perfect horizontal centering */
-}
-
-/* Center the info panel under the art and remove any side overlap */
-.modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
-  margin-left: 0;
-  margin-top: -9rem; /* Very tight gap to card */
-  max-width: min(900px, 92vw);
-  justify-self: center;
-  transform: none;
-  position: relative;
-  z-index: 1;
-  padding-left: 0; /* no content offset */
-}
-
-/* ============================================
    Mobile: HQ press-to-rotate and keep on screen
    ============================================ */
 @media (max-width:640px), (hover: none) and (pointer: coarse) {
   /* Ensure smooth transform on the inner rotator */
   .card.is-hq .card-rotator { transition: transform 220ms ease; transform-origin:center; }
 
-  /* Press and hold: rotate the HQ art */
-  .card.is-hq:active .card-rotator,
+  /* Press and hold: rotate the HQ art (only via JS class, not :active) */
   .card.is-hq.is-press .card-rotator { transform: rotate(90deg); }
 
   /* Raise stacking when pressed on mobile */
-  .card.is-hq:active,
   .card.is-hq.is-press { z-index: 120; }
 
   /* Keep within viewport on 2-col mobile: shift the ROTATOR depending on column */
-  #cardGrid .card.is-hq:nth-child(2n+1):active .card-rotator,
   #cardGrid .card.is-hq:nth-child(2n+1).is-press .card-rotator {
     transform: rotate(-90deg) translateX(35%);
   }
-  #cardGrid .card.is-hq:nth-child(2n):active .card-rotator,
   #cardGrid .card.is-hq:nth-child(2n).is-press .card-rotator {
     transform: rotate(-90deg) translateX(-35%);
   }
