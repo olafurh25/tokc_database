@@ -81,36 +81,18 @@ function handleCardAreaWheel(e) {
   const isScrollingUp = e.deltaY < 0;
   const currentScrollTop = cardArea.scrollTop;
   
-  // When at top of card grid
+  // When at top of card grid and scrolling up, immediately transport to hero
   if (currentScrollTop <= 0 && isScrollingUp) {
-    if (!isAtTop) {
-      // Just reached the top
-      isAtTop = true;
-      hasScrolledUpFromTop = false;
-    } else if (!hasScrolledUpFromTop) {
-      // First upward scroll after reaching top - mark it but don't transport yet
-      hasScrolledUpFromTop = true;
-      e.preventDefault();
+    e.preventDefault();
+    if (snapContainer) {
+      snapContainer.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      // Second upward scroll - now transport to hero
-      e.preventDefault();
-      if (snapContainer) {
-        snapContainer.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-      const heroInput = document.getElementById("searchInputHero");
-      setTimeout(() => {
-        if (heroInput) heroInput.focus();
-      }, 500);
-      // Reset state
-      isAtTop = false;
-      hasScrolledUpFromTop = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  } else if (currentScrollTop > 0) {
-    // Not at top anymore
-    isAtTop = false;
-    hasScrolledUpFromTop = false;
+    const heroInput = document.getElementById("searchInputHero");
+    setTimeout(() => {
+      if (heroInput) heroInput.focus();
+    }, 500);
   }
 }
 

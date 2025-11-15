@@ -172,7 +172,6 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin",
 
 /* Strength and numeric values use Qanelas */
 .strength-value,
-.meta-row .icon + span,
 [data-strength] { font-family: "Qanelas", sans-serif; font-weight: 700; }
 
 /* ================= HERO ================= */
@@ -776,7 +775,7 @@ body.typing #cardGrid{ opacity:.65; }
   background:rgba(20,42,46,0.94); border:1px solid rgba(255,255,255,0.12);
   border-radius:16px; padding:1.4rem 1.8rem;
   box-shadow:0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
-  min-height:380px; min-width:600px; max-width:600px; width:100%; z-index:1; text-align:left;
+  min-height:380px; width:min(38vw,420px); z-index:1; text-align:left;
   position: relative;
   height: fit-content;
   align-self: start;
@@ -785,12 +784,18 @@ body.typing #cardGrid{ opacity:.65; }
   word-break: break-word;
   box-sizing: border-box;
 }
+
+/* Wider panel for HQ cards (matches rotated card height) */
+.modal-inner:has(.modal-artwrap.is-hq) .modal-panel{
+  width:min(calc(38vw * 1.71), 718px) !important;
+  padding-left:2.0rem !important;
+}
 .modal-header-row{
   display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;
   margin-bottom:.4rem; gap:.5rem;
 }
 #modalName{
-  font-weight:500; text-transform:uppercase; letter-spacing:.06em; color:#FAD069;
+  font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:#FAD069;
   font-size:1.4rem; margin:0; flex:1 1 auto; text-align:left;
 }
 #modalTypeFaction{
@@ -846,7 +851,7 @@ body.typing #cardGrid{ opacity:.65; }
   font:600 1rem "Source Serif Pro",serif; color:#eaf0f5;
 }
 #metaVotes{ order:0; } #metaLore{ order:2; }
-.meta-row .icon{ top:0; vertical-align:-0.1em; }
+.meta-row .icon{ top:5px; vertical-align:-0.1em; }
 #metaRelease{ font:400 .95rem "Source Serif 4",serif; opacity:.5; margin-top:.8rem; }
 
 /* ===== RULES: leading tag pulled left ===== */
@@ -867,7 +872,7 @@ body.typing #cardGrid{ opacity:.65; }
 #modalCmd .or-line + *{ margin-top:.4rem; }
 
 /* ===== Inline icon system ===== */
-.icon{ display:inline-block; width:1.1em; height:1.1em; vertical-align:-0.15em; margin:0 .15em; position:relative; top:0px; }
+.icon{ display:inline-block; width:1.1em; height:1.1em; vertical-align:middle; margin:0 .15em; position:relative; top:2px; }
 .icon--img{ width:1.1em; height:1.1em; filter: drop-shadow(0 0 2px rgba(0,0,0,.25));
   background-image: var(--icon-path);
   background-repeat: no-repeat;
@@ -881,8 +886,31 @@ body.typing #cardGrid{ opacity:.65; }
   -webkit-mask-size:contain; mask-size:contain;
   -webkit-mask-position:center; mask-position:center;
 }
-.icon--phase{ top:0; transform:translateY(1px); }
-.icon--arch{ opacity:.95; }
+.icon--phase, .icon--trait{ 
+  width: 1.4em; 
+  height: 1.4em; 
+  vertical-align: middle;
+  top: 2px;
+}
+.icon--stat{ 
+  width: 1.4em; 
+  height: 1.4em; 
+  vertical-align: middle;
+  top: 4px;
+}
+.icon--arch{ opacity:.95; top: 2px; }
+.icon--faction{ top: 2px; }
+
+/* Modal header icons positioned higher for regular cards */
+#modalTypeFaction .icon--arch{ top: -2px !important; }
+#modalTypeFaction .icon--faction{ top: -2px !important; }
+
+/* HQ modal header icons positioned even higher */
+.modal-inner:has(.modal-artwrap.is-hq) #modalTypeFaction .icon--arch{ top: -6px !important; }
+.modal-inner:has(.modal-artwrap.is-hq) #modalTypeFaction .icon--faction{ top: -6px !important; }
+
+/* Tighter spacing for repeated icons in bottom stats */
+.bottom-stats .icon{ margin: 0 -0.5em; }
 
 /* ===== Global fades ===== */
 body::before,body::after{ content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; transition:opacity .8s ease; }
