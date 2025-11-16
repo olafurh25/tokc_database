@@ -175,99 +175,393 @@
     </div>
   </div>
 
+  <!-- Advanced Search Modal -->
+  <div id="advancedModal" class="advanced-modal hidden">
+    <div class="advanced-content">
+      <div class="advanced-header">
+        <h2>Advanced Search</h2>
+        <button id="closeAdvanced" class="advanced-close">×</button>
+      </div>
+      
+      <div class="advanced-body">
+        <!-- Quick Filters Section -->
+        <div class="filter-section">
+          <h3>Card Type</h3>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="basic" />
+              <span>Basic</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="advanced" />
+              <span>Advanced</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="kingdom" />
+              <span>Kingdom</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="favour" />
+              <span>Kingdom's Favour</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="type" value="tactic" />
+              <span>Tactic</span>
+            </label>
+          </div>
+        </div>
 
-  <!-- ============ SYNTAX GUIDE MODAL ============ -->
-  <div id="syntaxModal" class="syntax-modal hidden">
-    <div class="syntax-content">
-      <button id="closeSyntax" class="syntax-close">×</button>
-      <h2>Advanced Search Syntax</h2>
-      <div class="syntax-body">
-        <pre>
-📖 OLD KING'S CROWN — ADVANCED SEARCH SYNTAX
+        <div class="filter-section">
+          <h3>Faction</h3>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="faction" value="clans" />
+              <span class="icon-label"><span class="icon icon--mask icon--faction" style="--icon-path: url('images/iconography/svg/clans.svg')"></span> The Clans</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="faction" value="uprising" />
+              <span class="icon-label"><span class="icon icon--mask icon--faction" style="--icon-path: url('images/iconography/svg/uprising.svg')"></span> The Uprising</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="faction" value="gathering" />
+              <span class="icon-label"><span class="icon icon--mask icon--faction" style="--icon-path: url('images/iconography/svg/gathering.svg')"></span> The Gathering</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="faction" value="nobility" />
+              <span class="icon-label"><span class="icon icon--mask icon--faction" style="--icon-path: url('images/iconography/svg/nobility.svg')"></span> The Nobility</span>
+            </label>
+          </div>
+        </div>
 
-GENERAL
-────────────────────────────────────────
-• Fielded search: field:value
-• Implicit AND between terms. Use OR and - (NOT).
-• Grouping: ( ... )
-• Wildcards: * (any chars), ? (single char)
-• Numeric ops: = != > >= < <= and ranges: a..b
-• Presence: has:field   (negate with -has:field)
-• Default target (unfielded words): title + rules + commands
+        <div class="filter-section">
+          <h3>Archetype</h3>
+          <div class="checkbox-group checkbox-group--wrap">
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="hq" />
+              <span class="icon-label"><span class="icon icon--mask" style="--icon-path: url('images/iconography/svg/hq.svg')"></span> HQ</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="ruse" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/ruse.svg')"></span> Ruse</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="trader" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/trader.svg')"></span> Trader</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="follower" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/follower.svg')"></span> Follower</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="agent" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/agent.svg')"></span> Agent</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="cavalry" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/cavalry.svg')"></span> Cavalry</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="machine" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/machine.svg')"></span> Machine</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="captain" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/captain.svg')"></span> Captain</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="heir" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/heir.svg')"></span> Heir</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="archetype" value="champion" />
+              <span class="icon-label"><span class="icon icon--mask icon--arch" style="--icon-path: url('images/iconography/svg/champion.svg')"></span> Champion</span>
+            </label>
+          </div>
+        </div>
 
-FIELDS & ALIASES
-────────────────────────────────────────
-title, name, n              → Card title
-type, t                     → tarot | hq | kingdom | favor | tactic
-faction, f                  → clans | uprising | gathering | nobility
+        <div class="filter-section">
+          <h3>Traits</h3>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="traits" value="resilient" />
+              <span class="icon-label"><span class="icon icon--mask icon--trait" style="--icon-path: url('images/iconography/svg/resilient.svg')"></span> Resilient</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="traits" value="invulnerable" />
+              <span class="icon-label"><span class="icon icon--mask icon--trait" style="--icon-path: url('images/iconography/svg/invulnerable.svg')"></span> Invulnerable</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="traits" value="pathfinder" />
+              <span class="icon-label"><span class="icon icon--mask icon--trait" style="--icon-path: url('images/iconography/svg/pathfinder.svg')"></span> Pathfinder</span>
+            </label>
+          </div>
+        </div>
 
-TAROT-ONLY FIELDS (require type:tarot)
-archetype, a               → ruse | trader | follower | agent | cavalry | war machine | machine | captain | heir | champion
-traits, tr, trait          → resilient | invulnerable | pathfinder
-strength, str, s           → number
-votes, v                   → number
-lore, l                    → number
-cost, c                    → number (advanced tarot only)
+        <div class="filter-section">
+          <h3>Suit (Kingdom Cards)</h3>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="suit" value="swords" />
+              <span class="icon-label"><span class="icon icon--mask" style="--icon-path: url('images/iconography/svg/swords.svg')"></span> Swords</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="suit" value="book" />
+              <span class="icon-label"><span class="icon icon--mask" style="--icon-path: url('images/iconography/svg/book.svg')"></span> Book</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="suit" value="coins" />
+              <span class="icon-label"><span class="icon icon--mask" style="--icon-path: url('images/iconography/svg/coins.svg')"></span> Coins</span>
+            </label>
+          </div>
+        </div>
 
-KINGDOM-ONLY FIELDS (require type:kingdom)
-suit, s                    → swords | book | coins
+        <!-- Numeric Filters -->
+        <div class="filter-section">
+          <h3>Stats</h3>
+          <div class="slider-group">
+            <div class="slider-row">
+              <label>
+                <span class="icon icon--mask icon--stat" style="--icon-path: url('images/iconography/svg/cost.svg')"></span>
+                Cost
+              </label>
+              <div class="slider-controls">
+                <input type="number" id="costMin" min="0" max="5" step="1" placeholder="Min" />
+                <input type="number" id="costMax" min="0" max="5" step="1" placeholder="Max" />
+              </div>
+            </div>
 
-TEXT BOXES
-commands, cmd              → command text (day, autumn, night, etc.)
-rules, r, oracle           → rules text (supports tokens like <votes>, <lore>, <influence>)
-flavor, fl                 → flavor text (tarot/HQ typically)
+            <div class="slider-row">
+              <label>
+                <span class="icon icon--mask" style="--icon-path: url('images/iconography/svg/swords.svg')"></span>
+                Strength
+              </label>
+              <div class="slider-controls">
+                <input type="number" id="strengthMin" min="0" max="13" step="1" placeholder="Min" />
+                <input type="number" id="strengthMax" min="0" max="13" step="1" placeholder="Max" />
+              </div>
+            </div>
 
-RELEASE & TAGS
-release, set, exp, module  → expansion/module/basegame keywords
-tag, tags                  → user tags (free text)
-has                        → presence checks (rules, flavor, tag, cost, etc.)
-is                         → derived: is:vanilla (no rules & no commands), is:legendary (in title/traits)
+            <div class="slider-row">
+              <label>
+                <span class="icon icon--mask icon--stat" style="--icon-path: url('images/iconography/svg/votes.svg')"></span>
+                Votes
+              </label>
+              <div class="slider-controls">
+                <input type="number" id="votesMin" min="0" max="2" step="1" placeholder="Min" />
+                <input type="number" id="votesMax" min="0" max="2" step="1" placeholder="Max" />
+              </div>
+            </div>
 
-TYPE-AWARE BEHAVIOR
-────────────────────────────────────────
-• archetype/traits/strength/votes/lore/cost only match when type:tarot
-• suit only matches when type:kingdom
-• Other fields (title/faction/rules/commands/flavor/release/tags) work on any type
+            <div class="slider-row">
+              <label>
+                <span class="icon icon--mask icon--stat" style="--icon-path: url('images/iconography/svg/lore.svg')"></span>
+                Lore
+              </label>
+              <div class="slider-controls">
+                <input type="number" id="loreMin" min="0" max="2" step="1" placeholder="Min" />
+                <input type="number" id="loreMax" min="0" max="2" step="1" placeholder="Max" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-OPERATORS & EXAMPLES
-────────────────────────────────────────
-AND (default):
-  f:nobility type:tarot strength>=2
+        <!-- Text Search -->
+        <div class="filter-section">
+          <h3>Text Search</h3>
+          <div class="text-search-group">
+            <input type="text" id="titleSearch" placeholder="Card title..." />
+            <input type="text" id="rulesSearch" placeholder="Rules text..." />
+            <input type="text" id="commandsSearch" placeholder="Commands text..." />
+          </div>
+        </div>
 
-OR:
-  (archetype:ruse OR archetype:agent) type:tarot
+        <!-- Query Preview -->
+        <div class="filter-section query-preview-section">
+          <h3>Generated Query</h3>
+          <div class="query-preview" id="queryPreview">
+            <code id="queryPreviewText">Select filters to build your query...</code>
+          </div>
+          <button class="chip chip--primary" id="copyQuery">Copy Query</button>
+        </div>
+      </div>
 
-NOT:
-  -fl:"winter"   -has:flavor   -tag:deprecated
+      <div class="advanced-footer">
+        <button class="chip" id="resetFilters">Reset All</button>
+        <button class="chip chip--primary" id="applyAdvancedSearch">Apply Search</button>
+      </div>
+    </div>
+  </div>
 
-Wildcards & phrases:
-  title:king*     rules:"<influence>"     traits:resilient
+  <!-- Syntax Guide Modal -->
+  <div id="syntaxModal" class="advanced-modal hidden">
+    <div class="advanced-content">
+      <div class="advanced-header">
+        <h2>Search Syntax Guide</h2>
+        <button id="closeSyntax" class="advanced-close">×</button>
+      </div>
+      
+      <div class="advanced-body syntax-content">
+        <!-- Basic Search -->
+        <div class="filter-section">
+          <h3>Basic Search</h3>
+          <div class="syntax-examples">
+            <div class="syntax-item">
+              <code>ambush</code>
+              <p>Search for cards containing "ambush" anywhere in their text</p>
+            </div>
+            <div class="syntax-item">
+              <code>"gain 1 influence"</code>
+              <p>Search for the exact phrase (use quotes for multi-word phrases)</p>
+            </div>
+          </div>
+        </div>
 
-Ranges & numbers:
-  votes=2..4      cost<=3       strength>1
+        <!-- Field Searches -->
+        <div class="filter-section">
+          <h3>Field-Specific Searches</h3>
+          <div class="syntax-examples">
+            <div class="syntax-item">
+              <code>name/n:petrichor</code>
+              <p>Search only in card names</p>
+            </div>
+            <div class="syntax-item">
+              <code>text/txt:flank</code>
+              <p>Search only in card text (rules & commands)</p>
+            </div>
+            <div class="syntax-item">
+              <code>type/t:tactic</code>
+              <p>Find all Tactic tiles (basic, advanced, kingdom, favour, tactic, faction)</p>
+            </div>
+            <div class="syntax-item">
+              <code>faction/f:clans</code>
+              <p>Find cards from a specific faction (clans, uprising, nobility, gathering, aeronauts)</p>
+            </div>
+            <div class="syntax-item">
+              <code>arch/a/archetype:heir</code>
+              <p>Find cards with a specific archetype (insert all archetypes here)</p>
+            </div>
+          </div>
+        </div>
 
-Presence:
-  has:rules       -has:flavor   has:tag
+        <!-- Numeric Fields -->
+        <div class="filter-section">
+          <h3>Numeric Searches</h3>
+          <div class="syntax-examples">
+            <div class="syntax-item">
+              <code>cost/c:3</code>
+              <p>Cards with exactly 3 cost</p>
+            </div>
+            <div class="syntax-item">
+              <code>cost/c:2..4</code>
+              <p>Cards with cost between 2 and 4 (inclusive range)</p>
+            </div>
+            <div class="syntax-item">
+              <code>strength/str:>=5</code>
+              <p>Cards with 5 or more strength (use >=, >, <=, <, =, !=)</p>
+            </div>
+            <div class="syntax-item">
+              <code>votes/v:1</code>
+              <p>Cards with exactly 1 vote value</p>
+            </div>
+            <div class="syntax-item">
+              <code>lore/l:2</code>
+              <p>Cards with exactly 2 lore value</p>
+            </div>
+          </div>
+        </div>
 
-Release:
-  release:basegame
-  release:"Wild Kingdom"
+        <!-- Traits & Keywords -->
+        <div class="filter-section">
+          <h3>Traits & Keywords</h3>
+          <div class="syntax-examples">
+            <div class="syntax-item">
+              <code>trait:invulnerable</code>
+              <p>Cards with the Item trait (item, companion, building, title)</p>
+            </div>
+          </div>
+        </div>
 
-Kingdom examples:
-  type:kingdom suit:coins
-  type:kingdom f:gathering rules:river
+        <!-- Boolean Operators -->
+        <div class="filter-section">
+          <h3>Combining Searches</h3>
+          <div class="syntax-examples">
+            <div class="syntax-item">
+              <code>faction:clans type:advanced</code>
+              <p>Cards matching ALL conditions (implicit AND)</p>
+            </div>
+            <div class="syntax-item">
+              <code>faction:clans OR faction:uprising</code>
+              <p>Cards matching ANY condition (use OR between terms)</p>
+            </div>
+            <div class="syntax-item">
+              <code>text:draw -text:discard</code>
+              <p>Exclude terms with minus sign (cards with "draw" but not "discard")</p>
+            </div>
+            <div class="syntax-item">
+              <code>(faction:clans OR faction:uprising) cost:3</code>
+              <p>Use parentheses to group conditions</p>
+            </div>
+          </div>
+        </div>
 
-Tarot examples:
-  type:tarot archetype:ruse traits:resilient
-  type:tarot strength>=2 votes=2..4
-  type:tarot -has:flavor is:vanilla
+        <!-- Special Searches -->
+        <div class="filter-section">
+          <h3>Special Searches</h3>
+          <div class="syntax-examples">
+            <div class="syntax-item">
+              <code>release:basegame</code>
+              <p>Cards from the base game</p>
+            </div>
+            <div class="syntax-item">
+              <code>release:"wild kingdom"</code>
+              <p>Cards from a specific expansion (aegis, aegis:nobility, aegis:aeronauts, etc.)</p>
+            </div>
+            <div class="syntax-item">
+              <code>hq:true</code>
+              <p>Find only Headquarters cards</p>
+            </div>
+          </div>
+        </div>
 
-DEFAULT SEARCH
-────────────────────────────────────────
-Unfielded words search: title + rules + commands
-  example:  king deploy  → title/rules/commands contain both words
-</pre>
+        <!-- Advanced Examples -->
+        <div class="filter-section">
+          <h3>Advanced Examples</h3>
+          <div class="syntax-examples">
+            <div class="syntax-item">
+              <code>faction:clans cost:0..2 trait:pathfinder</code>
+              <p>Clans items with cost 0 to 2</p>
+            </div>
+            <div class="syntax-item">
+              <code>(text:draw OR text:search) -type:tactic</code>
+              <p>Non-tactic cards that draw or search</p>
+            </div>
+            <div class="syntax-item">
+              <code>strength:>=10 votes:0</code>
+              <p>High strength cards with no votes</p>
+            </div>
+            <div class="syntax-item">
+              <code>faction:nobility arch:noble cost:3..5</code>
+              <p>Nobility nobles costing 3-5</p>
+            </div>
+          </div>
+        </div>
 
+        <!-- Tips -->
+        <div class="filter-section">
+          <h3>Tips</h3>
+          <div class="syntax-tips">
+            <p>• Searches aren't case-insensitive</p>
+            <p>• Fuzzy matching helps with typos (e.g., "millitia" finds "militia")</p>
+            <p>• Use quotes for exact multi-word phrases</p>
+            <p>• Spaces between terms mean AND (all must match)</p>
+            <p>• Field names can be shortened: str:5 (strength), arc:warrior (archetype)</p>
+            <p>• Numeric ranges use .. (double dots): cost:2..4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="advanced-footer">
+        <button class="chip chip--primary" id="closeSyntaxBtn">Got It!</button>
       </div>
     </div>
   </div>
