@@ -166,6 +166,10 @@ body{
   overflow-x:hidden;
   min-height:100vh;
   transition: background-position-y 0.15s ease-out;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin","Source Serif Pro",serif; }
 #modalName,.card h3{ font-family:"Madelin","Spectral SC",serif; letter-spacing:.02em; }
@@ -202,6 +206,8 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin",
   padding:.9rem .9rem; width:clamp(280px,90vw,760px);
   transition: background .25s ease, box-shadow .25s ease, transform .15s ease;
   will-change: box-shadow, transform;
+  touch-action: manipulation;
+  min-height: 48px;
 }
 .search-wrap input{
   flex:1; background:transparent; border:none; outline:none; color:var(--ink);
@@ -209,6 +215,21 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin",
   padding:.55rem 2rem .55rem 2.2rem;
   transition: color .2s ease, font-weight .2s ease, transform .15s ease;
   transform-origin:left center;
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 32px;
+}
+
+@media (max-width: 640px){
+  .search-wrap{
+    width: 100%;
+    padding: 0.8rem;
+    min-height: 52px;
+  }
+  .search-wrap input{
+    font-size: 1rem;
+    padding: 0.5rem 2rem 0.5rem 2rem;
+  }
 }
 .search-icon{ position:absolute; left:1rem; color:#0a0e12; opacity:.55; }
 .icon-search{
@@ -299,12 +320,15 @@ h1,h2,h3,h4,h5,h6,#topbar,#hero,.chip,.syntax-content h2{ font-family:"Madelin",
   box-shadow:0 8px 20px rgba(0,0,0,.2);
   transition:transform .12s ease, background .15s ease, border-color .2s ease;
   min-height:44px; min-width:44px; display:flex; align-items:center; justify-content:center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 @media(max-width:640px){
-  .filters{ gap:.5rem; }
-  .chip{ padding:.5rem 0.9rem; font-size:0.95rem; }
+  .filters{ gap:.6rem; }
+  .chip{ padding:.65rem 1rem; font-size:0.95rem; min-height:48px; }
 }
 .chip:hover{ transform:translateY(-2px); background:rgba(46,87,96,1); border-color:rgba(255,255,255,.35); }
+.chip:active{ transform:translateY(0); background:rgba(46,87,96,0.9); }
 
 /* Topbar */
 #topbar{
@@ -604,9 +628,10 @@ input[type="search"]::-webkit-search-cancel-button{ -webkit-appearance:none; app
   transition:opacity .35s cubic-bezier(.4,0,.2,1);
 }
 @media(max-width:1100px){ #cardGrid{ grid-template-columns:repeat(3,1fr); } }
-@media(max-width:800px){  #cardGrid{ grid-template-columns:repeat(2,1fr); } }
-@media(max-width:640px){  #cardGrid{ grid-template-columns:repeat(2,1fr); } }
-@media(max-width:360px){  #cardGrid{ grid-template-columns:1fr; } }
+@media(max-width:800px){  #cardGrid{ grid-template-columns:repeat(2,1fr); gap:1rem; width:94%; } }
+@media(max-width:640px){  #cardGrid{ grid-template-columns:repeat(2,1fr); gap:0.9rem; width:95%; } }
+@media(max-width:480px){  #cardGrid{ grid-template-columns:repeat(2,1fr); gap:0.8rem; width:96%; } }
+@media(max-width:360px){  #cardGrid{ grid-template-columns:1fr; gap:1rem; } }
 body.typing #cardGrid{ opacity:.65; }
 
 .card {
@@ -614,11 +639,15 @@ body.typing #cardGrid{ opacity:.65; }
   background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
   border-radius:var(--card-radius-grid); cursor:pointer; backdrop-filter:blur(6px);
   transition: transform .35s cubic-bezier(.2,.7,.2,1), opacity .35s cubic-bezier(.2,.7,.2,1);
-  opacity:0; transform:translateY(0px); 
+  opacity:0; transform:translateY(0px);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
+
 .card::after{
   content:""; position:absolute; inset:0; border-radius:var(--card-radius-grid);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); pointer-events:none;
+  z-index: 11;
 }
 /* 1) Non-HQ hover: just nudge down 1px (no scale) */
 .card:not(.is-hq):hover{
@@ -627,13 +656,19 @@ body.typing #cardGrid{ opacity:.65; }
   filter: saturate(1.03);
 }
 
+/* Active state for mobile touch feedback */
+.card:not(.is-hq):active{
+  transform: translateY(2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.3);
+}
+
 /* Remove/replace any global .card:hover rules that add scale or large translate
    so they don't affect HQ cards. */
 
 
 /* HQ cards in the grid — rotate inner wrapper only */
 .card.is-hq { 
-  overflow: visible; 
+  overflow: visible;
   cursor: pointer;
 }
 
@@ -644,6 +679,7 @@ body.typing #cardGrid{ opacity:.65; }
   transition: transform 0.35s cubic-bezier(.33,1.02,.44,1);
   pointer-events: none; /* Let clicks pass through to parent card */
   cursor: pointer;
+  animation-delay: 0s;
 }
 
 /* But enable pointer events on the image so clicks work */
@@ -651,6 +687,8 @@ body.typing #cardGrid{ opacity:.65; }
   width:100%; height:100%; object-fit:cover; border-radius:var(--card-radius-grid);
   pointer-events: auto;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 /* Move the rim to the rotator for HQ so it rotates with the art */
@@ -747,6 +785,10 @@ body.typing #cardGrid{ opacity:.65; }
   background:rgba(16, 50, 95, 0.3);
 }
 
+#modal[data-faction="aeronauts"]{
+  background:rgba(33, 120, 137, 0.3);
+}
+
 #modal.visible #modalContent{
   animation: slideUpModal 0.3s ease-out forwards;
 }
@@ -759,18 +801,37 @@ body.typing #cardGrid{ opacity:.65; }
 .modal-nav{
   position:fixed; top:50%; transform:translateY(-50%);
   z-index:101; display:flex; align-items:center; justify-content:center;
-  width:3rem; height:3rem; border-radius:50%;
-  background:rgba(20,20,20,0.85); border:1px solid rgba(255,255,255,0.2);
-  color:#fff; font-size:2rem; font-weight:300;
+  width:30rem; height:80rem; 
+  background:transparent; border:none;
+  color:#fff; font-size:3rem; font-weight:300;
   cursor:pointer; transition:all 0.2s ease;
   pointer-events:auto;
+  padding:1rem;
+  -webkit-tap-highlight-color: transparent;
 }
 .modal-nav:hover{
-  background:rgba(40,40,40,0.95); border-color:rgba(255,255,255,0.4);
-  transform:translateY(-50%) scale(1.1);
+  color:rgba(250, 208, 105, 1);
+  transform:translateY(-50%) scale(1.15);
 }
-.modal-nav-prev{ left:2rem; }
-.modal-nav-next{ right:2rem; }
+.modal-nav:active{
+  color:rgba(250, 208, 105, 0.8);
+}
+.modal-nav-prev{ left:0; }
+.modal-nav-next{ right:0; }
+
+@media (max-width: 768px){
+  .modal-nav{
+    width:20vw; height:100vh;
+    font-size:2rem;
+  }
+}
+
+@media (max-width: 480px){
+  .modal-nav{
+    width:25vw; height:100vh;
+    font-size:1.8rem;
+  }
+}
 
 /* Slide animations */
 @keyframes slideLeft{
@@ -861,6 +922,11 @@ body.typing #cardGrid{ opacity:.65; }
   border-color:rgba(26, 80, 155, 0.5);
 }
 
+.modal-inner[data-faction="aeronauts"] .modal-panel{
+  background:rgba(33, 120, 137, 0.96);
+  border-color:rgba(83, 193, 220, 0.5);
+}
+
 .modal-header-row{
   display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;
   margin-bottom:.8rem; gap:.8rem;
@@ -884,26 +950,44 @@ body.typing #cardGrid{ opacity:.65; }
   :root{ --modal-overlap:80px; }
 }
 @media (max-width:720px){
-  .modal-inner{ grid-template-columns:1fr; justify-items:center; }
-  .modal-artwrap{ margin-right:0; width:min(70vw,300px); }
+  .modal-inner{ grid-template-columns:1fr; justify-items:center; gap:2rem; }
+  .modal-artwrap{ margin-right:0; width:min(75vw,340px); }
+  .modal-artwrap.is-hq{ margin-right:0; width:min(75vw,340px); }
   :root{ --modal-overlap:0px; }
-  .modal-panel{ margin-top:1rem; padding:1rem 1rem; min-width:0; max-width:min(70vw,300px); text-align:left; }
+  .modal-panel{ 
+    margin-top:0; padding:1.5rem; min-width:0; 
+    max-width:min(75vw,340px); width:100%;
+    text-align:left; min-height:auto;
+  }
   
   /* Enable vertical scrolling on mobile */
-  #modalContent{ overflow-y:auto; overflow-x:hidden; max-height:92vh; display:flex; align-items:center; justify-content:center; }
+  #modalContent{ 
+    overflow-y:auto; overflow-x:hidden; max-height:90vh; 
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:1rem 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
   
-  /* Modal navigation on mobile */
-  .modal-nav{ width:2.5rem; height:2.5rem; font-size:1.5rem; }
-  .modal-nav-prev{ left:1rem; }
-  .modal-nav-next{ right:1rem; }
+  .modal-inner{ 
+    width: 100%; 
+    padding: 0.5rem;
+  }
 }
 @media (max-width:480px){
-  .modal-artwrap{ width:min(85vw,280px); }
-  .modal-panel{ padding:0.8rem; min-height:auto; min-width:0; max-width:min(85vw,280px); text-align:left; }
-  #modalName{ font-size:1.1rem; }
-  #modalMeta{ font-size:0.95rem; }
-  #modalCmd{ font-size:0.95rem; line-height:2; }
-  #modalRules{ font-size:0.9rem; }
+  .modal-inner{ gap:1.5rem; padding: 0.25rem; }
+  .modal-artwrap{ width:min(82vw,300px); }
+  .modal-artwrap.is-hq{ width:min(82vw,300px); }
+  .modal-panel{ 
+    padding:1.2rem; min-height:auto; min-width:0; 
+    max-width:min(82vw,300px); text-align:left; 
+  }
+  #modalContent{ padding:0.75rem 0.25rem; }
+  #modalName{ font-size:1.15rem; }
+  #modalMeta{ font-size:0.92rem; }
+  #modalCmd{ font-size:0.95rem; line-height:1.8; }
+  #modalRules{ font-size:0.92rem; line-height:1.35; }
+  #modalFlavour{ font-size:0.9rem; line-height:1.4; }
+  #modalTypeFaction{ font-size:0.88rem; }
 }
 
 /* ===== META ROWS ===== */
@@ -975,22 +1059,67 @@ body.typing #cardGrid{ opacity:.65; }
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1.5rem 2rem;
-  background: rgba(15, 30, 35, 0.95);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255,255,255,0.15);
+  padding: 0.5rem 2rem;
+  background: rgba(15, 30, 35, 0.4);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255,255,255,0.08);
   z-index: 102;
-  max-height: 25vh;
+  max-height: 60px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  -webkit-overflow-scrolling: touch;
+}
+
+.related-cards:hover,
+.related-cards.expanded{
+  max-height: 30vh;
+  padding: 1.5rem 2rem;
+  background: rgba(15, 30, 35, 1);
+  backdrop-filter: blur(10px);
+  border-top-color: rgba(255,255,255,0.2);
   overflow-y: auto;
 }
+
+@media (max-width: 768px){
+  .related-cards{
+    padding: 0.5rem 1rem;
+    max-height: 70px;
+  }
+  .related-cards:hover,
+  .related-cards.expanded{
+    max-height: 25vh;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px){
+  .related-cards{
+    padding: 0.5rem 0.75rem;
+  }
+  .related-cards:hover,
+  .related-cards.expanded{
+    padding: 0.75rem;
+  }
+}
+
 .related-title{
-  font: 600 1.1rem "Source Serif Pro", serif;
-  color: #FAD069;
-  margin: 0 0 1rem 0;
+  font: 600 0.9rem "Source Serif Pro", serif;
+  color: rgba(250, 208, 105, 0.6);
+  margin: 0 0 0.5rem 0;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
+
+.related-cards:hover .related-title,
+.related-cards.expanded .related-title{
+  font-size: 1.1rem;
+  color: rgba(250, 208, 105, 1);
+  margin-bottom: 1rem;
+}
+
 .related-grid{
   display: flex;
   gap: 1rem;
@@ -999,18 +1128,49 @@ body.typing #cardGrid{ opacity:.65; }
   flex-wrap: nowrap;
   overflow-x: auto;
   padding-bottom: 0.5rem;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
+
+.related-cards:hover .related-grid,
+.related-cards.expanded .related-grid{
+  opacity: 1;
+}
+
 .related-card{
   position: relative;
-  width: 120px;
+  width: 80px;
   flex-shrink: 0;
   aspect-ratio: var(--card-ratio);
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  -webkit-tap-highlight-color: transparent;
 }
+
+.related-cards:hover .related-card,
+.related-cards.expanded .related-card{
+  width: 120px;
+}
+
+@media (max-width: 768px){
+  .related-grid{
+    gap: 0.75rem;
+    justify-content: flex-start;
+  }
+  .related-card{
+    width: 70px;
+  }
+  .related-cards:hover .related-card,
+  .related-cards.expanded .related-card{
+    width: 100px;
+  }
+}
+
 .related-card:hover{
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.5);

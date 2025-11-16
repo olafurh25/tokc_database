@@ -333,6 +333,22 @@ export function initModal() {
     relatedSection.addEventListener('click', (e) => {
       e.stopPropagation();
     });
+    
+    // Touch support for expanding related cards on mobile
+    let touchStartY = 0;
+    relatedSection.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    relatedSection.addEventListener('touchmove', (e) => {
+      const touchY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchY;
+      
+      // If swiping up on related cards, expand them
+      if (deltaY > 30) {
+        relatedSection.classList.add('expanded');
+      }
+    }, { passive: true });
   }
 
   // Navigation chevrons
@@ -344,6 +360,15 @@ export function initModal() {
       e.stopPropagation();
       navigateCard(-1);
     });
+    
+    // Touch feedback
+    prevBtn.addEventListener('touchstart', (e) => {
+      e.currentTarget.style.opacity = '0.6';
+    }, { passive: true });
+    
+    prevBtn.addEventListener('touchend', (e) => {
+      e.currentTarget.style.opacity = '';
+    }, { passive: true });
   }
   
   if (nextBtn) {
@@ -351,6 +376,15 @@ export function initModal() {
       e.stopPropagation();
       navigateCard(1);
     });
+    
+    // Touch feedback
+    nextBtn.addEventListener('touchstart', (e) => {
+      e.currentTarget.style.opacity = '0.6';
+    }, { passive: true });
+    
+    nextBtn.addEventListener('touchend', (e) => {
+      e.currentTarget.style.opacity = '';
+    }, { passive: true });
   }
 
   document.addEventListener('keydown', (e) => {
